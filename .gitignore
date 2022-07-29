@@ -1,0 +1,13 @@
+# (La)TeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+
+# (n)vim
+local.vimrc
+/Session.vim

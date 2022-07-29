@@ -1,0 +1,3 @@
+[submodule "class"]
+	path = class
+	url = git@github.com:sgorblex-unimi/thesis.cls.git
