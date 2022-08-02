@@ -1,0 +1,93 @@
+\chapter{Preliminari}
+La teoria dei linguaggi formali è un campo fondamentale dell'informatica teorica e studia il rapporto tra i linguaggi, cioè insiemi di parole, e i loro generatori o riconoscitori. In questo capitolo ricordiamo al lettore le nozioni fondamentali della teoria dei linguaggi e dei principali riconoscitori, di cui studieremo il rapporto con gli automi 1-limited.
+
+
+
+\section{Linguaggi}
+
+
+\subsection*{Alfabeti}
+Tutte le nozioni di base della teoria dei linguaggi partono dalla definizione di alfabeto, simile a quello dei linguaggi naturali (le lingue parlate e scritte): un insieme di lettere.
+\begin{defin}[alfabeto]
+	Un alfabeto (\emph{alphabet}) è un insieme non vuoto arbitrario, i cui elementi sono detti simboli (\emph{symbol}). Un alfabeto è solitamente indicato con $\Sigma$ o altre lettere greche maiuscole.
+\end{defin}
+Per semplicità i simboli di un alfabeto sono spesso indicati con lettere minuscole o cifre numeriche, tuttavia può essere utile usare altri simboli quando la semantica ne viene semplificata.
+
+
+\subsection*{Parole}
+\begin{defin}[parola]
+	Una parola (\emph{word}), o stringa, su un alfabeto $\Sigma$ è una sequenza di simboli appartenenti a $\Sigma$. La parola non contenente simboli, detta parola vuota, si può costruire da qualunque alfabeto ed è comunemente indicata con $\emptyword$.
+
+	Si indica con $\Sigma\star$ l'infinito insieme di parole sull'alfabeto $\Sigma$.
+\end{defin}
+La lunghezza di una parola $w$ è il numero di simboli che la compongono e viene indicata con $|w|$ (o $l(w)$).
+\begin{examp}
+	Una parola sull'alfabeto $\Sigma=\{a,c,s\}$ è $w=casa$. La lunghezza di $w$ è $|w|=4$.
+\end{examp}
+Si possono costruire parole, oltre che da simboli, a partire da altre parole:
+\begin{defin}[prodotto di giustapposizione]
+	Date due parole $v=x_1\dots x_n$ e $w=y_1\dots y_m$ si dice prodotto di giustapposizione di $v$ e $w$ la parola $v\cdot w=x_1\dots x_n y_1\dots y_m$ (anche indicata semplicemente con $vw$) composta dai simboli di $v$ seguiti da quelli di $w$. Si noti che $|vw|=|v|+|w|$.
+\end{defin}
+Il prodotto di giustapposizione $\cdot$ è un'operazione binaria che gode della proprietà associativa e di cui la parola vuota $\emptyword$ è l'elemento neutro, sicché dato un alfabeto $\Sigma$, $(\Sigma,\cdot)$ è un monoide.
+\begin{defin}[prefisso, fattore, suffisso]
+	Date parole $w$, $x$, $y$, $z$, tali che $w=xyz$ si dice:
+	\begin{itemize}
+		\item $x$ è prefisso di $w$
+		\item $y$ è fattore di $w$
+		\item $z$ è suffisso di $w$
+	\end{itemize}
+\end{defin}
+Ovviamente, prefissi, fattori e suffissi di una parola non sono, in generale, unici.
+
+
+\subsection*{Linguaggi}
+\begin{defin}[linguaggio]
+	Un linguaggio (\emph{language}) $L$ su un alfabeto $\Sigma$ è un insieme di parole su $\Sigma$, ossia un sottoinsieme di $\Sigma\star$:
+	\begin{equation*}
+		L\subseteq\Sigma\star.
+	\end{equation*}
+	Il linguaggio $\emptyset$ si dice linguaggio vuoto.
+\end{defin}
+\begin{examp}
+	Un linguaggio su $\Sigma=\{a,c,s\}$ è $L=\{casa, sacca, cassa, \emptyword\}$.
+\end{examp}
+Si definiscono numerose operazioni dei linguaggi, tra cui una delle più importanti è l'unaria chiusura di Kleene.
+\begin{defin}[prodotto di linguaggi]
+	Il prodotto di due linguaggi $L_1$ e $L_2$ è il linguaggio delle parole composte dalla giustapposizione di una parola di $L_1$ e una di $L_2$:
+	\begin{equation*}
+		L_1\cdot L_2 := \{xy\mid x\in L_1 \land y\in L_2\}
+	\end{equation*}
+	Il prodotto di un linguaggio $L$ con se stesso $n$ volte, ossia $L\cdot L^{n-1}$ viene indicato con $L^n$. Viene inoltre indicato con $L^0$ il linguaggio $\{\emptyword\}$.
+\end{defin}
+\begin{defin}[chiusura di Kleene]
+	La chiusura (di Kleene) di un linguaggio $L$ è il linguaggio $L\star$ delle parole composte da un numero arbitrario di parole di $L$:
+	\begin{equation*}
+		L\star := L^0\cup L^1\cup\dots=\bigcup_{k=0}^\infty L^k
+	\end{equation*}
+	Si indica inoltre con $L^+$ il linguaggio $\bigcup_{k=1}^\infty L^k$
+\end{defin}
+
+Considereremo alfabeti e parole finiti, poiché lo studio di linguaggi contenenti parole infinite o su alfabeti infiniti fuoriesce dallo scopo di questo testo. È invece particolarmente interessante studiare linguaggi infiniti, poiché quelli finiti sono triviali da trattare.
+
+
+\subsection*{Riconoscitori e generatori}
+Come si è visto, esistono diversi modi di rappresentare un linguaggio: se è finito è sufficiente elencarne le parole, se è infinito e le sue parole possiedono una proprietà caratterizzante $P$ può essere descritto da essa: $L:=\{w\mid P(w)\}$. Tuttavia, non sempre è facile usare una di queste rappresentazioni. I metodi generativo e riconoscitivo forniscono un ulteriore modo di descrivere i linguaggi.
+
+\paragraph{Riconoscitori} un riconoscitore per un linguaggio $L\subseteq\Sigma\star$ è un algoritmo che determina se una data parola $w\in\Sigma\star$ appartiene a $L$.
+
+\paragraph{Generatori} un generatore per un linguaggio $L\subseteq\Sigma\star$ è un sistema formale che produce parole appartenenti a $L$, cioè un metodo per costruirle a partire da regole.
+
+
+
+\section{Grammatiche}
+
+
+\subsection{La Classificazione di Chomsky}
+
+
+
+\section{Automi}
+
+
+
+\section{Complessità descrizionale}
