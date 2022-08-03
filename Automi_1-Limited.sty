@@ -3,6 +3,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{caption}
+\captionsetup{tableposition=top,figureposition=bottom,font=small,labelfont={sf,bf}}%,format=hang}
+
 \usepackage{amssymb,amsmath}
 
 \usepackage{amsthm}
@@ -23,3 +28,7 @@
 % useful symbols
 \renewcommand{\star}{^*} % redefined from amssymb
 \newcommand{\emptyword}{\varepsilon}
+\newcommand{\deriv}[1]{\underset{#1}{\Rightarrow}}
+\newcommand{\derivs}[1]{\deriv{#1}\star}
+\newcommand{\generated}[1]{\mathcal L(#1)}
+\newcommand{\len}[1]{|#1|}

@@ -22,11 +22,11 @@ Per semplicità i simboli di un alfabeto sono spesso indicati con lettere minusc
 \end{defin}
 La lunghezza di una parola $w$ è il numero di simboli che la compongono e viene indicata con $|w|$ (o $l(w)$).
 \begin{examp}
-	Una parola sull'alfabeto $\Sigma=\{a,c,s\}$ è $w=casa$. La lunghezza di $w$ è $|w|=4$.
+	Una parola sull'alfabeto $\Sigma=\{a,c,s\}$ è $w=casa$. La lunghezza di $w$ è $\len w=4$.
 \end{examp}
 Si possono costruire parole, oltre che da simboli, a partire da altre parole:
 \begin{defin}[prodotto di giustapposizione]
-	Date due parole $v=x_1\dots x_n$ e $w=y_1\dots y_m$ si dice prodotto di giustapposizione di $v$ e $w$ la parola $v\cdot w=x_1\dots x_n y_1\dots y_m$ (anche indicata semplicemente con $vw$) composta dai simboli di $v$ seguiti da quelli di $w$. Si noti che $|vw|=|v|+|w|$.
+	Date due parole $v=x_1\dots x_n$ e $w=y_1\dots y_m$ si dice prodotto di giustapposizione di $v$ e $w$ la parola $v\cdot w=x_1\dots x_n y_1\dots y_m$ (anche indicata semplicemente con $vw$) composta dai simboli di $v$ seguiti da quelli di $w$. Si noti che $\len{vw}=\len v+\len w$.
 \end{defin}
 Il prodotto di giustapposizione $\cdot$ è un'operazione binaria che gode della proprietà associativa e di cui la parola vuota $\emptyword$ è l'elemento neutro, sicché dato un alfabeto $\Sigma$, $(\Sigma,\cdot)$ è un monoide.
 \begin{defin}[prefisso, fattore, suffisso]
@@ -77,16 +77,79 @@ Come si è visto, esistono diversi modi di rappresentare un linguaggio: se è fi
 
 \paragraph{Generatori} un generatore per un linguaggio $L\subseteq\Sigma\star$ è un sistema formale che produce parole appartenenti a $L$, cioè un metodo per costruirle a partire da regole.
 
+Dato un riconoscitore o generatore $M$, si indica con $\generated M$ il linguaggio riconosciuto o generato da $M$.
+
 
 
 \section{Grammatiche}
+\begin{defin}[grammatica]
+	Una grammatica è una quadrupla $G=\langle \Sigma,N,P,S \rangle$, dove:
+	\begin{itemize}
+		\item $\Sigma$ è l'alfabeto dei simboli terminali (\emph{terminal symbols})
+		\item $N$ è l'alfabeto dei metasimboli (\emph{nonterminal symbols})
+		\item $P$ è l'insieme delle regole di produzione (\emph{production rules}). Ogni regola è nella forma $(\Sigma\cup N)\star N(\Sigma\cup N)\star\to(\Sigma\cup N)$
+		\item $S\in N$ è l'assioma (\emph{start symbol})
+	\end{itemize}
+	Data una grammatica $G=\langle \Sigma,N,P,S \rangle$, si definisce la relazione binaria tra parole $\deriv{G}$, detta di derivazione in un passo:
+	\begin{equation*}
+		x\deriv{G} y \iff \exists u,v,p,q\in(\Sigma\cup N)\star \mid (x=upv)\land(p\to q\in P)\land(y=uqv)
+	\end{equation*}
+	Data una grammatica $G=\langle \Sigma,N,P,S \rangle$, si definisce la relazione binaria tra parole $\derivs{G}$, detta di derivazione in zero o più passi (o semplicemente derivazione):
+	\begin{itemize}
+		\item $w \derivs{G} w$
+		\item $x \derivs{G} y \iff \exists w_1,w_2,\dots,w_m \mid x\deriv{G} w_1 \land w_1\deriv{G} w_2 \land\dots\land w_m\deriv{G}y$
+	\end{itemize}
+	Il linguaggio $\generated G$ generato da una grammatica $G=\langle \Sigma,N,P,S \rangle$ è il linguaggio delle parole derivabili dall'assioma:
+	\begin{equation*}
+		\generated G := \{ w\in\Sigma\star\mid S\derivs{G} w \}
+	\end{equation*}
+\end{defin}
 
 
-\subsection{La Classificazione di Chomsky}
+\subsection{La Classificazione di Chomsky-Schützenberger}
+Nel 1956 il linguista Noam Chomsky ha costruito in \cite{chomsky56} una gerarchia di classi di grammatiche, basata sulla forma delle loro regole di produzione, da cui deriva una gerarchia di classi di linguaggi oggi considerata un concetto fondamentale della teoria dei linguaggi formali. La gerarchia si compone di quattro classi:
+\begin{description}
+	\item[Tipo 0] tutte le grammatiche sono di tipo 0;
+	\item[Tipo 1] in una grammatica di tipo 1, ogni regola di produzione è nella forma $\alpha A\beta\to\alpha\gamma\beta$, dove $\gamma$ è non vuota e $A$ è un metasimbolo. È ammessa la regola $S\to\emptyword$, se $S$ è l'assioma, solo se $S$ non compare nella parte destra di alcuna altra regola. I linguaggi che possono essere generati da grammatiche di tipo 1 sono detti dipendenti dal contesto (\emph{context sensitive});
+	\item[Tipo 2] in una grammatica di tipo 2, ogni regola di produzione $\alpha\to\beta$ è tale che $\alpha$ è un metasimbolo. Valgono le stesse restrizioni sull'assioma delle grammatiche di tipo 1. I linguaggi che possono essere generati da grammatiche di tipo 2 sono detti liberi dal contesto (\emph{context free});
+	\item[Tipo 3] in una grammatica di tipo 3, ogni regola di produzione è in una delle forme $A\to\sigma B$, $A\to\sigma$, $A\to\emptyword$, dove $A$ e $B$ sono metasimboli e $\sigma$ è un simbolo terminale\footnote{L'esistenza della regola $A\to\sigma B$ dà luogo, per essere precisi, alla classe delle grammatiche regolari a destra (\emph{right regular}). Tale forma può essere sostituita (ma non accompagnata) da $A\to B\sigma$, dando luogo alle grammatiche regolari a sinistra (\emph{left regular}). Le due classi corrispondono alla stessa classe di linguaggi e sono considerate intercambiabili, anche se è più comune utilizzare le regolari a destra.}. I linguaggi che possono essere generati da grammatiche di tipo 3 sono detti regolari (\emph{regular}).
+\end{description}
+È facilmente verificabile che esiste un'inclusione tra le classi di grammatiche di tipo più alto e quelle di tipo più basso, da cui deriva un'inclusione, che si può dimostrare essere propria, tra le rispettive classi di linguaggi. Come vedremo, queste classi corrispondono inoltre a classi di riconoscitori.
 
 
 
 \section{Automi}
+% TODO spiegare (non)determinismo
+
+
+\subsection{Macchine di Turing}
+% TODO
+
+
+\subsection{Automi a pila}
+% TODO
+
+
+\subsection{Automi a stati finiti}
+% TODO
+
+La tabella \ref{tab:prel:chomskyhier} riassume la classificazione di Chomsky-Schützenberger completa di corrispondenza con le rispettive classi di linguaggi e riconoscitori.
+
+\begin{table}
+	\caption{Classificazione di Chomsky-Schützenberger con corrispondenza con le rispettive classi di linguaggi e riconoscitori. $a$ è un simbolo terminale, $A$ e $B$ metasimboli, $\alpha$, $\beta$ e $\gamma$ parole qualunque, con $\gamma$ non vuota. Una macchina di Turing linearmente limitata è una macchina di Turing la cui lunghezza del nastro è funzione lineare della dimensione dell'input.}
+	\label{tab:prel:chomskyhier}
+	\centering
+	\begin{tabularx}{\textwidth}{lXXl}
+		\toprule
+		\textbf{Grammatica} & \textbf{Linguaggi generabili} & \textbf{Riconoscitore}                  & \textbf{Regole di produzione}         \\
+		\midrule
+		Tipo 0              & Ricorsivamente enumerabili    & Macchine di Turing                      & $\gamma\to\alpha$                     \\
+		Tipo 1              & Dipendenti dal contesto       & Macchine di Turing linearmente limitate & $\alpha A\beta\to\alpha\gamma\beta$   \\
+		Tipo 2              & Liberi dal contesto           & Automi a pila                           & $A\to\alpha$                          \\
+		Tipo 3              & Regolari                      & Automi a stati finiti                   & $A\to a$, $A\to aB$, $A\to\emptyword$ \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
 
 
 
