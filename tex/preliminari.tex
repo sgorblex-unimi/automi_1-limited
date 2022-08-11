@@ -106,7 +106,7 @@ Dato un riconoscitore o generatore $M$, si indica con $\generated M$ il linguagg
 \end{defin}
 
 
-\subsection{La Classificazione di Chomsky-Schützenberger}
+\subsection{La Classificazione di Chomsky-Schützenberger}\label{subs:prel:chomshutz}
 Nel 1956 il linguista Noam Chomsky ha costruito in \cite{chomsky56} una gerarchia di classi di grammatiche, basata sulla forma delle loro regole di produzione, da cui deriva una gerarchia di classi di linguaggi oggi considerata un concetto fondamentale della teoria dei linguaggi formali. La gerarchia si compone di quattro classi:
 \begin{description}
 	\item[Tipo 0] tutte le grammatiche sono di tipo 0;
@@ -119,11 +119,69 @@ Nel 1956 il linguista Noam Chomsky ha costruito in \cite{chomsky56} una gerarchi
 
 
 \section{Automi}
-% TODO spiegare (non)determinismo
+La tecnica dei riconoscitori corrisponde nello studio moderno dei linguaggi alla costruzione di macchine o automi. Essi sono modelli matematici che descrivono il comportamento di oggetti astratti in funzione di un input. In particolare, una macchina, data una certa parola in input, può accettare o rifiutare la parola come appartenente al linguaggio riconosciuto. La macchina fondamentale, a cui tutte le altre sono riconducibili, è la macchina di Turing.
 
 
 \subsection{Macchine di Turing}
-% TODO
+Una macchina di Turing si compone di un nastro, una testina e un controllo finito. Il nastro ha lunghezza infinita ed è diviso in celle, le prime celle contenenti l'input (un simbolo per cella), quelle che seguono contenenti il simbolo vuoto. La testina punta a una cella del nastro ed è in grado di leggere e scrivere su di essa. Il controllo finito consiste in un insieme di stati di cui uno corrente. L'evoluzione della computazione di una macchina di Turing procede per istanti successivi, secondo una legge detta modello di transizione. Precisamente, la macchina, in funzione dello stato attuale e del simbolo letto dalla testina, sovrascrive il simbolo nella cella con un altro e si muove in una direzione (sinistra o destra) in una cella adiacente, cambiando contemporaneamente lo stato. Lo stato attuale e i simboli sul nastro (più la posizione della testina) consistono nell'unica memoria della macchina.
+
+Di seguito si riporta la definizione formale di macchina di Turing, così come presentata in \cite{hopcroftullman79}.
+\begin{defin}[macchina di Turing]
+	Una macchina di Turing (\emph{Turing Machine}, abbreviata in TM) è una tupla di 7 elementi $\tuple{Q,\Gamma,b,\Sigma,\delta,q_0,F}$, dove:
+	\begin{itemize}
+		\item $Q$ è un insieme finito e non vuoto di stati;
+		\item $\Gamma$ è un insieme finito e non vuoto di simboli per il nastro;
+		\item $b$ il simbolo vuoto, che ricorre infinitamente sul nastro al termine dell'input;
+		\item $\Sigma\subseteq\Gamma\setminus\set{b}$ è l'insieme dei simboli di input, cioè i simboli che si possono trovare sul nastro all'inizio della computazione (insieme a $b$);
+		\item $\delta:(Q\setminus F)\times\Gamma\nrightarrow Q\times\Gamma\times\set{L,R}$ è una funzione parziale detta di transizione. Se $\delta(p,x)=(q,y,D)$, allora
+			\begin{itemize}
+				\item $q$ è il prossimo stato;
+				\item $y$ è il simbolo che verrà scritto in sostituzione a $x$ nella cella corrente, allo spostamento della testina;
+				\item $D$ e la direzione in cui si muoverà la testina, $L$ se a sinistra e $R$ se a destra.
+			\end{itemize}
+		\item $q_0$ è lo stato iniziale;
+		\item $F$ è l'insieme di stati finali (o accettanti).
+	\end{itemize}
+	L'evoluzione della macchina consiste in una sequenza di \textbf{configurazioni}, ognuna composta da stato attuale, posizione della testina e simboli sul nastro. Una configurazione si indica con la notazione standard $xqy$, dove $x$ è la parola sul nastro prima della testina (può essere omesso se $x=\emptyword$), $q$ lo stato attuale e $y$ la parola sul nastro a partire dal simbolo puntato dalla testina, escludendo gli infiniti simboli vuoti presenti da una certa cella del nastro in poi.
+	Una macchina di Turing accetta una parola $w$ se la sua computazione, a partire dalla configurazione $q_0w$, termina in uno stato finale.
+\end{defin}
+% La figura \ref{fig:prel:turmac} corrisponde alla tipica rappresentazione di una configurazione di una macchina di Turing.
+
+Gli esiti possibili della computazione di una TM sono tre: la terminazione in uno stato finale (accettazione), la terminazione in uno stato non finale (rifiuto o \emph{crash}), la non terminazione (\emph{loop}), da interpretare come un rifiuto. È un noto risultato l'impossibilità di costruire un algoritmo che determini, data una qualunque coppia macchina di Turing - parola di input, se la macchina termini con il dato input.
+
+Numerosi modelli alternativi, tutti equivalenti, sono stati presentati, variando ad esempio nel numero dei nastri, nel loro utilizzo (per esempio, un nastro di sola lettura per l'input e uno per la memoria scrivibile) e nell'infinità dell'estensione delle celle verso sinistra.
+
+\subsubsection{Nondeterminismo}
+È fondamentale citare il modello nondeterministico delle macchine di Turing e, in generale, delle macchine riconoscitrici. Una macchina di Turing nondeterministica ha per modello di transizione una relazione del tipo $\delta:(Q\setminus F)\times\Gamma\nrightarrow 2^{Q\times\Gamma\times\set{L,R}}$. Un modello di questo tipo descrive multiple possibilità per un passo dell'evoluzione della macchina. Una parola in input è accettata se esiste una computazione, tra quelle coerenti con il modello, che termina in uno stato accettante.
+
+In generale, una macchina riconoscitrice si dice nondeterministica quando il suo modello di transizione fornisce più possibilità per un passo evolutivo, e l'accettazione corrisponde all'esistenza di una computazione che termini in uno stato accettante.
+
+\subsubsection{Linguaggi ricorsivamente enumerabili e ricorsivi}
+La classe dei linguaggi accettati da macchine di Turing è quella dei linguaggi ricorsivamente enumerabili.
+\begin{defin}[linguaggio ricorsivamente enumerabile]
+	Un linguaggio $L$ si dice ricorsivamente enumerabile se e solo se esiste una macchina di Turing $M$ che lo riconosce:
+	\begin{equation*}
+		w\in L \iff M \text{ termina in uno stato accettante}
+	\end{equation*}
+	Equivalentemente:
+	\begin{equation*}
+		w\notin L \iff M \text{ rifiuta o non termina}
+	\end{equation*}
+\end{defin}
+Si può dimostrare che tale classe equivale a quella dei linguaggi generabili da grammatiche di tipo 0 della classificazione di Chomsky-Schützenberger (paragrafo \ref{subs:prel:chomshutz}).
+
+Esiste una classe la cui definizione è più restrittiva, poiché rimuove la possibilità di computazione non terminante: la classe dei linguaggi ricorsivi.
+\begin{defin}[linguaggio ricorsivo]
+	Un linguaggio $L$ si dice ricorsivo se e solo se esiste una macchina di Turing $M$ tale che per ogni parola in $L$, $M$ termina in uno stato accettante, mentre rifiuta esplicitamente ogni parola che non vi appartiene:
+	\begin{equation*}
+		\begin{cases}
+			\text{$M$ termina in uno stato accettante} \qquad&\text{se } w\in L \\
+			\text{$M$ termina rifiutando} \qquad&\text{se } w\notin L
+		\end{cases}
+	\end{equation*}
+\end{defin}
+Si può dimostrare che questa classe è propriamente inclusa nella classe dei ricorsivamente enumerabili, e non corrisponde ad alcuna classe della classificazione di Chomsky-Schützenberger.
+
 
 
 \subsection{Automi a pila}
