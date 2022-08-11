@@ -22,7 +22,7 @@ Per semplicità i simboli di un alfabeto sono spesso indicati con lettere minusc
 \end{defin}
 La lunghezza di una parola $w$ è il numero di simboli che la compongono e viene indicata con $|w|$ (o $l(w)$).
 \begin{examp}
-	Una parola sull'alfabeto $\Sigma=\{a,c,s\}$ è $w=casa$. La lunghezza di $w$ è $\len w=4$.
+	Una parola sull'alfabeto $\Sigma=\set{a,c,s}$ è $w=casa$. La lunghezza di $w$ è $\len w=4$.
 \end{examp}
 Si possono costruire parole, oltre che da simboli, a partire da altre parole:
 \begin{defin}[prodotto di giustapposizione]
@@ -49,15 +49,15 @@ Ovviamente, prefissi, fattori e suffissi di una parola non sono, in generale, un
 	Il linguaggio $\emptyset$ si dice linguaggio vuoto.
 \end{defin}
 \begin{examp}
-	Un linguaggio su $\Sigma=\{a,c,s\}$ è $L=\{casa, sacca, cassa, \emptyword\}$.
+	Un linguaggio su $\Sigma=\set{a,c,s}$ è $L=\set{casa, sacca, cassa, \emptyword}$.
 \end{examp}
 Si definiscono numerose operazioni dei linguaggi, tra cui una delle più importanti è l'unaria chiusura di Kleene.
 \begin{defin}[prodotto di linguaggi]
 	Il prodotto di due linguaggi $L_1$ e $L_2$ è il linguaggio delle parole composte dalla giustapposizione di una parola di $L_1$ e una di $L_2$:
 	\begin{equation*}
-		L_1\cdot L_2 := \{xy\mid x\in L_1 \land y\in L_2\}
+		L_1\cdot L_2 := \set{xy\mid x\in L_1 \land y\in L_2}
 	\end{equation*}
-	Il prodotto di un linguaggio $L$ con se stesso $n$ volte, ossia $L\cdot L^{n-1}$ viene indicato con $L^n$. Viene inoltre indicato con $L^0$ il linguaggio $\{\emptyword\}$.
+	Il prodotto di un linguaggio $L$ con se stesso $n$ volte, ossia $L\cdot L^{n-1}$ viene indicato con $L^n$. Viene inoltre indicato con $L^0$ il linguaggio $\set{\emptyword}$.
 \end{defin}
 \begin{defin}[chiusura di Kleene]
 	La chiusura (di Kleene) di un linguaggio $L$ è il linguaggio $L\star$ delle parole composte da un numero arbitrario di parole di $L$:
@@ -71,7 +71,7 @@ Considereremo alfabeti e parole finiti, poiché lo studio di linguaggi contenent
 
 
 \subsection*{Riconoscitori e generatori}
-Come si è visto, esistono diversi modi di rappresentare un linguaggio: se è finito è sufficiente elencarne le parole, se è infinito e le sue parole possiedono una proprietà caratterizzante $P$ può essere descritto da essa: $L:=\{w\mid P(w)\}$. Tuttavia, non sempre è facile usare una di queste rappresentazioni. I metodi generativo e riconoscitivo forniscono un ulteriore modo di descrivere i linguaggi.
+Come si è visto, esistono diversi modi di rappresentare un linguaggio: se è finito è sufficiente elencarne le parole, se è infinito e le sue parole possiedono una proprietà caratterizzante $P$ può essere descritto da essa: $L:=\set{w\mid P(w)}$. Tuttavia, non sempre è facile usare una di queste rappresentazioni. I metodi generativo e riconoscitivo forniscono un ulteriore modo di descrivere i linguaggi.
 
 \paragraph{Riconoscitori} un riconoscitore per un linguaggio $L\subseteq\Sigma\star$ è un algoritmo che determina se una data parola $w\in\Sigma\star$ appartiene a $L$.
 
@@ -83,25 +83,25 @@ Dato un riconoscitore o generatore $M$, si indica con $\generated M$ il linguagg
 
 \section{Grammatiche}
 \begin{defin}[grammatica]
-	Una grammatica è una quadrupla $G=\langle \Sigma,N,P,S \rangle$, dove:
+	Una grammatica è una quadrupla $G=\tuple{\Sigma,N,P,S}$, dove:
 	\begin{itemize}
 		\item $\Sigma$ è l'alfabeto dei simboli terminali (\emph{terminal symbols})
 		\item $N$ è l'alfabeto dei metasimboli (\emph{nonterminal symbols})
 		\item $P$ è l'insieme delle regole di produzione (\emph{production rules}). Ogni regola è nella forma $(\Sigma\cup N)\star N(\Sigma\cup N)\star\to(\Sigma\cup N)$
 		\item $S\in N$ è l'assioma (\emph{start symbol})
 	\end{itemize}
-	Data una grammatica $G=\langle \Sigma,N,P,S \rangle$, si definisce la relazione binaria tra parole $\deriv{G}$, detta di derivazione in un passo:
+	Data una grammatica $G=\tuple{\Sigma,N,P,S}$, si definisce la relazione binaria tra parole $\deriv{G}$, detta di derivazione in un passo:
 	\begin{equation*}
 		x\deriv{G} y \iff \exists u,v,p,q\in(\Sigma\cup N)\star \mid (x=upv)\land(p\to q\in P)\land(y=uqv)
 	\end{equation*}
-	Data una grammatica $G=\langle \Sigma,N,P,S \rangle$, si definisce la relazione binaria tra parole $\derivs{G}$, detta di derivazione in zero o più passi (o semplicemente derivazione):
+	Data una grammatica $G=\tuple{\Sigma,N,P,S}$, si definisce la relazione binaria tra parole $\derivs{G}$, detta di derivazione in zero o più passi (o semplicemente derivazione):
 	\begin{itemize}
 		\item $w \derivs{G} w$
 		\item $x \derivs{G} y \iff \exists w_1,w_2,\dots,w_m \mid x\deriv{G} w_1 \land w_1\deriv{G} w_2 \land\dots\land w_m\deriv{G}y$
 	\end{itemize}
-	Il linguaggio $\generated G$ generato da una grammatica $G=\langle \Sigma,N,P,S \rangle$ è il linguaggio delle parole derivabili dall'assioma:
+	Il linguaggio $\generated G$ generato da una grammatica $G=\tuple{\Sigma,N,P,S}$ è il linguaggio delle parole derivabili dall'assioma:
 	\begin{equation*}
-		\generated G := \{ w\in\Sigma\star\mid S\derivs{G} w \}
+		\generated G := \set{w\in\Sigma\star\mid S\derivs{G} w}
 	\end{equation*}
 \end{defin}
 
