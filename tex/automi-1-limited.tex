@@ -8,14 +8,25 @@
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
-		\item $\Gamma\supseteq\Sigma\cup\set{\lem,\rem}$ è l'alfabeto di lavoro (\emph{working alphabet}), dove $\lem$ e $\rem$ sono rispettivamente il \emph{left} e \emph{right end marker}, che circoscrivono l'input nonché lo spazio di lavoro sul nastro. $\Gamma$ è partizionato in $d+1$ sottoinsiemi $\Gamma_0,\Gamma_1,\dots,\Gamma_d$, con $\Gamma_0=\Sigma$ e $\lem,\rem\in\Gamma_d$. L'insieme $\Gamma_k$ rappresenta l'alfabeto a cui appartiene ogni simbolo alla $k$-esima visita. Dopo la $d$-esima visita, la cella rimane invariata (\emph{frozen});
-		\item $\delta:Q\times\Gamma\to 2^{Q\times(\Gamma\setminus\set{\lem,\rem})\times\set{-1,+1}}$ è la funzione di transizione: a ogni passo la macchina, in funzione del simbolo corrente sul nastro e dello stato corrente, cambia stato, sovrascrive il simbolo e muove la testina a destra ($+1$) o a sinistra ($-1$). La scelta del simbolo è soggetta al partizionamento di $\Gamma$: un simbolo in $\Gamma_k$ viene sostituito con un simbolo in $\Gamma_{k+1}$ (ad eccezione di $\Gamma_d$). Le visite in cui si cambia direzione contano doppio\footnote{Ciò è una conseguenza del fatto che, in realtà, si contano per ogni cella non le visite, ma le scansioni da sinistra a destra (visite di numero dispari) e quelle da destra a sinistra (visite di numero pari), per cui un cambio di direzione comprende entrambe.}, sostituendo un simbolo in $\Gamma_k$ con un simbolo in $\Gamma_{k+2}$. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica.
+		\item $\Gamma\supseteq\Sigma\cup\set{\lem,\rem}$ è l'alfabeto di lavoro (\emph{working alphabet}), dove $\lem$ e $\rem$ sono rispettivamente il \emph{left} e \emph{right end marker}, che circoscrivono l'input nonché lo spazio di lavoro sul nastro. $\Gamma$ è partizionato in $d+1$ sottoinsiemi $\Gamma_0,\Gamma_1,\dots,\Gamma_d$, con $\Gamma_0=\Sigma$ e $\lem,\rem\in\Gamma_d$. L'insieme $\Gamma_k$ rappresenta l'alfabeto a cui appartiene ogni simbolo alla $k$-esima visita della cella che lo contiene. Dopo la $d$-esima visita, la cella rimane invariata (\emph{frozen});
+		\item $\delta:Q\times\Gamma\to \subsets{Q\times(\Gamma\setminus\set{\lem,\rem})\times\set{-1,+1}}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)=(q,\gamma,D)$, allora:
+			\begin{itemize}
+				\item $q$ è il prossimo stato;
+				\item $\gamma$ è il simbolo che verrà scritto in sostituzione a $\sigma$ nella cella corrente, allo spostamento della testina;
+				\item $D$ e la direzione in cui si muoverà la testina, $-1$ se a sinistra e $+1$ se a destra.
+			\end{itemize}
+			La natura del simbolo $\gamma$ è soggetta al partizionamento di $\Gamma$: un simbolo in $\Gamma_k$ viene sostituito con un simbolo in $\Gamma_{k+1}$ (ma un simbolo in $\Gamma_d$ viene sostituito con se stesso). Le visite in cui si cambia direzione contano doppio\footnote{Ciò è una conseguenza del fatto che, in realtà, si contano per ogni cella non le visite, ma le scansioni da sinistra a destra (visite di numero dispari) e quelle da destra a sinistra (visite di numero pari), per cui un cambio di direzione comprende entrambe.}, sostituendo un simbolo in $\Gamma_k$ con un simbolo in $\Gamma_{k+2}$. Le celle contenenti gli \emph{end marker} non sono mai modificate, né è possibile muoversi a sinistra di $\lem$ e a destra di $\rem$, se non per accettare. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		\item $q_0\in Q$ è lo stato iniziale;
 		\item $F\subseteq Q$ è l'insieme degli stati finali.
 	\end{itemize}
-	Un automa $d$-limited accetta una parola $w$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ con la testina sulla prima delle celle contenenti l'input (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \emph{right end marker}.
+	Una configurazione per un automa $d$-limited si indica con $xqy$, dove $x$ è la parola prima della cella corrente (può essere omessa se $x=\emptyword$), preceduta da $\lem$, $q$ è lo stato corrente, e $y$ è la parola che inizia con il simbolo nella cella corrente e seguita da $\rem$.
+
+	Un automa $d$-limited accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dalla configurazione $q_0w$ (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \emph{right end marker}.
 
 	Un automa $d$-limited si dice deterministico se $\card{\delta(q,\gamma)}\leq 1 ~ \forall q\in Q,\gamma\in\Gamma$. Un automa si dice \emph{limited} se è \emph{$d$-limited} per qualche $d$.
 \end{defin}
+Nella pratica, esiste la possibilità che un 1-LA non sovrascriva il simbolo corrente. Formalmente, tuttavia, esso viene sempre sovrascritto, per esempio sostituendo $a$ con $a'$ (che viene comunque rappresentato come $a$). In questo modo si preserva l'informazione originale ma si mantiene la correttezza rispetto al modello. Una tecnica analoga viene usata quando si segna (\emph{mark}) una cella, per esempio sostituendo $a$ con $\bar a$, preservando il simbolo ma dandovi un valore aggiuntivo.
+
 Si noti che gli 0-LA corrispondono esattamente ai 2NFA.
 
 
