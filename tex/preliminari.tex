@@ -189,7 +189,24 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 
 
 \subsection{Automi a stati finiti}
-% TODO
+
+\subsubsection{NFA e DFA}
+\begin{defin}[automa a stati finiti nondeterministico]
+	Un automa a stati finiti nondeterministico (\emph{nondeterministic finite automaton}, abbreviato in NFA) è una quintupla $\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
+	\begin{itemize}
+		\item $Q$ è un insieme finito e non vuoto di stati;
+		\item $\Sigma$ è l'alfabeto di input;
+		\item $\delta:Q\times\Sigma\to\subsets{Q}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)\ni q$, allora l'automa può passare allo stato $q$ e alla lettura del simbolo successivo (cioè quello immediatamente a destra di quello corrente). La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		\item $q_0\in\Sigma$ è lo stato iniziale;
+		\item $F\subseteq Q$ è l'insieme degli stati finali.
+	\end{itemize}
+	Un NFA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ e dalla lettura del primo simbolo a sinistra, termina in uno stato finale.
+\end{defin}
+\begin{defin}
+	Un automa a stati finiti deterministico (\emph{deterministic finite automaton}, abbreviato in DFA) è un NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma$.
+\end{defin}
+
+Un NFA $A=\tuple{Q,\Sigma,\delta,q_0,F}$ può essere facilmente simulato da una macchina di Turing nondeterministica $M=\tuple{Q,\Sigma\cup\set{b},\Sigma,\delta',q_0,F}$, costruendo per ogni regola $\delta(p,\sigma)\ni q$ di $A$ una regola $\delta'(p,\sigma)\ni (q,\sigma,R)$. Si può inoltre dimostrare che si può costruire una grammatica di tipo 3 che generi il linguaggio riconosciuto da un dato NFA e viceversa, ossia che la classe riconosciuta dagli NFA è quella dei linguaggi regolari.
 
 La tabella \ref{tab:prel:chomskyhier} riassume la classificazione di Chomsky-Schützenberger completa di corrispondenza con le rispettive classi di linguaggi e riconoscitori.
 
