@@ -190,7 +190,32 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 
 
 \subsection{Automi a pila}
-% TODO
+\begin{defin}[automa a pila]
+	Un automa a pila (\emph{pushdown automaton}, abbreviato in PDA) è una tupla di 7 elementi $\tuple{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$, dove:
+	\begin{itemize}
+		\item $Q$ è un insieme finito e non vuoto di stati;
+		\item $\Sigma$ è l'alfabeto di input;
+		\item $\Gamma$ è un alfabeto di simboli per la pila (\emph{stack});
+		\item $\delta:Q\times(\Sigma\cup\set{\emptyword})\times\Gamma\to \fsubsets{Q\times\Gamma\star}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$ (potenzialmente vuoto), sulla cima della pila c'è il simbolo $X$ e $\delta(p,\sigma,X)\ni (p,w)$, allora l'automa può passare allo stato $q$, scrivere sulla cima dello stack la parola $w$ in sostituzione a $A$ (\verb!pop! di $X$ e \verb!push! di $w$) e passare alla lettura del simbolo successivo (cioè quello immediatamente a destra di quello corrente). La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		\item $q_0\in Q$ è lo stato iniziale;
+		\item $Z_0$ è l'unico simbolo contenuto nella pila all'inizio della computazione;
+		\item $F\subseteq Q$ è l'insieme degli stati finali.
+	\end{itemize}
+	Un PDA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$, con la pila contenente $Z_0$ e dalla lettura del primo simbolo di $w$, termina con uno dei seguenti risultati:
+	\begin{itemize}
+		\item lo stato corrente è finale;
+		\item la pila è vuota.
+	\end{itemize}
+\end{defin}
+\begin{defin}[automa a pila deterministico]
+	Un automa a pila deterministico (\emph{deterministic pushdown automaton}, abbreviato in DPDA) è un PDA in cui:
+	\begin{itemize}
+		\item $\card{\delta(q,a,X)}\leq 1\quad \forall q\in Q, a\in\Sigma\lor a=\emptyword, X\in\Gamma$;
+		\item $\card{\delta(q,a,X)}>0\impl \delta(q,\emptyword,X)=\emptyset$.
+	\end{itemize}
+\end{defin}
+
+Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{hibbard67} tramite gli automi \emph{$d$-limited}.
 
 
 \subsection{Automi a stati finiti}
@@ -201,7 +226,7 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
-		\item $\delta:Q\times\Sigma\to\subsets{Q}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)\ni q$, allora l'automa può passare allo stato $q$ e alla lettura del simbolo successivo (cioè quello immediatamente a destra di quello corrente). La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		\item $\delta:Q\times\Sigma\to\subsets{Q}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)\ni q$, allora l'automa può passare allo stato $q$ e alla lettura del simbolo successivo. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
 		\item $q_0\in\Sigma$ è lo stato iniziale;
 		\item $F\subseteq Q$ è l'insieme degli stati finali.
 	\end{itemize}
