@@ -107,7 +107,7 @@ Dato un riconoscitore o generatore $M$, si indica con $\generated M$ il linguagg
 
 
 \subsection{La Classificazione di Chomsky-Schützenberger}\label{subs:prel:chomshutz}
-Nel 1956 il linguista Noam Chomsky ha costruito in \cite{chomsky56} una gerarchia di classi di grammatiche, basata sulla forma delle loro regole di produzione, da cui deriva una gerarchia di classi di linguaggi oggi considerata un concetto fondamentale della teoria dei linguaggi formali. La gerarchia si compone di quattro classi:
+Nel 1956 il linguista Noam Chomsky ha costruito in \cite{Chomsky:56:hier} una gerarchia di classi di grammatiche, basata sulla forma delle loro regole di produzione, da cui deriva una gerarchia di classi di linguaggi oggi considerata un concetto fondamentale della teoria dei linguaggi formali. La gerarchia si compone di quattro classi:
 \begin{description}
 	\item[Tipo 0] tutte le grammatiche sono di tipo 0;
 	\item[Tipo 1] in una grammatica di tipo 1, ogni regola di produzione è nella forma $\alpha A\beta\to\alpha\gamma\beta$, dove $\gamma$ è non vuota e $A$ è un metasimbolo. È ammessa la regola $S\to\emptyword$, se $S$ è l'assioma, solo se $S$ non compare nella parte destra di alcuna altra regola. I linguaggi che possono essere generati da grammatiche di tipo 1 sono detti dipendenti dal contesto (\emph{context sensitive});
@@ -125,7 +125,7 @@ La tecnica dei riconoscitori corrisponde nello studio moderno dei linguaggi alla
 \subsection{Macchine di Turing}
 Una macchina di Turing si compone di un nastro, una testina e un controllo finito. Il nastro ha lunghezza infinita ed è diviso in celle, le prime celle contenenti l'input (un simbolo per cella), quelle che seguono contenenti il simbolo vuoto. La testina punta a una cella del nastro ed è in grado di leggere e scrivere su di essa. Il controllo finito consiste in un insieme di stati di cui uno corrente. L'evoluzione della computazione di una macchina di Turing procede per istanti successivi, secondo una legge detta modello di transizione. Precisamente, la macchina, in funzione dello stato corrente e del simbolo letto dalla testina, sovrascrive il simbolo nella cella con un altro e si muove in una direzione (sinistra o destra) in una cella adiacente, cambiando contemporaneamente lo stato. Lo stato corrente e i simboli sul nastro (più la posizione della testina) consistono nell'unica memoria della macchina.
 
-Di seguito si riporta la definizione formale di macchina di Turing, così come presentata in \cite{hopcroftullman79}.
+Di seguito si riporta la definizione formale di macchina di Turing, così come presentata in \cite{Hopcroft:79:introLFA}.
 \begin{defin}[macchina di Turing]
 	Una macchina di Turing (\emph{Turing Machine}, abbreviata in TM) è una tupla di 7 elementi $\tuple{Q,\Gamma,b,\Sigma,\delta,q_0,F}$, dove:
 	\begin{itemize}
@@ -215,7 +215,7 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 	\end{itemize}
 \end{defin}
 
-Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{hibbard67} tramite gli automi \emph{$d$-limited}.
+Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{Hibbard:67:CFdet} tramite gli automi \emph{$d$-limited}.
 
 
 \subsection{Automi a stati finiti}
