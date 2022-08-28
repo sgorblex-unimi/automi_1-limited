@@ -257,7 +257,23 @@ La tabella \ref{tab:prel:chomskyhier} riassume la classificazione di Chomsky-Sch
 \end{table}
 
 \subsubsection{2NFA e 2DFA}
-% TODO
+\begin{defin}
+	Un automa a stati finiti \emph{2-way} nondeterministico (\emph{2-way finite automaton}, abbreviato in 2NFA) è una quintupla $\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
+	\begin{itemize}
+		\item $Q$ è un insieme finito e non vuoto di stati;
+		\item $\Sigma$ è l'alfabeto di input;
+		\item $\delta:Q\times(\Sigma\cup\set{\lem,\rem})\to\subsets{Q\times\set{L,R}}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)\ni (q,D)$, allora l'automa può passare allo stato $q$ e alla lettura del simbolo alla sinistra di quello corrente se $D=L$, o alla sua destra se $D=R$. Non è possibile muoversi a sinistra di $\lem$ e a destra di $\rem$, se non per accettare. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		\item $q_0\in Q$ è lo stato iniziale;
+		\item $F\subseteq Q$ è l'insieme degli stati finali.
+	\end{itemize}
+	I simboli speciali $\lem$ e $\rem$ sono rispettivamente il \emph{left} e \emph{right end marker}, che circoscrivono l'input nonché lo spazio di lavoro sul nastro.
+
+	Un 2NFA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ e dalla lettura del primo simbolo dell'input (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \emph{right end marker}.
+\end{defin}
+Talvolta, per distinguerli dalle loro controparti \emph{two-way}, gli NFA \emph{one-way} si abbreviano con 1NFA e, analogamente, i DFA con 1DFA.
+\begin{defin}
+	Un automa a stati finiti \emph{two-way} deterministico (\emph{2-way deterministic finite automaton}, abbreviato in 2DFA) è un 2NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma\cup\set{\lem,\rem}$.
+\end{defin}
 
 
 
