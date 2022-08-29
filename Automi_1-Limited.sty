@@ -33,6 +33,7 @@
 \renewcommand{\matrtext}{matr.}
 
 % useful symbols
+\newcommand{\N}{\mathbb N}
 \renewcommand{\star}{^*} % redefined from amssymb
 \newcommand{\emptyword}{\varepsilon}
 \newcommand{\deriv}[1]{\underset{#1}{\Rightarrow}}
@@ -44,9 +45,11 @@
 \newcommand{\lem}{\vartriangleright}
 \newcommand{\rem}{\vartriangleleft}
 \newcommand{\card}[1]{\# #1}
-\newcommand{\subsets}[1]{2^{#1}}
+\newcommand{\subsets}[1]{\mathcal P(#1)}
 \newcommand{\fsubsets}[1]{\mathcal P_{\text{finite}}(#1)}
 \newcommand{\impl}{\Rightarrow}
+\newcommand{\trans}[1]{\vdash_{#1}}
+\newcommand{\transs}[1]{\trans{#1}\star}
 
 \newcommand{\draft}{
 	\geometry{
