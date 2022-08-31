@@ -1,5 +1,5 @@
 \chapter{Preliminari}
-La teoria dei linguaggi formali è un campo fondamentale dell'informatica teorica e studia i linguaggi, cioè insiemi di parole, e i loro generatori o riconoscitori. Questo campo, sebbene strettamente legato alla linguistica, ha implicazioni enormi nell'informatica e nella matematica, per esempio nei campi della computabilità, della programmazione, della crittografia e della logica. In questo capitolo ricordiamo al lettore le nozioni fondamentali della teoria dei linguaggi, delle grammatiche e dei principali riconoscitori, di cui studieremo il rapporto con gli automi \emph{$1$-limited}.
+La teoria dei linguaggi formali è un campo fondamentale dell'informatica teorica e studia i linguaggi, cioè insiemi di parole, e i loro generatori o riconoscitori. Questo campo, sebbene strettamente legato alla linguistica, ha implicazioni enormi nell'informatica e nella matematica, per esempio nei campi della computabilità, della programmazione, della crittografia e della logica. In questo capitolo ricordiamo al lettore le nozioni fondamentali della teoria dei linguaggi, delle grammatiche e dei principali riconoscitori, di cui studieremo il rapporto con gli automi \eng{$1$-limited}.
 
 
 
@@ -10,7 +10,7 @@ In questa sezione introduciamo le definizioni fondamentali della teoria dei ling
 \subsection*{Alfabeti}
 Tutte le nozioni di base della teoria dei linguaggi partono dalla definizione di alfabeto, simile a quello dei linguaggi naturali (le lingue parlate e scritte): un insieme di lettere.
 \begin{defin}[alfabeto]
-	Un alfabeto (\emph{alphabet}) è un insieme finito e non vuoto arbitrario, i cui elementi sono detti simboli (\emph{symbol}). Un alfabeto è solitamente indicato con $\Sigma$ o altre lettere greche maiuscole.
+	Un alfabeto (\eng{alphabet}) è un insieme finito e non vuoto arbitrario, i cui elementi sono detti simboli (\eng{symbol}). Un alfabeto è solitamente indicato con $\Sigma$ o altre lettere greche maiuscole.
 \end{defin}
 Per chiarezza i simboli di un alfabeto sono spesso indicati con lettere minuscole o cifre numeriche, tuttavia può essere utile usare altri simboli quando la semantica ne viene semplificata.
 
@@ -19,7 +19,7 @@ Per chiarezza i simboli di un alfabeto sono spesso indicati con lettere minuscol
 Le parole, costituite da simboli, sono gli elementi che possono formare un linguaggio.
 
 \begin{defin}[parola]
-	Una parola $w$ su un alfabeto $\Sigma$ (\emph{word}, o stringa, \emph{string}) è una sequenza finita di simboli appartenenti a $\Sigma$: $w=x_1 x_2 \dots x_n$ con $x_1,x_2,\dots,x_n\in\Sigma$. Le parole si indicano comunemente con lettere latine minuscole.
+	Una parola $w$ su un alfabeto $\Sigma$ (\eng{word}, o stringa, \eng{string}) è una sequenza finita di simboli appartenenti a $\Sigma$: $w=x_1 x_2 \dots x_n$ con $x_1,x_2,\dots,x_n\in\Sigma$. Le parole si indicano comunemente con lettere latine minuscole.
 
 	La parola non contenente simboli, detta parola vuota, si può costruire da qualunque alfabeto ed è comunemente indicata con $\emptyword$.
 
@@ -39,15 +39,15 @@ Le potenze di un alfabeto contengono parole di una certa lunghezza su di esso.
 
 Si possono costruire parole, oltre che da simboli, a partire da altre parole. Il prodotto di giustapposizione di due parole è la parola costruita come l'unione (la giustapposizione) delle due:
 \begin{defin}[prodotto di giustapposizione]
-	Date due parole $v=x_1\dots x_n$ e $w=y_1\dots y_m$ si dice prodotto di giustapposizione (\emph{concatenation}) di $v$ e $w$ la parola $v\cdot w=x_1\dots x_n y_1\dots y_m$ (anche indicata semplicemente con $vw$) composta dai simboli di $v$ seguiti da quelli di $w$. Si noti che $\len{vw}=\len v+\len w$.
+	Date due parole $v=x_1\dots x_n$ e $w=y_1\dots y_m$ si dice prodotto di giustapposizione (\eng{concatenation}) di $v$ e $w$ la parola $v\cdot w=x_1\dots x_n y_1\dots y_m$ (anche indicata semplicemente con $vw$) composta dai simboli di $v$ seguiti da quelli di $w$. Si noti che $\len{vw}=\len v+\len w$.
 \end{defin}
 Il prodotto di giustapposizione $\cdot$ è un'operazione binaria che gode della proprietà associativa e di cui la parola vuota $\emptyword$ è l'elemento neutro, sicché dato un alfabeto $\Sigma$, $(\Sigma,\cdot)$ è un monoide.
 \begin{defin}[prefisso, fattore, suffisso]
 	Date parole $w$, $x$, $y$, $z$, tali che $w=xyz$ si dice che:
 	\begin{itemize}
-		\item $x$ è prefisso (\emph{prefix}) di $w$;
-		\item $y$ è fattore (\emph{factor}) di $w$;
-		\item $z$ è suffisso (\emph{suffix}) di $w$.
+		\item $x$ è prefisso (\eng{prefix}) di $w$;
+		\item $y$ è fattore (\eng{factor}) di $w$;
+		\item $z$ è suffisso (\eng{suffix}) di $w$.
 	\end{itemize}
 \end{defin}
 Ovviamente, prefissi, fattori e suffissi di una parola non sono, in generale, unici.
@@ -56,7 +56,7 @@ Ovviamente, prefissi, fattori e suffissi di una parola non sono, in generale, un
 \subsection*{Linguaggi}
 I linguaggi, il fondamentale oggetto di studio, sono insiemi di parole su un certo alfabeto.
 \begin{defin}[linguaggio]
-	Un linguaggio (\emph{language}) $L$ su un alfabeto $\Sigma$ è un insieme di parole su $\Sigma$, ossia un sottoinsieme di $\Sigma\star$:
+	Un linguaggio (\eng{language}) $L$ su un alfabeto $\Sigma$ è un insieme di parole su $\Sigma$, ossia un sottoinsieme di $\Sigma\star$:
 	\begin{equation*}
 		L\subseteq\Sigma\star.
 	\end{equation*}
@@ -80,7 +80,7 @@ Si definiscono numerose operazioni dei linguaggi, tra cui una delle più importa
 	\end{equation*}
 \end{defin}
 \begin{defin}[chiusura di Kleene]
-	La chiusura (di Kleene) di un linguaggio $L$ (\emph{Kleene closure}) è il linguaggio $L\star$ delle giustapposizioni di un numero arbitrario di parole di $L$:
+	La chiusura (di Kleene) di un linguaggio $L$ (\eng{Kleene closure}) è il linguaggio $L\star$ delle giustapposizioni di un numero arbitrario di parole di $L$:
 	\begin{equation*}
 		L\star := L^0\cup L^1\cup\dots=\bigcup_{k=0}^\infty L^k
 	\end{equation*}
@@ -105,12 +105,12 @@ Dato un riconoscitore o generatore $M$, si indica con $\generated M$ il linguagg
 \section{Grammatiche}
 Le grammatiche, proposte in origine dal linguista Noam Chomsky negli anni '50, sono il principale generatore studiato nella teoria dei linguaggi formali. Esse consistono in un insieme di regole che costruiscono le parole del linguaggio generato trasformando in multipli modi e passi un assioma di partenza.
 \begin{defin}[grammatica]
-	Una grammatica (\emph{grammar}) è una quadrupla $G=\tuple{\Sigma,N,P,S}$, dove:
+	Una grammatica (\eng{grammar}) è una quadrupla $G=\tuple{\Sigma,N,P,S}$, dove:
 	\begin{itemize}
-		\item $\Sigma$ è l'alfabeto dei simboli terminali (\emph{terminal symbols}), cioè dei simboli presenti nelle parole di $\generated G$;
-		\item $N$ è l'alfabeto dei metasimboli (\emph{nonterminal symbols}), non presenti nelle parole di $\generated G$;
-		\item $P$ è l'insieme delle regole di produzione (\emph{production rules}). Ogni regola è nella forma $(\Sigma\cup N)\star N(\Sigma\cup N)\star\to(\Sigma\cup N)$ e "trasforma" la parola (o fattore in una parola) a sinistra in quella a destra;
-		\item $S\in N$ è l'assioma (\emph{start symbol}), cioè il punto di partenza delle derivazioni che danno origine alle parole di $\generated G$.
+		\item $\Sigma$ è l'alfabeto dei simboli terminali (\eng{terminal symbols}), cioè dei simboli presenti nelle parole di $\generated G$;
+		\item $N$ è l'alfabeto dei metasimboli (\eng{nonterminal symbols}), non presenti nelle parole di $\generated G$;
+		\item $P$ è l'insieme delle regole di produzione (\eng{production rules}). Ogni regola è nella forma $(\Sigma\cup N)\star N(\Sigma\cup N)\star\to(\Sigma\cup N)$ e "trasforma" la parola (o fattore in una parola) a sinistra in quella a destra;
+		\item $S\in N$ è l'assioma (\eng{start symbol}), cioè il punto di partenza delle derivazioni che danno origine alle parole di $\generated G$.
 	\end{itemize}
 	Data una grammatica $G=\tuple{\Sigma,N,P,S}$, si definisce la relazione binaria tra parole $\deriv{G}$, detta di derivazione in un passo:
 	\begin{equation*}
@@ -132,9 +132,9 @@ Le grammatiche, proposte in origine dal linguista Noam Chomsky negli anni '50, s
 Nel 1956 Chomsky ha costruito in \cite{Chomsky:56:hier} una gerarchia di classi di grammatiche, basata sulla forma delle loro regole di produzione, da cui deriva una gerarchia di classi di linguaggi oggi considerata un concetto fondamentale della teoria dei linguaggi formali. La gerarchia si compone di quattro classi:
 \begin{description}
 	\item[Tipo 0] tutte le grammatiche sono di tipo 0;
-	\item[Tipo 1] in una grammatica di tipo 1, ogni regola di produzione è nella forma $\alpha A\beta\to\alpha\gamma\beta$, dove $\gamma$ è non vuota e $A$ è un metasimbolo. È ammessa la regola $S\to\emptyword$, se $S$ è l'assioma, solo se $S$ non compare nella parte destra di alcuna altra regola. I linguaggi che possono essere generati da grammatiche di tipo 1 sono detti dipendenti dal contesto (\emph{context sensitive});
-	\item[Tipo 2] in una grammatica di tipo 2, ogni regola di produzione $\alpha\to\beta$ è tale che $\alpha$ è un metasimbolo. Valgono le stesse restrizioni sull'assioma delle grammatiche di tipo 1. I linguaggi che possono essere generati da grammatiche di tipo 2 sono detti liberi dal contesto (\emph{context free});
-	\item[Tipo 3] in una grammatica di tipo 3, ogni regola di produzione è in una delle forme $A\to\sigma B$, $A\to\sigma$, $A\to\emptyword$, dove $A$ e $B$ sono metasimboli e $\sigma$ è un simbolo terminale\footnote{L'esistenza della regola $A\to\sigma B$ dà luogo, per essere precisi, alla classe delle grammatiche regolari a destra (\emph{right regular}). Tale forma può essere sostituita (ma non accompagnata) da $A\to B\sigma$, dando luogo alle grammatiche regolari a sinistra (\emph{left regular}). Le due classi corrispondono alla stessa classe di linguaggi e sono considerate intercambiabili, anche se è più comune utilizzare le regolari a destra.}. I linguaggi che possono essere generati da grammatiche di tipo 3 sono detti regolari (\emph{regular}).
+	\item[Tipo 1] in una grammatica di tipo 1, ogni regola di produzione è nella forma $\alpha A\beta\to\alpha\gamma\beta$, dove $\gamma$ è non vuota e $A$ è un metasimbolo. È ammessa la regola $S\to\emptyword$, se $S$ è l'assioma, solo se $S$ non compare nella parte destra di alcuna altra regola. I linguaggi che possono essere generati da grammatiche di tipo 1 sono detti dipendenti dal contesto (\eng{context sensitive});
+	\item[Tipo 2] in una grammatica di tipo 2, ogni regola di produzione $\alpha\to\beta$ è tale che $\alpha$ è un metasimbolo. Valgono le stesse restrizioni sull'assioma delle grammatiche di tipo 1. I linguaggi che possono essere generati da grammatiche di tipo 2 sono detti liberi dal contesto (\eng{context free});
+	\item[Tipo 3] in una grammatica di tipo 3, ogni regola di produzione è in una delle forme $A\to\sigma B$, $A\to\sigma$, $A\to\emptyword$, dove $A$ e $B$ sono metasimboli e $\sigma$ è un simbolo terminale\footnote{L'esistenza della regola $A\to\sigma B$ dà luogo, per essere precisi, alla classe delle grammatiche regolari a destra (\eng{right regular}). Tale forma può essere sostituita (ma non accompagnata) da $A\to B\sigma$, dando luogo alle grammatiche regolari a sinistra (\eng{left regular}). Le due classi corrispondono alla stessa classe di linguaggi e sono considerate intercambiabili, anche se è più comune utilizzare le regolari a destra.}. I linguaggi che possono essere generati da grammatiche di tipo 3 sono detti regolari (\eng{regular}).
 \end{description}
 È facilmente verificabile che esiste un'inclusione tra le classi di grammatiche di tipo più alto e quelle di tipo più basso, da cui deriva un'inclusione, che si può dimostrare essere propria, tra le rispettive classi di linguaggi. Come vedremo, queste classi corrispondono inoltre a classi di riconoscitori.
 
@@ -153,10 +153,10 @@ In questa sezione faremo riferimento alle definizioni formali contenute in \cite
 
 
 \subsection{Macchine di Turing}
-La macchina di Turing, descritta per la prima volta da Alan Turing nel 1936, nasce come strumento per studiare la decidibilità di problemi. La macchina si compone di un nastro (\emph{tape}), una testina (\emph{head}) e un controllo finito (\emph{finite control}). Il nastro ha lunghezza infinita ed è diviso in celle, le prime celle contenenti l'input (un simbolo per cella), le seguenti il simbolo vuoto (\emph{blank symbol}). La testina punta a una cella del nastro (visita) ed è in grado di leggere e scrivere su di essa, scegliendo da un predeterminato alfabeto. Il controllo finito consiste in un insieme di stati di cui uno corrente. L'evoluzione della computazione di una macchina di Turing procede per istanti successivi, secondo una legge detta modello di transizione. Precisamente, la macchina, in funzione dello stato corrente e del simbolo letto dalla testina, sovrascrive il simbolo nella cella con un altro, cambia stato, e si muove in una direzione (sinistra o destra) in una cella adiacente. Questo procedimento è detto transizione o mossa. Lo stato corrente e i simboli sul nastro (più la posizione della testina) consistono nell'unica memoria della macchina.
+La macchina di Turing, descritta per la prima volta da Alan Turing nel 1936, nasce come strumento per studiare la decidibilità di problemi. La macchina si compone di un nastro (\eng{tape}), una testina (\eng{head}) e un controllo finito (\eng{finite control}). Il nastro ha lunghezza infinita ed è diviso in celle, le prime celle contenenti l'input (un simbolo per cella), le seguenti il simbolo vuoto (\eng{blank symbol}). La testina punta a una cella del nastro (visita) ed è in grado di leggere e scrivere su di essa, scegliendo da un predeterminato alfabeto. Il controllo finito consiste in un insieme di stati di cui uno corrente. L'evoluzione della computazione di una macchina di Turing procede per istanti successivi, secondo una legge detta modello di transizione. Precisamente, la macchina, in funzione dello stato corrente e del simbolo letto dalla testina, sovrascrive il simbolo nella cella con un altro, cambia stato, e si muove in una direzione (sinistra o destra) in una cella adiacente. Questo procedimento è detto transizione o mossa. Lo stato corrente e i simboli sul nastro (più la posizione della testina) consistono nell'unica memoria della macchina.
 
 \begin{defin}[macchina di Turing]
-	Una macchina di Turing (\emph{Turing Machine}, abbreviata in TM) è una settupla $M=\tuple{Q,\Sigma,\Gamma,b,\delta,q_0,F}$, dove:
+	Una macchina di Turing (\eng{Turing Machine}, abbreviata in TM) è una settupla $M=\tuple{Q,\Sigma,\Gamma,b,\delta,q_0,F}$, dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input, cioè dei simboli che si possono trovare sul nastro all'inizio della computazione (insieme a $b$);
@@ -181,19 +181,19 @@ La macchina di Turing, descritta per la prima volta da Alan Turing nel 1936, nas
 	Se una TM è nella configurazione $xp\sigma y$, con $x,y\in\Gamma\star, p\in Q,\sigma\in\Gamma$, e $\delta(p,\sigma)=(q,\gamma,R)$, allora la prossima configurazione della macchina sarà $x\gamma qy$.
 \end{examp}
 
-Gli esiti possibili della computazione di una TM sono tre: la terminazione in uno stato finale (accettazione), la terminazione in uno stato non finale (rifiuto o \emph{crash}), la non terminazione (\emph{loop}), da interpretare come un rifiuto. È un noto risultato l'impossibilità di costruire un algoritmo che determini, data una qualunque coppia macchina di Turing - parola di input, se la macchina termini con il dato input.
+Gli esiti possibili della computazione di una TM sono tre: la terminazione in uno stato finale (accettazione), la terminazione in uno stato non finale (rifiuto o \eng{crash}), la non terminazione (\eng{loop}), da interpretare come un rifiuto. È un noto risultato l'impossibilità di costruire un algoritmo che determini, data una qualunque coppia macchina di Turing - parola di input, se la macchina termini con il dato input.
 
 Numerosi modelli alternativi, tutti equivalenti, sono stati presentati, variando ad esempio nel numero dei nastri, nel loro utilizzo (per esempio, un nastro di sola lettura per l'input e uno per la memoria scrivibile) e nell'infinità dell'estensione delle celle verso sinistra.
 
 \subsubsection{Nondeterminismo}
-È fondamentale citare il modello nondeterministico delle macchine di Turing e, in generale, delle macchine riconoscitrici. Una macchina di Turing nondeterministica (\emph{nondeterministic Turing machine}, abbreviata NTM) ha per modello di transizione una relazione del tipo $\delta:(Q\setminus F)\times\Gamma\nrightarrow \subsets{Q\times\Gamma\times\set{L,R}}$. Un modello di questo tipo descrive multiple possibilità per un passo dell'evoluzione della macchina, ciascuna descritta da uno degli elementi di un'immagine della funzione. Una parola in input è accettata se esiste una computazione, tra quelle coerenti con il modello, che termina in uno stato accettante.
+È fondamentale citare il modello nondeterministico delle macchine di Turing e, in generale, delle macchine riconoscitrici. Una macchina di Turing nondeterministica (\eng{nondeterministic Turing machine}, abbreviata NTM) ha per modello di transizione una relazione del tipo $\delta:(Q\setminus F)\times\Gamma\nrightarrow \subsets{Q\times\Gamma\times\set{L,R}}$. Un modello di questo tipo descrive multiple possibilità per un passo dell'evoluzione della macchina, ciascuna descritta da uno degli elementi di un'immagine della funzione. Una parola in input è accettata se esiste una computazione, tra quelle coerenti con il modello, che termina in uno stato accettante.
 
 In generale, una macchina riconoscitrice si dice nondeterministica quando il suo modello di transizione fornisce più possibilità per un passo evolutivo, e l'accettazione corrisponde all'esistenza di una computazione che termini accettando.
 
 \subsubsection{Linguaggi ricorsivamente enumerabili e ricorsivi}
 La classe dei linguaggi accettati da macchine di Turing è quella dei linguaggi ricorsivamente enumerabili.
 \begin{defin}[linguaggio ricorsivamente enumerabile]
-	Un linguaggio $L$ si dice ricorsivamente enumerabile (\emph{recursively enumerable}) se e solo se esiste una macchina di Turing $M$ che lo riconosce:
+	Un linguaggio $L$ si dice ricorsivamente enumerabile (\eng{recursively enumerable}) se e solo se esiste una macchina di Turing $M$ che lo riconosce:
 	\begin{equation*}
 		w\in L \iff M \text{ termina in uno stato accettante}
 	\end{equation*}
@@ -206,7 +206,7 @@ Si può dimostrare che tale classe equivale a quella dei linguaggi generabili da
 
 Esiste una classe la cui definizione è più restrittiva, poiché rimuove la possibilità di computazione non terminante: la classe dei linguaggi ricorsivi.
 \begin{defin}[linguaggio ricorsivo]
-	Un linguaggio $L$ si dice ricorsivo (\emph{recursive}) se e solo se esiste una macchina di Turing $M$ tale che per ogni parola in $L$, $M$ termina in uno stato accettante, mentre rifiuta esplicitamente ogni parola che non vi appartiene:
+	Un linguaggio $L$ si dice ricorsivo (\eng{recursive}) se e solo se esiste una macchina di Turing $M$ tale che per ogni parola in $L$, $M$ termina in uno stato accettante, mentre rifiuta esplicitamente ogni parola che non vi appartiene:
 	\begin{equation*}
 		\begin{cases}
 			\text{$M$ termina in uno stato accettante} \qquad & \text{se } w\in L    \\
@@ -219,9 +219,9 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 
 
 \subsection{Automi a pila}
-Gli automi a pila sono macchine composte da un controllo finito e una pila. Una pila (\emph{stack}) è una struttura dati che permettere di leggere e scrivere in maniera LIFO (\emph{last in, first out}). A ogni passo l'automa può leggere un simbolo dell'input, procedendo da sinistra verso destra, oppure leggere $\emptyword$. In funzione del simbolo letto e di quello sulla cima dello stack, l'automa cambia stato e scrive sulla cima dello stack una parola, sostituendo il simbolo letto.
+Gli automi a pila sono macchine composte da un controllo finito e una pila. Una pila (\eng{stack}) è una struttura dati che permettere di leggere e scrivere in maniera LIFO (\eng{last in, first out}). A ogni passo l'automa può leggere un simbolo dell'input, procedendo da sinistra verso destra, oppure leggere $\emptyword$. In funzione del simbolo letto e di quello sulla cima dello stack, l'automa cambia stato e scrive sulla cima dello stack una parola, sostituendo il simbolo letto.
 \begin{defin}[automa a pila]
-	Un automa a pila (\emph{pushdown automaton}, abbreviato in PDA) è una settupla $P=\tuple{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$, dove:
+	Un automa a pila (\eng{pushdown automaton}, abbreviato in PDA) è una settupla $P=\tuple{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$, dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
@@ -241,21 +241,21 @@ Gli automi a pila sono macchine composte da un controllo finito e una pila. Una 
 Un PDA può essere simulato da una macchina di Turing nondeterministica a due nastri, di cui uno contiene l'input e l'altro simula la pila.
 Come le macchine di Turing, gli automi a pila hanno una controparte deterministica. Tuttavia, contrariamente alle TM, essa non equivale, nel potere riconoscitivo, alla versione nondeterministica.
 \begin{defin}[automa a pila deterministico]
-	Un automa a pila deterministico (\emph{deterministic pushdown automaton}, abbreviato in DPDA) è un PDA in cui:
+	Un automa a pila deterministico (\eng{deterministic pushdown automaton}, abbreviato in DPDA) è un PDA in cui:
 	\begin{itemize}
 		\item $\card{\delta(q,a,X)}\leq 1\quad \forall q\in Q, a\in\Sigma\cup\set{\emptyword}, X\in\Gamma$;
 		\item $\card{\delta(q,a,X)}>0\impl \delta(q,\emptyword,X)=\emptyset$.
 	\end{itemize}
 \end{defin}
 
-Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{Hibbard:67:CFdet} tramite gli automi \emph{$d$-limited}.
+Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{Hibbard:67:CFdet} tramite gli automi \eng{$d$-limited}.
 
 
 \subsection{Automi a stati finiti}
 
 \subsubsection{NFA e DFA}
 \begin{defin}[automa a stati finiti nondeterministico]
-	Un automa a stati finiti nondeterministico (\emph{nondeterministic finite automaton}, abbreviato in NFA) è una quintupla $A=\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
+	Un automa a stati finiti nondeterministico (\eng{nondeterministic finite automaton}, abbreviato in NFA) è una quintupla $A=\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
@@ -266,7 +266,7 @@ Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con l
 	Un NFA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ e dalla lettura del primo simbolo a sinistra, termina in uno stato finale.
 \end{defin}
 \begin{defin}
-	Un automa a stati finiti deterministico (\emph{deterministic finite automaton}, abbreviato in DFA) è un NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma$.
+	Un automa a stati finiti deterministico (\eng{deterministic finite automaton}, abbreviato in DFA) è un NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma$.
 \end{defin}
 
 Un NFA $A=\tuple{Q,\Sigma,\delta,q_0,F}$ può essere facilmente simulato da una macchina di Turing nondeterministica $M=\tuple{Q,\Sigma,\Sigma\cup\set{b},b,\delta',q_0,F}$, costruendo per ogni regola $\delta(p,\sigma)\ni q$ di $A$ una regola $\delta'(p,\sigma)\ni (q,\sigma,R)$. Si può inoltre dimostrare che si può costruire una grammatica di tipo 3 che generi il linguaggio riconosciuto da un dato NFA e viceversa, ossia che la classe riconosciuta dagli NFA è quella dei linguaggi regolari.
@@ -289,12 +289,12 @@ La tabella \ref{tab:prel:chomskyhier} riassume la classificazione di Chomsky-Sch
 	\end{tabularx}
 \end{table}
 
-\subsubsection{Automi \emph{two-way}}
-Un altro sistema equivalente a quello degli NFA per riconoscere i linguaggi regolari è quello degli automi \emph{two-way}, simili ad essi ma con la capacità di muoversi in ambe le direzioni tra i simboli dell'input. Useremo la formalizzazione di \cite{Pighizzini:14:limitedRE}, poiché si avvicina molto a quella per gli automi \emph{limited}. L'equivalenza degli automi two-way deterministici e DFA è discussa in \cite{Shallit:09:secondLFA}.
+\subsubsection{Automi \eng{two-way}}
+Un altro sistema equivalente a quello degli NFA per riconoscere i linguaggi regolari è quello degli automi \eng{two-way}, simili ad essi ma con la capacità di muoversi in ambe le direzioni tra i simboli dell'input. Useremo la formalizzazione di \cite{Pighizzini:14:limitedRE}, poiché si avvicina molto a quella per gli automi \eng{limited}. L'equivalenza degli automi two-way deterministici e DFA è discussa in \cite{Shallit:09:secondLFA}.
 
-Un automa a stati finiti two-way ha le stesse componenti di una macchina di Turing: controllo finito, nastro e testina. Tuttavia, esso non può effettuare operazioni di scrittura; inoltre, può visitare unicamente le celle che in origine contengono l'input. Questo è infatti delimitato da due simboli speciali, il \emph{left} ($\lem$) e il \emph{right} ($\rem$) \emph{end-marker}, oltre i quali la testina non può muoversi.
+Un automa a stati finiti two-way ha le stesse componenti di una macchina di Turing: controllo finito, nastro e testina. Tuttavia, esso non può effettuare operazioni di scrittura; inoltre, può visitare unicamente le celle che in origine contengono l'input. Questo è infatti delimitato da due simboli speciali, il \eng{left} ($\lem$) e il \eng{right} ($\rem$) \eng{end-marker}, oltre i quali la testina non può muoversi.
 \begin{defin}
-	Un automa a stati finiti \emph{2-way} nondeterministico (\emph{2-way finite automaton}, abbreviato in 2NFA) è una quintupla $A=\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
+	Un automa a stati finiti \eng{2-way} nondeterministico (\eng{2-way finite automaton}, abbreviato in 2NFA) è una quintupla $A=\tuple{Q,\Sigma,\delta,q_0,F}$, dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
@@ -304,13 +304,13 @@ Un automa a stati finiti two-way ha le stesse componenti di una macchina di Turi
 	\end{itemize}
 	I simboli speciali $\lem$ e $\rem$ circoscrivono l'input nonché lo spazio di lavoro sul nastro.
 
-	Un 2NFA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ e dalla lettura del primo simbolo dell'input (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \emph{right end marker}.
+	Un 2NFA accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dallo stato $q_0$ e dalla lettura del primo simbolo dell'input (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \eng{right end-marker}.
 \end{defin}
-Talvolta, per distinguerli dalle loro controparti two-way, gli NFA \emph{one-way} si abbreviano con 1NFA e, analogamente, i DFA con 1DFA.
+Talvolta, per distinguerli dalle loro controparti two-way, gli NFA \eng{one-way} si abbreviano con 1NFA e, analogamente, i DFA con 1DFA.
 
 Come anticipato, i 2NFA hanno un equivalente deterministico:
 \begin{defin}
-	Un automa a stati finiti \emph{two-way} deterministico (\emph{2-way deterministic finite automaton}, abbreviato in 2DFA) è un 2NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma\cup\set{\lem,\rem}$.
+	Un automa a stati finiti \eng{two-way} deterministico (\eng{2-way deterministic finite automaton}, abbreviato in 2DFA) è un 2NFA in cui $\card{\delta(q,\sigma)}\leq 1 ~ \forall q\in Q,\sigma\in\Sigma\cup\set{\lem,\rem}$.
 \end{defin}
 
 
