@@ -175,7 +175,12 @@ La macchina di Turing, descritta per la prima volta da Alan Turing nel 1936, nas
 
 	Una macchina di Turing accetta una parola $w\in\Sigma\star$ se e solo se la sua computazione, a partire dalla configurazione $q_0w$, termina in uno stato finale.
 \end{defin}
-% La figura \ref{fig:prel:turmac} corrisponde alla tipica rappresentazione di una configurazione di una macchina di Turing.
+
+\begin{figure}
+	\centering
+	\input{img/tm_example.tikz}
+	\caption{Rappresentazione di una macchina di Turing di esempio nella configurazione $\sigma_0 q \sigma_1\sigma_2\dots\sigma_n$.}
+\end{figure}
 
 \begin{examp}
 	Se una TM è nella configurazione $xp\sigma y$, con $x,y\in\Gamma\star, p\in Q,\sigma\in\Gamma$, e $\delta(p,\sigma)=(q,\gamma,R)$, allora la prossima configurazione della macchina sarà $x\gamma qy$.
@@ -218,7 +223,7 @@ Si può dimostrare che questa classe è propriamente inclusa nella classe dei ri
 
 
 
-\subsection{Automi a pila}
+\subsection{Automi a pila}\label{subs:prel:PDA}
 Gli automi a pila sono macchine composte da un controllo finito e una pila. Una pila (\eng{stack}) è una struttura dati che permettere di leggere e scrivere in maniera LIFO (\eng{last in, first out}). A ogni passo l'automa può leggere un simbolo dell'input, procedendo da sinistra verso destra, oppure leggere $\emptyword$. In funzione del simbolo letto e di quello sulla cima dello stack, l'automa cambia stato e scrive sulla cima dello stack una parola, sostituendo il simbolo letto.
 \begin{defin}[automa a pila]
 	Un automa a pila (\eng{pushdown automaton}, abbreviato in PDA) è una settupla $P=\tuple{Q,\Sigma,\Gamma,\delta,q_0,Z_0,F}$, dove:
@@ -251,7 +256,7 @@ Come le macchine di Turing, gli automi a pila hanno una controparte deterministi
 Si può dimostrare che la classe di linguaggi riconosciuta da PDA coincide con la classe dei linguaggi liberi da contesto (in riferimento alla classificazione di Chomsky-Schützenberger al paragrafo \ref{subs:prel:chomshutz}). I DPDA riconoscono una sottoclasse propria dei linguaggi liberi da contesto, chiamata semplicemente linguaggi liberi da contesto deterministici e la cui non trova posto nella classificazione. Una migliore classificazione per i linguaggi liberi da contesto deterministici è stata introdotta da Hibbard in \cite{Hibbard:67:CFdet} tramite gli automi \eng{$d$-limited}.
 
 
-\subsection{Automi a stati finiti}
+\subsection{Automi a stati finiti}\label{subs:prel:NFA}
 
 \subsubsection{NFA e DFA}
 \begin{defin}[automa a stati finiti nondeterministico]
@@ -274,17 +279,17 @@ Un NFA $A=\tuple{Q,\Sigma,\delta,q_0,F}$ può essere facilmente simulato da una 
 La tabella \ref{tab:prel:chomskyhier} riassume la classificazione di Chomsky-Schützenberger completa di corrispondenza con le rispettive classi di linguaggi e riconoscitori.
 
 \begin{table}
-	\caption{Classificazione di Chomsky-Schützenberger con corrispondenza con le rispettive classi di linguaggi e riconoscitori. $a$ è un simbolo terminale, $A$ e $B$ metasimboli, $\alpha$, $\beta$ e $\gamma$ parole qualunque, con $\gamma$ non vuota. Una macchina di Turing linearmente limitata è una macchina di Turing la cui lunghezza del nastro è funzione lineare della dimensione dell'input.}
+	\caption{Classificazione di Chomsky-Schützenberger con corrispondenza con le rispettive classi di linguaggi e riconoscitori. $a$ è un simbolo terminale, $A$ e $B$ metasimboli, $\alpha$, $\beta$ e $\gamma$ parole qualunque, con $\gamma$ non vuota. Un automa lineare limitato (\eng{linear-bounded automaton}) è una macchina di Turing la cui lunghezza del nastro è funzione lineare della dimensione dell'input.}
 	\label{tab:prel:chomskyhier}
 	\centering
 	\begin{tabularx}{\textwidth}{lXXl}
 		\toprule
-		\textbf{Grammatica} & \textbf{Linguaggi generabili} & \textbf{Riconoscitore}                  & \textbf{Regole di produzione}         \\
+		\textbf{Grammatica} & \textbf{Linguaggi generabili} & \textbf{Riconoscitore}  & \textbf{Regole di produzione}         \\
 		\midrule
-		Tipo 0              & Ricorsivamente enumerabili    & Macchine di Turing                      & $\gamma\to\alpha$                     \\
-		Tipo 1              & Dipendenti dal contesto       & Macchine di Turing linearmente limitate & $\alpha A\beta\to\alpha\gamma\beta$   \\
-		Tipo 2              & Liberi dal contesto           & Automi a pila                           & $A\to\alpha$                          \\
-		Tipo 3              & Regolari                      & Automi a stati finiti                   & $A\to a$, $A\to aB$, $A\to\emptyword$ \\
+		Tipo 0              & Ricorsivamente enumerabili    & Macchine di Turing      & $\gamma\to\alpha$                     \\
+		Tipo 1              & Dipendenti dal contesto       & Automi lineari limitati & $\alpha A\beta\to\alpha\gamma\beta$   \\
+		Tipo 2              & Liberi dal contesto           & Automi a pila           & $A\to\alpha$                          \\
+		Tipo 3              & Regolari                      & Automi a stati finiti   & $A\to a$, $A\to aB$, $A\to\emptyword$ \\
 		\bottomrule
 	\end{tabularx}
 \end{table}
