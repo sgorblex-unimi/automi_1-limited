@@ -25,7 +25,7 @@
 \theoremstyle{remark}
 \newtheorem{examp}{Esempio}[chapter]
 
-\usepackage[isbn=false,doi=false]{biblatex}
+\usepackage[isbn=false]{biblatex}
 \addbibresource{bib/bibliografia.bib}
 
 \usepackage[hidelinks]{hyperref}
@@ -55,14 +55,15 @@
 
 % macros
 \newcommand{\eng}[1]{\emph{#1}}
+\newcommand{\la}[1]{$#1$-LA}
 
 \newcommand{\draft}{
 	\geometry{
-	paperheight=\dimexpr\textheight+4mm\relax,
+	paperheight=\dimexpr\textheight+8mm\relax,
 	paperwidth=\dimexpr\textwidth+2mm\relax,
 	left=1mm,
-	top=2mm,
+	top=4mm,
 	right=1mm,
-	bottom=2mm
+	bottom=4mm
 	}
 }

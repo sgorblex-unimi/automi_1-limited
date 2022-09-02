@@ -1,41 +1,46 @@
-\chapter{Automi \emph{1-limited}}
+\chapter{Automi \eng{\texorpdfstring{$1$}{1}-limited}}
 Come accennato al paragrafo \ref{subs:prel:PDA}, il fatto che gli automi a pila deterministici riconoscano una classe intermedia tra i linguaggi liberi da contesto e quelli regolari ha portato Hibbard a voler costruire una generalizzazione del determinismo nei linguaggi liberi da contesto e i loro riconoscitori. Per fare ciò, egli introduce in \cite{Hibbard:67:CFdet} gli \eng{scan limited automata}, che oggi, con qualche piccola modifica al modello, chiamiamo automi \eng{limited}. Lo studio degli automi limited ha ormai superato il suo scopo iniziale: non riguarda più unicamente il caso deterministico e si presta particolarmente a risultati nell'ambito della complessità descrizionale. Questi riconoscitori ricadono inoltre nella famiglia degli automi lineari limitati, cioè il cui spazio di lavoro è limitato da una funzione lineare nella dimensione dell'input.
 
 In questo capitolo presentiamo innanzitutto gli automi \eng{$d$-limited} e il loro potere riconoscitivo, poi entriamo nel merito degli automi \eng{$1$-limited}, il nostro oggetto di studio, con una panoramica dei principali risultati che li riguardano.
 
 
 
-\section{Automi \emph{d-limited}}
+\section{Automi \eng{d-limited}}
 Un automa \eng{$d$-limited}, con $d\in\N$, è una macchina di Turing a singolo nastro in cui lo spazio di lavoro, che all'inizio contiene l'input, è circoscritto dagli \eng{end-marker} $\lem$ e $\rem$ (come già visto per i 2NFA al paragrafo \ref{subs:prel:NFA}). Inoltre, la capacità di scrittura della macchina è limitata, potendo scrivere su una cella solo durante le due prime $d$ visite.
-\begin{defin}[automa \emph{$d$-limited}]
-	Dato un intero $d\geq 0$, un automa \emph{$d$-limited} (abbreviato in $d$-LA) è una tupla $\tuple{Q,\Sigma,\Gamma,\delta,q_0,F}$ dove:
+\begin{defin}[automa \eng{$d$-limited}]
+	Dato un intero $d\geq 0$, un automa \eng{$d$-limited} (abbreviato in $d$-LA) è una tupla $A=\tuple{Q,\Sigma,\Gamma,\delta,q_0,F}$ dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
-		\item $\Gamma\supseteq\Sigma\cup\set{\lem,\rem}$ è l'alfabeto di lavoro (\emph{working alphabet}), dove $\lem$ e $\rem$ sono rispettivamente il \emph{left} e \emph{right end marker}, che circoscrivono l'input nonché lo spazio di lavoro sul nastro. $\Gamma$ è partizionato in $d+1$ sottoinsiemi $\Gamma_0,\Gamma_1,\dots,\Gamma_d$, con $\Gamma_0=\Sigma$ e $\lem,\rem\in\Gamma_d$. L'insieme $\Gamma_k$ rappresenta l'alfabeto a cui appartiene ogni simbolo alla $k$-esima visita della cella che lo contiene. Dopo la $d$-esima visita, la cella rimane invariata (\emph{frozen});
+		\item $\Gamma\supseteq\Sigma\cup\set{\lem,\rem}$ è l'alfabeto di lavoro (\eng{working alphabet}), dove $\lem$ e $\rem$ circoscrivono l'input nonché lo spazio di lavoro sul nastro. $\Gamma$ è partizionato in $d+1$ sottoinsiemi $\Gamma_0,\Gamma_1,\dots,\Gamma_d$, con $\Gamma_0=\Sigma$ e $\lem,\rem\in\Gamma_d$. L'insieme $\Gamma_k$ rappresenta l'alfabeto a cui appartiene ogni simbolo alla $k$-esima visita della cella che lo contiene. Dopo la $d$-esima visita, la cella rimane invariata (\eng{frozen});
 		\item $\delta:Q\times\Gamma\to \subsets{Q\times(\Gamma\setminus\set{\lem,\rem})\times\set{-1,+1}}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)=(q,\gamma,D)$, allora:
 		      \begin{itemize}
 			      \item $q$ è il prossimo stato;
 			      \item $\gamma$ è il simbolo che verrà scritto in sostituzione a $\sigma$ nella cella corrente, allo spostamento della testina;
 			      \item $D$ e la direzione in cui si muoverà la testina, $-1$ se a sinistra e $+1$ se a destra.
 		      \end{itemize}
-		      La natura del simbolo $\gamma$ è soggetta al partizionamento di $\Gamma$: un simbolo in $\Gamma_k$ viene sostituito con un simbolo in $\Gamma_{k+1}$ (ma un simbolo in $\Gamma_d$ viene sostituito con se stesso). Le visite in cui si cambia direzione contano doppio\footnote{Ciò è una conseguenza del fatto che, in realtà, si contano per ogni cella non le visite, ma le scansioni da sinistra a destra (visite di numero dispari) e quelle da destra a sinistra (visite di numero pari), per cui un cambio di direzione comprende entrambe.}, sostituendo un simbolo in $\Gamma_k$ con un simbolo in $\Gamma_{k+2}$. Le celle contenenti gli \emph{end marker} non sono mai modificate, né è possibile muoversi a sinistra di $\lem$ e a destra di $\rem$, se non per accettare. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
+		      La natura del simbolo $\gamma$ è soggetta al partizionamento di $\Gamma$: un simbolo in $\Gamma_k$ viene sostituito con un simbolo in $\Gamma_{k+1}$ (ma un simbolo in $\Gamma_d$ viene sostituito con se stesso). Le visite in cui si cambia direzione contano doppio\footnote{Ciò è una conseguenza del fatto che, in realtà, si contano per ogni cella non le visite, ma le scansioni da sinistra a destra (visite di numero dispari) e quelle da destra a sinistra (visite di numero pari), per cui un cambio di direzione comprende entrambe.}, sostituendo un simbolo in $\Gamma_k$ con un simbolo in $\Gamma_{k+2}$. Le celle contenenti gli \eng{end-marker} non sono mai modificate, né è possibile muoversi a sinistra di $\lem$ e a destra di $\rem$, se non per accettare. La macchina ha, in generale, più possibilità per un passo evolutivo, operando in maniera nondeterministica;
 		\item $q_0\in Q$ è lo stato iniziale;
 		\item $F\subseteq Q$ è l'insieme degli stati finali.
 	\end{itemize}
-	Una configurazione per un automa $d$-limited si indica con $xqy$, dove $x$ è la parola prima della cella corrente (può essere omessa se $x=\emptyword$), preceduta da $\lem$, $q$ è lo stato corrente, e $y$ è la parola che inizia con il simbolo nella cella corrente e seguita da $\rem$.
+	Una configurazione per un automa $d$-limited si indica con $xqy$, dove $x$ è la parola prima della cella corrente (può essere omessa se $x=\emptyword$), $q$ è lo stato corrente, e $y$ è la parola che inizia con il simbolo nella cella corrente (si omettono $\lem$ e $\rem$).
 
-	Un automa $d$-limited accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dalla configurazione $q_0w$ (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \emph{right end marker}.
+	Un automa $d$-limited accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dalla configurazione $q_0w$ (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \eng{right end-marker}.
 
-	Un automa $d$-limited si dice deterministico se $\card{\delta(q,\gamma)}\leq 1 ~ \forall q\in Q,\gamma\in\Gamma$. Un automa si dice \emph{limited} se è \emph{$d$-limited} per qualche $d$.
+	Un automa $d$-limited si dice deterministico (e si abbrevia in D$d$-LA) se $\card{\delta(q,\gamma)}\leq 1 ~ \forall q\in Q,\gamma\in\Gamma$. Un automa si dice \eng{limited} se è \eng{$d$-limited} per qualche $d$.
 \end{defin}
-Nella pratica, esiste la possibilità che un 1-LA non sovrascriva il simbolo corrente. Formalmente, tuttavia, esso viene sempre sovrascritto, per esempio sostituendo $a$ con $a'$ (che viene comunque rappresentato come $a$). In questo modo si preserva l'informazione originale ma si mantiene la correttezza rispetto al modello. Una tecnica analoga viene usata quando si segna (\emph{mark}) una cella, per esempio sostituendo $a$ con $\bar a$, preservando il simbolo ma dandovi un valore aggiuntivo.
+Nella pratica, esiste la possibilità che un $d$-LA non sovrascriva il simbolo corrente. Formalmente, tuttavia, esso viene sempre sovrascritto, per esempio sostituendo $a$ con $a'$ (che viene comunque rappresentato come $a$). In questo modo si preserva l'informazione originale ma si mantiene la correttezza rispetto al modello. Una tecnica analoga viene usata quando si segna (\eng{mark}) una cella, per esempio sostituendo $a$ con $\bar a$, preservando il simbolo ma dandovi un valore aggiuntivo.
 
 Si noti che gli 0-LA corrispondono esattamente ai 2NFA.
 
 
 
 \section{Potenza riconoscitiva}
+Sebbene Hibbard abbia studiato il diverso potere riconoscitivo dei D\la d al variare di $d$ (\cite{Hibbard:67:CFdet}), con i D\la2 che riconoscono esattamente i linguaggi liberi da contesto deterministici, è noto che la controparte nondeterministica riconosce la stessa classe di linguaggi, cioè esattamente quella dei liberi da contesto, per qualunque $d\geq2$. Questo risultato deriva dalla costruzione di alcune trasformazioni da modelli equivalenti agli automi a pila ai \la2 e viceversa, combinati con trasformazioni da \la{d+1} a \la d, per $d\geq2$. Una dimostrazione più semplice del potere riconoscitivo dei \la2 si ottiene dal teorema di Chomsky-Schützenberger (\cite{Chomsky:63:algebraCF}) e un \la2 molto semplice che riconosce i linguaggi di Dyck (dettagli in \cite{Pighizzini:14:limitedRE}).
+
+Per quanto riguarda $d<2$, poiché gli \la0 sono esattamente i 2NFA è chiaro che questi riconoscano esattamente i linguaggi regolari. Wagner e Wechsung hanno dimostrato in \cite{Wagner:86:compCompl} che la possibilità di riscrivere una cella durante la sua prima visita non aumenta il potere riconoscitivo, ergo anche gli \la1 riconoscono i linguaggi regolari. Come vedremo, infatti, vero potere degli \la1 non è nella classe riconosciuta, ma nella complessità della loro descrizione, notevolmente ridotta rispetto ai riconoscitori standard per i linguaggi regolari.
+
+Una panoramica più approfondita dei risultati ottenuti per gli automi $d$-limited, specialmente per $d\geq2$ che qui non trattiamo, si può trovare in \cite{Pighizzini:19:limited}.
 
 
 
