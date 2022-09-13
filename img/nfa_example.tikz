@@ -1,0 +1,9 @@
+\begin{tikzpicture}[shorten >=1pt,node distance=1.1cm,auto,initial text=]
+	\node[state,initial]	(q_0)			{$q_0$};
+	\node[state]		(q_1)	[right=of q_0]	{$q_1$};
+	\node[state,accepting]	(q_2)	[right=of q_1]	{$q_2$};
+	\path[->]
+	(q_0)	edge			node		{$0$} (q_1)
+		edge [loop above]	node 		{$0,1$} ()
+	(q_1)	edge			node		{$1$} (q_2);
+\end{tikzpicture}
