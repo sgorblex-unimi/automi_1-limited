@@ -1,19 +1,19 @@
 \chapter{Automi \eng{\texorpdfstring{$1$}{1}-limited}}
-Come accennato al paragrafo \ref{subs:prel:PDA}, il fatto che gli automi a pila deterministici riconoscano una classe intermedia tra i linguaggi liberi da contesto e quelli regolari ha portato Hibbard a voler costruire una generalizzazione del determinismo nei linguaggi liberi da contesto e i loro riconoscitori. Per fare ciò, egli introduce in \cite{Hibbard:67:CFdet} gli \eng{scan limited automata}, che oggi, con qualche piccola modifica al modello, chiamiamo automi \eng{limited}. Lo studio degli automi limited ha ormai superato il suo scopo iniziale: non riguarda più unicamente il caso deterministico e si presta particolarmente a risultati nell'ambito della complessità descrizionale.
+Come accennato al paragrafo \ref{subs:prel:PDA}, il fatto che gli automi a pila deterministici riconoscano una classe intermedia tra i linguaggi liberi da contesto e quelli regolari ha portato Hibbard a voler definire una generalizzazione del determinismo nei linguaggi liberi da contesto e i loro riconoscitori. Per fare ciò, egli introdusse in \cite{Hibbard:67:CFdet} gli \eng{scan limited automata}, che oggi, con qualche piccola modifica al modello, chiamiamo automi \eng{limited}. Lo studio degli automi limited ha ormai superato il suo scopo iniziale: non riguarda più unicamente il caso deterministico e si presta particolarmente a risultati nell'ambito della complessità descrizionale.
 
 In questo capitolo presentiamo innanzitutto gli automi \eng{$d$-limited} e il loro potere riconoscitivo, poi entriamo nel merito degli automi \eng{$1$-limited}, il nostro oggetto di studio, con una panoramica dei principali risultati che li riguardano.
 
 
 
 \section{Automi \eng{d-limited}}
-Gli automi \eng{$d$-limited} sono un caso particolare di automi linearmente limitati. Un automa \eng{$d$-limited}, con $d\in\N$, è una macchina di Turing nondeterministica in cui lo spazio di lavoro, che all'inizio contiene l'input, è circoscritto dagli \eng{end-marker} $\lem$ e $\rem$ (come già visto per i 2NFA al paragrafo \ref{subs:prel:NFA}). Inoltre, la capacità di scrittura della macchina è limitata, potendo scrivere su una cella solo durante le due prime $d$ visite.
+Gli automi \eng{$d$-limited} sono un caso particolare di automi linearmente limitati. Un automa \eng{$d$-limited}, con $d\in\N$, è una macchina di Turing nondeterministica in cui lo spazio di lavoro, che all'inizio contiene l'input, è circoscritto dagli \eng{end-marker} $\lem$ e $\rem$ (come già visto per i 2NFA al paragrafo \ref{subs:prel:NFA}). Inoltre, la capacità di scrittura della macchina è limitata, potendo scrivere su una cella solo durante le prime $d$ visite.
 \begin{defin}[automa \eng{$d$-limited}]
 	Dato un intero $d\geq 0$, un automa \eng{$d$-limited} ($d$-LA) è una tupla $A=\tuple{Q,\Sigma,\Gamma,\delta,q_0,F}$ dove:
 	\begin{itemize}
 		\item $Q$ è un insieme finito e non vuoto di stati;
 		\item $\Sigma$ è l'alfabeto di input;
 		\item $\Gamma\supseteq\Sigma\cup\set{\lem,\rem}$ è l'alfabeto di lavoro (\eng{working alphabet}), dove $\lem$ e $\rem$ circoscrivono l'input nonché lo spazio di lavoro sul nastro. $\Gamma$ è partizionato in $d+1$ sottoinsiemi $\Gamma_0,\Gamma_1,\dots,\Gamma_d$, con $\Gamma_0=\Sigma$ e $\lem,\rem\in\Gamma_d$. L'insieme $\Gamma_k$ rappresenta l'alfabeto a cui appartiene ogni simbolo alla $k$-esima visita della cella che lo contiene. Dopo la $d$-esima visita, la cella rimane invariata (\eng{frozen});
-		\item $\delta:Q\times\Gamma\to \subsets{Q\times(\Gamma\setminus\set{\lem,\rem})\times\set{\Left,\Right}}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)=(q,\gamma,D)$, allora:
+		\item $\delta:Q\times\Gamma\to \subsets{Q\times(\Gamma\setminus\set{\lem,\rem})\times\set{\Left,\Right}}$ è la funzione di transizione. Se a un dato passo l'automa è nello stato $p$, legge il simbolo $\sigma$, e $\delta(p,\sigma)\ni (q,\gamma,D)$, allora:
 		      \begin{itemize}
 			      \item $q$ è il prossimo stato;
 			      \item $\gamma$ è il simbolo che verrà scritto in sostituzione a $\sigma$ nella cella corrente, allo spostamento della testina;
@@ -23,7 +23,7 @@ Gli automi \eng{$d$-limited} sono un caso particolare di automi linearmente limi
 		\item $q_0\in Q$ è lo stato iniziale;
 		\item $F\subseteq Q$ è l'insieme degli stati finali.
 	\end{itemize}
-	Una configurazione di un automa $d$-limited si indica con $xqy$, dove $x$ è la parola prima della cella corrente (può essere omessa se $x=\emptyword$), $q$ è lo stato corrente, e $y$ è la parola che inizia con il simbolo nella cella corrente (si omettono $\lem$ e $\rem$).
+	Una \emph{configurazione} di un automa $d$-limited si indica con $xqy$, dove $x$ è la parola prima della cella corrente (può essere omessa se $x=\emptyword$), $q$ è lo stato corrente, e $y$ è la parola che inizia con il simbolo nella cella corrente (si omettono $\lem$ e $\rem$). Si scrive $xpy\trans zqw$ se esiste una transizione che porta dalla configurazione $xpy$ a $zqw$ e $xpy\transs zqw$ se esiste una computazione in zero o più passi che porta dalla configurazione $xpy$ a $zqw$.
 
 	Un automa $d$-limited accetta una parola $w\in\Sigma\star$ se e solo se esiste una computazione che, a partire dalla configurazione $q_0w$ (il nastro contenente $\lem w\rem$), termina in uno stato finale $q\in F$ violando il \eng{right end-marker}.
 
@@ -42,9 +42,9 @@ Si noti che gli 0-LA corrispondono esattamente ai 2NFA.
 
 
 \section{Potenza riconoscitiva}
-In \cite{Hibbard:67:CFdet} Hibbard studia il diverso potere riconoscitivo dei D\la d al variare di $d$ (\cite{Hibbard:67:CFdet}), con i D\la2 che riconoscono esattamente i linguaggi liberi da contesto deterministici. Nonostante ciò, e nonostante gli \la d siano una restrizione dei LBA, che riconoscono i \eng{context-sensitive}, è noto che i \la d nondeterministici riconoscono esattamente la classe dei linguaggi \eng{context-free}, per qualunque $d\geq2$. Questo risultato deriva dalla costruzione di alcune trasformazioni da modelli equivalenti agli automi a pila ai \la2 e viceversa, combinati con trasformazioni da \la{d+1} a \la d, per $d\geq2$. Una dimostrazione più semplice del potere riconoscitivo dei \la2 si ottiene dal teorema di Chomsky-Schützenberger (\cite{Chomsky:63:algebraCF}) e un \la2 molto semplice che riconosce i linguaggi di Dyck (dettagli in \cite{Pighizzini:19:limited}).
+In \cite{Hibbard:67:CFdet} Hibbard studia il diverso potere riconoscitivo dei D\la d al variare di $d$, con i D\la2 che riconoscono esattamente i linguaggi liberi da contesto deterministici. Nonostante ciò, e nonostante gli \la d siano una restrizione dei LBA, che riconoscono i \eng{context-sensitive}, è noto che i \la d nondeterministici riconoscono esattamente la classe dei linguaggi \eng{context-free}, per qualunque $d\geq2$. Questo risultato deriva dalla costruzione di alcune trasformazioni da modelli equivalenti agli automi a pila ai \la2 e viceversa, combinati con trasformazioni da \la{d+1} a \la d, per $d\geq2$. Una dimostrazione più semplice del potere riconoscitivo dei \la2 si ottiene dal teorema di Chomsky-Schützenberger (\cite{Chomsky:63:algebraCF}) e un \la2 molto semplice che riconosce i linguaggi di Dyck (dettagli in \cite{Pighizzini:19:limited}).
 
-Per quanto riguarda $d<2$, poiché gli \la0 sono esattamente i 2NFA è chiaro che questi riconoscano esattamente i linguaggi regolari. Wagner e Wechsung hanno dimostrato in \cite{Wagner:86:compCompl} che la possibilità di riscrivere una cella durante la sua prima visita non aumenta il potere riconoscitivo, ergo anche gli \la1 riconoscono i linguaggi regolari. Come vedremo, infatti, vero potere degli \la1 non è nella classe riconosciuta, ma nella complessità della loro descrizione, notevolmente ridotta rispetto ai riconoscitori standard per i linguaggi regolari.
+Per quanto riguarda $d<2$, poiché gli \la0 sono esattamente i 2NFA è chiaro che questi riconoscano esattamente i linguaggi regolari. Wagner e Wechsung hanno dimostrato in \cite{Wagner:86:compCompl} che la possibilità di riscrivere una cella durante la sua prima visita non aumenta il potere riconoscitivo, ergo anche gli \la1 riconoscono i linguaggi regolari. Come vedremo, infatti, il vero potere degli \la1 non è nella classe riconosciuta, ma nella complessità della loro descrizione, notevolmente ridotta rispetto ai riconoscitori standard per i linguaggi regolari.
 
 Una panoramica più approfondita dei risultati ottenuti per gli automi $d$-limited, specialmente per $d\geq2$ che qui non trattiamo, si può trovare in \cite{Pighizzini:19:limited}.
 
