@@ -3,7 +3,7 @@ Ai fini di ottenere o migliorare i lower bound, di risolvere i problemi aperti e
 
 
 
-\section{Linguaggi a blocchi}
+\section{Linguaggi a blocchi}\label{sec:wit:blk}
 In un linguaggio a blocchi di parametro $n$, ogni parola è composta dalla concatenazione di stringhe di lunghezza $n$, dette blocchi. Condizioni diverse sulla relazione tra i blocchi danno origine a diverse famiglie di linguaggi, ad esempio:
 \begin{itemize}
 	\item il linguaggio delle parole in cui l'ultimo blocco è uguale a uno dei precedenti:
@@ -108,4 +108,37 @@ In conclusione il linguaggio $\generated{S_N}$ è testimone del gap esponenziale
 
 
 
-\section{Linguaggi algebrici}
+\section{Problemi aperti e ricerche future}
+Lo studio dei $1$-limited e del loro rapporto con altri riconoscitori, pur avendo portato a risultati soddisfacenti nei casi principali (1NFA, 1DFA), lascia diverse domande senza risposta.
+
+
+\subsection{L'eliminazione del nondeterminismo}
+Il più importante dei problemi aperti che riguardano i $1$-limited è il gap di complessità descrizionale tra \la1 e D\la1, di cui conosciamo un lower bound esponenziale (corollario \ref{cor:a1l:LAtoDLA}) e un upper bound doppiamente esponenziale, derivante dalla simulazione degli \la1 da parte dei 1DFA. Non abbiamo, tra l'altro, evidenze di una distanza maggiore tra \la1 e 2DFA.
+
+Pighizzini, Prigioniero e Sádovský (\cite{Pighizzini:22:limitedwitness}) hanno proposto, con l'intenzione di introdurre dei witness language per una ipotetica distanza più che esponenziale tra \la1 e D\la1 (o tra \la1 e 2DFA), due linguaggi binari basati sulla parità (XOR). Il linguaggio $P_n$ è un linguaggio a blocchi, in cui lo XOR di un certo numero di blocchi risulta nell'ultimo blocco. Il linguaggio $P'_n$ è una versione di $P_n$ in cui cade il vincolo dei blocchi, permettendo lo XOR di qualunque sottostringa che non si sovrapponga:
+\begin{align*}
+	P_n := \{  x_1\dots x_kx \mid ~ & k>0, x_1,\dots,x_k,x\in\{0,1\}^n,                                \\
+	                                & \exists h>0,i_1,i_2,\dots,x_h\in\{1,\dots,k\},i_1<i_2<\dots<i_h: \\
+	                                & x=x_{i_1}\oplus x_{i_2}\oplus\dots\oplus x_{i_h}\}
+\end{align*}
+\begin{align*}
+	P'_n := \{  wx \mid ~ & w\in\{0,1\}^*,x\in\{0,1\}^n,                                              \\
+	                      & \exists h>0,x_1,x_2,\dots,x_h\in\{0,1\}^n,y_0,y_1,\dots,y_h\in\{0,1\}^*:  \\
+	                      & w=y_0x_1y_1\dots y_{n-1}x_hy_h \land x=x_1\oplus x_2\oplus\dots\oplus x_h\}
+\end{align*}
+
+Questi linguaggi possono essere riconosciuti da un \la1 lineare in $n$ con un adattamento delle tecniche per i linguaggi a blocchi (paragrafo \ref{sec:wit:blk}), tuttavia è sconosciuto un lower bound per un 1DFA equivalente. Rimane una congettura, per il momento, che questi linguaggi non siano accettati da D\la1 o 2DFA di dimensione semplicemente esponenziale.
+
+
+\subsection{Simulazioni mancanti}
+Non si conoscono simulazioni che permettano, a partire da un \la1, di rimuovere il nondeterminismo (\la1\tto D\la1), la capacità di riscrittura (\la1\tto 2NFA), o la combinazione delle due (\la1\tto 2DFA), se non quella in 1NFA e 1DFA.
+
+In effetti, non si conosce una costruzione che permetta di convertire un 2NFA in un 2DFA (o un 1NFA in un 2DFA), di cui si conosce un lower bound polinomiale e un upper bound esponenziale. Pur non risolvendo questo problema, sarebbe interessante investigare la sua potenziale correlazione con la simulazione di \la1 da parte di D\la1. In particolare, l'eliminazione del nondeterminismo da una macchina two-way potrebbe sfruttare una tecnica adattabile al caso \la1\tto D\la1.
+
+Per quanto riguarda l'eliminazione della capacità di riscrittura, ci sembra improbabile trovare una tecnica che permetta di codificare nel solo movimento two-way, anche se nondeterministico, i possibili stati del nastro modificato.
+
+
+\subsection{Il caso unario}
+Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla binary carry sequence (paragrafo \ref{sec:wit:un}) ha portato alla determinazione di diversi testimoni della distanza almeno esponenziale tra \la1 e 1DFA. Non si conosce una simulazione che limiti la distanza nel caso unario a semplicemente esponenziale, né sono stati trovati lower bound maggiori, pertanto il gap tra \la1 e 1DFA per gli unari rimane un problema aperto, la cui risposta è inclusa tra il singolo e il doppio esponenziale.
+
+% TODO: aggiungere tabella/mappa dei bound

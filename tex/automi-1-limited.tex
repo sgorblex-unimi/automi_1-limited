@@ -195,7 +195,7 @@ Per dimostrare l'ottimalità dell'upper bound trovato in precedenza, dimostriamo
 \noindent La dimostrazione di Pighizzini e Pisoni (\cite{Pighizzini:14:limitedRE}) estende il lower bound per i 1DFA a $((2^n-2)\cdot(\frac{n-1}{n})^2+1)\cdot n^{2^n}+1$ (tramite distinguibilità) e quello dei 1NFA a $n^2\cdot2^n$ (tramite \eng{fooling set}).
 
 Il teorema \ref{thm:a1l:lowLn}, oltre a dimostrare che le conversioni da \la1 non possono essere migliorate significativamente, fornisce un lower bound esponenziale per la conversione da \la1 a D\la1:
-\begin{corol}
+\begin{corol}\label{cor:a1l:LAtoDLA}
 	La simulazione di \la1 nondeterministici da parte di \la1 deterministici richiede un aumento esponenziale nel numero di stati.
 \end{corol}
 \begin{proof}
