@@ -51,3 +51,86 @@ Una panoramica più approfondita dei risultati ottenuti per gli automi $d$-limit
 
 
 \section{Complessità descrizionale}
+Non sono necessari particolari costruzioni perché un \la1 simuli un'altra macchina tra i tipici riconoscitori di linguaggi regolari: è sufficiente che ignori la sua capacità di scrivere (2NFA) o quella di muoversi in ambe le direzioni (1NFA), eventualmente aggiungendo uno stato che permetta di muoversi verso destra per accettare violando il right end-marker. È invece non triviale la simulazione opposta, cioè quella di un \la1 da parte di una di tali macchine. Gli estensivi studi di queste simulazioni ci permettono non solo di dimostrare che gli \la1 riconoscano effettivamente i linguaggi regolari, ma anche quale aumento di complessità descrizionale derivi dalla costruzione.
+
+
+\subsection{Upper bound}
+Con una rivisitazione della costruzione di Wagner e Wechsung (teorema 12.1 in \cite{Wagner:86:compCompl}), Pighizzini e Pisoni hanno ottenuto in \cite{Pighizzini:14:limitedRE} l'upper bound del numero di stati necessari a un automa a stati finiti per simulare un automa 1-limited. La simulazione si basa sul concetto di tabella di transizione, già usato nella conversione da 2DFA in 1DFA presentata in \cite{Shepherdson:59:reduction2to1way}. Dato un \la1 di $n$ stati, la costruzione produce un 1NFA di un numero di stati esponenziale in $n$, oppure un 1DFA doppiamente esponenziale, indipendentemente dalla dimensione dell'alfabeto di lavoro. Se il \la1 è deterministico, inoltre, la stessa costruzione produce un 1DFA di numero di stati semplicemente esponenziale.
+\begin{theor}[Teorema 2 in \cite{Pighizzini:14:limitedRE}]\label{thm:a1l:upper}
+	Sia $M$ un \la1 di $n$ stati.
+	\begin{enumerate}[(a)]
+		\item \label{itm:a1l:up:NFA} $M$ può essere simulato da un 1NFA con $n\cdot2^{n^2}$ stati;
+		\item \label{itm:a1l:up:DFA} $M$ può essere simulato da un 1DFA con $2^{n\cdot2^{n^2}}$ stati;
+		\item \label{itm:a1l:up:det} se $M$ è deterministico, può essere simulato da un 1DFA con al più $n\cdot (n+1)^n$ stati.
+	\end{enumerate}
+\end{theor}
+\begin{proof}
+	Sia $M=\tuple{Q,\Sigma,\Gamma,\delta,q_0,F}$ un \la1, con $\card{Q}=n$.
+
+	\ref{itm:a1l:up:NFA} Per costruire un 1NFA $A$ che simuli $M$ ci occorre uno strumento che trasferisca nella memoria a stati finiti le due facoltà degli 1-LA che $A$ non possiede: la scrittura alla prima visita e il movimento della testina verso sinistra. Ogni transizione di $A$ legge un simbolo nuovo, perciò dovrà simulare una o più transizioni di $M$.
+	Dal momento che $M$ accetta violando l'end-marker destro, ogni cella deve essere visitata, e la prima visita di ogni cella segue l'ordine delle celle stesse, da sinistra verso destra. Tra la prima visita di una cella $\sigma_k$ e quella della successiva $\sigma_{k+1}$, l'unica computazione possibile è una computazione two-way in sola lettura, poiché tutte le celle che precedono $\sigma_{k+1}$ sono ormai immutabili. Una tabella di transizione rappresenta questa computazione come una relazione tra gli stati in cui può iniziare e quelli in cui può finire. Formalmente, data una stringa $z\in\Gamma_1^+$ una tabella di transizione è una relazione binaria $\tau_z\subseteq Q\times Q$ tale che
+	\begin{equation*}
+		(p,q)\in\tau_z \iff z'pYw \transs zqw = z'Yqw
+	\end{equation*}
+	con $Y\in\Gamma_1,p,q\in Q,z=z'Y,w\in\Gamma\star$. Se la testina punta a $Y$ ed è preceduta da $z'$, la tabella di transizione di $z$ indica quindi, per ogni stato in cui $M$ può trovarsi, i possibili stati in cui può uscire dalla porzione di nastro contenente $z'Y$ per visitare la cella alla destra di $Y$. La figura \ref{fig:a1l:ttt} dà una rappresentazione di $\tau_z$. Una tabella di transizione dipende ovviamente dalla stringa su cui è costruita, ma non è, in generale, unica di tale stringa (infatti le possibili tabelle sono finite).
+
+	\begin{figure}
+		\centering
+		\subfloat[][$(p,q)\in \tau_{z}$ oppure $(p,q)\in t_Y(\tau_{z'})$\label{fig:a1l:ttt}]
+		{
+			\input{img/transtablet.tikz}
+		} \qquad
+		\subfloat[][$(p,q)\in m_X(\tau_z)$\label{fig:a1l:ttm}]{
+			\input{img/transtablem.tikz}}
+		\caption{Rappresentazione delle computazioni che determinano l'appartenenza della coppia di stati $(p,q)$ a diverse tabelle di transizione. $z=z'Y$.}
+	\end{figure}
+
+	Fissato $X\in\Gamma_1$, introduciamo ora due funzioni $t_X,m_X:\subsets{Q\times Q}\to\subsets{Q\times Q}$ che trasformano tabelle di transizione. Intuitivamente, $t_X$ trasforma una tabella $\tau_z$ in $\tau_{zX}$, mentre $m_X(\tau_z)$ produce una tabella leggermente diversa, che descrive la computazione dall'ultimo simbolo di $z$ al simbolo dopo $zX$:
+	\begin{equation*}
+		(p,q)\in m_X(\tau_z) \iff z'pYXw \transs zXqw = z'YXqw
+	\end{equation*}
+	Le funzioni $t$ e $m$ sono rappresentate rispettivamente nelle figure \ref{fig:a1l:ttt} e \ref{fig:a1l:ttm}.
+
+	Queste definizioni sono ben poste dal momento che è sufficiente conoscere $\tau_z$, senza necessariamente conoscere $z$, per produrre $m_X(\tau_z)$ e $t_X(\tau_z)$. Ciò è possibile perché, muovendosi a sinistra di $X$, si può consultare $\tau_z$ per ottenere lo stato in cui si torna in $X$, mentre in $X$ è sufficiente calcolare $\delta$. In altre parole, se $\tau_z=\tau_w$ allora $t_X(\tau_z)=t_X(\tau_w)$ e $m_X(\tau_z)=t_X(\tau_w)$. Definizioni più formali sono presenti in \cite{Pighizzini:14:limitedRE}.
+
+	Siamo ora pronti a descrivere la forma e il comportamento di $A$.
+	Ogni stato di $A$ corrisponde in $M$ alla prima visita di una cella, e una transizione deve simulare una computazione di $M$ che termina con la prima visita della successiva. Precisamente, ogni stato di $A$ è una coppia $[q,\tau]$:
+	\begin{itemize}
+		\item la prima componente è lo stato in cui si trova la macchina simulata $M$ durante la prima visita del simbolo corrente;
+		\item la seconda componente è una tabella di transizione che permette, qualora la macchina simulata si muova a sinistra, di sapere in che stati può tornare nella posizione attuale.
+	\end{itemize}
+	Si ipotizzi ora che $M$ sia nella configurazione $zraw$, durante la prima visita della cella contenente $a$ ($z\in\Gamma_1\star,r\in Q,a\in\Sigma,w\in\Sigma\star$). Simulando $M$, $A$ avrà uno stato corrente $[r,\tau]$, dove $\tau=\tau_z$ (ma $A$ non ha traccia di $z$). Poiché questa è la prima visita di $a$, la prossima transizione di $M$ sostituirà il simbolo con un altro, diciamo $X$. Separiamo ora i casi di movimento della testina a destra e a sinistra.
+	\begin{itemize}
+		\item se la testina si muove a destra in uno stato $s$ (fig. \ref{fig:a1l:mright}), ci troviamo in corrispondenza della prima visita della cella successiva, perciò $A$ può spostarsi direttamente in un nuovo stato. La prima componente del nuovo stato sarà ovviamente $s$, mentre la tabella va aggiornata in modo da contenere l'informazione sulla cella appena lasciata, che è stata anche riscritta. La tabella per il nuovo stato sarà dunque $t_X(\tau)$, che rappresenta le possibili computazioni da $X$ per uscire dalla porzione di nastro che vi termina qualora $M$ ci dovesse tornare. Estendendo il caso al nondeterminismo il movimento a destra può variare nello stato $s$ e nel simbolo scritto $X$, sono quindi necessarie le corrispondenti transizioni in ogni stato $[s,t_X(\tau)]$;
+		\item se la testina si muove verso sinistra in uno stato $s$ (fig. \ref{fig:a1l:mleft}), occorre "aspettare" che $M$ effettui una computazione che termini a destra di $X$, nella prima visita di una nuova cella. La tabella dello stato risultante, come nel caso precedente, sarà $t_X(\tau)$, poiché la computazione a sinistra della nuova cella non può essere influenzata da ulteriori scritture. Lo stato risultante $q$ ci viene invece dato da $(s,q)\in m_X(\tau)$, che descrive il comportamento di $M$ all'arrivo nella nuova cella a partire dallo stato $s$ e dal simbolo a sinistra di $X$. Considerando anche il nondeterminismo, per ogni stato $s$ e simbolo $X$ vanno quindi costruite transizioni in $[q,t_X(\tau)]$, per ogni stato $q$ tale che $(s,q)\in m_X(\tau)$.
+	\end{itemize}
+
+	\begin{figure}
+		\centering
+		\subfloat[][$M$ muove la testina a destra. $A$ passa nello stato ${[s,t_X(\tau)]}$.\label{fig:a1l:mright}]{
+			\hspace{.7cm}\input{img/mright.tikz}\hspace{.7cm}}
+		\qquad
+		\subfloat[][$M$ muove la testina a sinistra. $A$ passa nello stato ${[q,t_X(\tau)]}$.\label{fig:a1l:mleft}]{
+			\hspace{.3cm}\input{img/mleft.tikz}\hspace{.3cm}}
+		\caption{I due tipi di computazione di $M$ che corrispondono a una transizione in $A$.}
+	\end{figure}
+
+	Lo stato iniziale è la coppia $[q_0,\tau_\lem]$. Poiché un 1NFA non può leggere il simbolo $\rem$, è necessario un altro meccanismo per rendere uno stato finale. Uno stato $[s,\tau]$ è finale se e solo se $M$, giunto a $\rem$ nello stato $s$, possiede una computazione (in sola lettura e su tutto il nastro) che termina in uno stato finale $f\in F$ superato l'end-marker, cioè se $(s,f)\in t_\rem(\tau)$.
+
+	Formalmente, $A:=\tuple{Q',\Sigma,\delta',q_0',F'}$ con
+	\begin{itemize}
+		\item $Q':=Q\times\subsets{Q\times Q}$;
+		\item $q_0':=[q_0,\tau_\lem]$;
+		\item $F':=\set{[p,\tau]\mid \exists q\in F: (p,q)\in t_\rem(\tau)}$
+		\item dati $r,s\in Q,a\in\Sigma,X\in\Gamma_1,\tau\in\subsets{Q\times Q}$ le seguenti transizioni:
+		      \begin{itemize}
+			      \item per ogni $(s,X,\Right)\in\delta(r,a)$, $\delta'([r,\tau],a)$ contiene $[s,t_X(\tau)]$;
+			      \item per ogni $(s,X,\Left)\in\delta(r,a)$, $\delta'([r,\tau],a)$ contiene $[q,t_X(\tau)]$ per ogni $q\in Q$ tale che $(s,q)\in m_X(\tau)$.
+		      \end{itemize}
+	\end{itemize}
+	L'1NFA risultante ha $n\times 2^{n^2}$ stati. Benché $t_X$ e $m_X$ restituiscano diverse tabelle al variare di $X$, il numero di tabelle possibili, e quindi di stati di $A$, non dipende da $\card{\Gamma}$.
+
+	\ref{itm:a1l:up:DFA} usando la subset construction (\cite{Rabin:59:NFA}), $A$ può essere convertito in un 1DFA con $2^{2^{n^2}}$ stati.
+
+	\ref{itm:a1l:up:det} se $M$ è deterministico, ogni tabella di transizione è una funzione parziale $Q\to Q$, perciò $A$ ha al più $n\cdot(n+1)^n$ stati ($n+1$ immagini poiché si include la possibilità di non uscire dal segmento di nastro). Inoltre, per ogni tabella $\tau$, ogni stato $[r,\tau]$ possiede esattamente una transizione derivante da una transizione di $M$ per ciascun simbolo di input. $A$ è quindi un 1DFA.
+\end{proof}
