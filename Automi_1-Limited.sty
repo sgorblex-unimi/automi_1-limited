@@ -17,12 +17,19 @@
 \usepackage{caption}
 \captionsetup{tableposition=top,figureposition=bottom,font=small,labelfont={sf,bf}}%,format=hang}
 
+\usepackage[ruled,algochapter,vlined,linesnumbered,italiano]{algorithm2e}
+\SetAlFnt{\small}
+\SetAlCapNameFnt{\small}
+\newcommand{\captionstyle}[1]{\small{\textsf{\textbf{#1}}}}
+\SetAlCapSty{captionstyle}
+\newcommand{\refalgrange}[3]{\hyperref[#1:#2]{\ref{#1:#2}-\ref{#1:#3}}}
+
 \usepackage{amssymb,amsmath}
 
 \usepackage{amsthm}
 \theoremstyle{plain}
 \newtheorem{theor}{Teorema}[chapter]
-\newtheorem{corol}{Corollario}[chapter]
+\newtheorem{corol}[theor]{Corollario}
 \theoremstyle{definition}
 \newtheorem{defin}{Definizione}[chapter]
 \theoremstyle{remark}

@@ -134,3 +134,71 @@ Con una rivisitazione della costruzione di Wagner e Wechsung (teorema 12.1 in \c
 
 	\ref{itm:a1l:up:det} se $M$ è deterministico, ogni tabella di transizione è una funzione parziale $Q\to Q$, perciò $A$ ha al più $n\cdot(n+1)^n$ stati ($n+1$ immagini poiché si include la possibilità di non uscire dal segmento di nastro). Inoltre, per ogni tabella $\tau$, ogni stato $[r,\tau]$ possiede esattamente una transizione derivante da una transizione di $M$ per ciascun simbolo di input. $A$ è quindi un 1DFA.
 \end{proof}
+
+
+\subsection{Lower bound}
+Studieremo ora i lower bound di conversione, facendo uso di \eng{witness languages} per dimostrare che esistono determinati casi in cui le complessità di conversione ottenute negli upper bound non possono essere significativamente migliorate. Per fare ciò, si cerca una famiglia di linguaggi per il cui riconoscimento esiste un \la1 con certo numero di stati $n$ e, al contempo, per cui un 1DFA necessita di un numero doppiamente esponenziale in $n$ di stati e un 1NFA, oppure 2NFA, 2DFA o D\la1 un numero esponenziale\footnote{Non è necessario, in generale, che sia la stessa famiglia di linguaggi a dimostrare l'ottimalità delle diverse conversioni; tuttavia presenteremo un caso in cui ciò si verifica.}.
+\begin{theor}
+	Esistono infiniti \la1 di $n$ stati la cui conversione in 1DFA richiede un numero doppiamente esponenziale in $n$ di stati.
+\end{theor}
+
+Si consideri il linguaggio $L_n$, dove $1\leq n\in\N$ è un parametro, delle parole binarie a blocchi di $n$ simboli in cui $n$ blocchi sono uguali:
+\begin{align*}
+	L_n := \{ & x_1x_2\cdots x_k\mid k\geq0, x_1,x_2,\dots,x_k\in\{0,1\}^n,                                   \\
+	          & \exists i_1,i_2,\dots,i_n\in\{1,\dots,k\},i_1<i_2<\dots<i_n, x_{i_1}=x_{i_2}=\dots=x_{i_n}\}
+\end{align*}
+
+\begin{theor}
+	$L_n$ può essere riconosciuto da un \la1 con un numero di stati di $O(n)$ e un alfabeto di lavoro indipendente da $n$.
+\end{theor}
+\begin{proof}
+	Un \la1 $A_n$ può riconoscere $L_n$ come segue:
+	\begin{enumerate}
+		\SetKwData{B}{b}\SetKwData{C}{c}
+		\item $A_n$ effettua una scansione preliminare dell'input, da sinistra verso destra, che verifichi tramite un contatore modulo $n$ che la parola sia effettivamente composta da blocchi di $n$ simboli, ossia che la sua lunghezza sia multipla di $n$. Se si raggiunge il right end-marker con il contatore non a zero, la macchina si ferma rifiutando. Durante questa scansione, l'unica in cui $A_n$ ha facoltà di scrittura, la macchina sceglie inoltre in modo nondeterministico delle celle, provando a indovinare quelle che danno inizio ai blocchi uguali. Ciò viene fatto sostituendo i simboli con una loro versione segnata, che però mantenga l'informazione originale (per esempio $0$ in $\hat 0$), e in corrispondenza dell'azzeramento del contatore, in modo che i simboli segnati siano necessariamente all'inizio di blocchi. Questa fase richiede $O(n)$ stati per il contatore;
+		\item viene poi effettuata una scansione verso sinistra che verifichi che il numero di celle segnate, e quindi di blocchi candidati, sia $n$. Anche questa scansione richiede $O(n)$ stati;
+		\item \label{itm:a1l:lowLn:LA3} la macchina prosegue poi verificando in sola lettura l'uguaglianza dei blocchi candidati, confrontando coppie di blocchi simbolo a simbolo. Per fare ciò la macchina implementa l'algoritmo \ref{alg:a1l:lowLn:3f}, una versione rivista e corretta dell'algoritmo presentato in \cite{Pighizzini:14:limitedRE}, che presentava qualche errore. Si ipotizzi di prendere in considerazione una coppia di blocchi candidati successivi. L'algoritmo fa uso di due variabili: la variabile intera \C, il cui dominio è $\set{0,\dots,n-1}$, rappresenta l'indice del simbolo che dev'essere confrontato nei due blocchi; la variabile \B contiene una copia del simbolo all'indice \C del primo blocco per confrontarla con il corrispondente simbolo nel secondo. Inizialmente $A_n$ scansiona da $\lem$ verso destra alla ricerca del primo simbolo segnato, e \C è inizializzata a $0$. A questo punto si entra nel ciclo principale, che confronta due blocchi adiacenti tra quelli segnati. La porzione di codice a righe \refalgrange{algln:a1l:lowLn:3f}{1}{2} sposta la testina alla posizione di indice \C del primo blocco decrementando \C, salva una copia del simbolo in \B, quindi ripristina il valore di \C (modificando direttamente \C si risparmia l'utilizzo di un ulteriore indice variabile). Quindi la macchina prosegue individuando l'inizio del secondo blocco, accettando se trova invece $\rem$. Effettua quindi una procedura simile alla precedente per localizzare il simbolo in posizione \C (righe \refalgrange{algln:a1l:lowLn:3f}{3}{4}), questa volta però confrontandolo con quello contenuto in \B. Se i due sono diversi la macchina rifiuta, altrimenti prosegue. A questo punto, se $\C=n-1$ significa che i due blocchi sono stati confrontati, quindi si passa al confronto del secondo con il prossimo dei candidati. Per fare ciò è necessario unicamente resettare \C a $0$, dal momento che la testina è già nella corretta posizione. Se invece $\C<n-1$, si incrementa \C e si torna all'inizio del primo blocco per confrontare il prossimo simbolo. Questa fase richiede un numero di stati di $O(n)$ per memorizzare i valori di \B e \C.
+	\end{enumerate}
+
+	\IncMargin{1em}
+	\begin{algorithm}
+		\input{img/alg_Ln.tex}
+		\caption{\hyperref[itm:a1l:lowLn:LA3]{Terza fase} del riconoscimento di $L_n$ da parte di $A_n$}
+		\label{alg:a1l:lowLn:3f}
+	\end{algorithm}
+	\DecMargin{1em}
+\end{proof}
+
+Per dimostrare l'ottimalità dell'upper bound trovato in precedenza, dimostriamo che qualunque conversione non porterebbe alla costruzione di un 1DFA equivalente ad $A_n$ che abbia meno di un numero doppiamente esponenziale in $n$ di stati, poiché un tale 1DFA non può esistere. Il risultato viene poi esteso per l'ottimalità dei bound relativi a 1NFA, 2NFA, 2DFA e D\la1.
+\begin{theor}\label{thm:a1l:lowLn}
+	Sia $1\leq n\in\N$. Allora:
+	\begin{enumerate}[(a)]
+		\item \label{itm:a1l:lowLn:DFA} un 1DFA che riconosca $L_n$ necessita di un numero di stati doppiamente esponenziale in $n$;
+		\item \label{itm:a1l:lowLn:1LA} un \la1 che riconosca $L_n$ necessita di un numero di stati almeno polinomiale in $n$;
+		\item \label{itm:a1l:lowLn:NFA} un D\la1, un 2NFA, 2DFA o 1NFA che riconosca $L_n$ necessita di un numero di stati esponenziale in $n$.
+	\end{enumerate}
+\end{theor}
+\begin{proof}
+	\ref{itm:a1l:lowLn:DFA} Per dimostrare che un 1DFA che riconosca $L_n$ necessita di $2^{2^n}$ stati usiamo la tecnica delle stringhe distinguibili. Fissato un alfabeto, due stringhe $x$ e $y$ si dicono \emph{distinguibili} rispetto a un linguaggio $L$ se e solo se esiste una stringa $z$ tale che esattamente una tra le parole $xz$ e $yz$ appartiene a $L$. La cardinalità di un qualunque insieme di stringhe a due a due distinguibili è lower bound per il numero di stati necessari a un 1DFA per riconoscere il relativo linguaggio\footnote{Questa proprietà è una conseguenza del teorema di Myhill-Nerode se si sceglie come relazione di equivalenza l'indistinguibilità di stringhe.}.
+
+	Sia $x_1,x_2,\dots,x_{2^n}$, una lista in qualunque ordine di tutti i possibili blocchi, cioè stringhe in $\set{a,b}^n$. Sia $F:=\set{f: \set{0,\dots,2^n}\to\set{0,\dots,n-1}}$ l'insieme delle funzioni che mappano gli indici dei blocchi a interi tra $0$ e $n-1$. Scelto $f\in F$, sia $w_f$ la parola formata dalla giustapposizione dei blocchi $x_1,x_2,\dots,x_{2^n}$, il blocco di indice $i$ ripetuto $f(i)$ volte, ossia $w_f:=x_1^{f(1)}x_2^{f(2)}\cdots x_{2^n}^{f(2^n)}$. Si considerino ora due funzioni $f,g\in F$ tali che per un certo indice $j$, $f(j)\neq g(j)$. Le stringhe $w_f$ e $w_g$ sono distinguibili dalla stringa $z:=x_j^{n-\max(f(j),g(j))}$, poiché una e una sola delle due parole $w_fz$ e $w_gz$ raggiunge $n$ ripetizioni del blocco $x_j$. Per esempio, se $f(j)>g(j)$:
+	\begin{equation*}
+		w_fz=x_1\cdots \underbrace{x_j\cdots x_j}_{f(j)} \cdots x_{2^n}\underbrace{x_j\cdots x_j}_{n-f(j)}\in L_n \qquad w_gz=x_1\cdots \underbrace{x_j\cdots x_j}_{g(j)} \cdots x_{2^n}\underbrace{x_j\cdots x_j}_{n-f(j)}\notin L_n
+	\end{equation*}
+	Dove il totale di ripetizioni del blocco $x_j$ sono $n$ per $w_fz$ e $g(j)+n-f(j)<n$ per $w_gz$.
+
+	Ne si deduce, quindi, che la cardinalità dell'insieme delle parole $w_f$ è lower bound per il numero di stati di una 1DFA che riconosca $L_n$. Tale numero coincide con il numero di possibili funzioni $f$, ossia con $|F|=n^{2^n}=\Omega(2^{2^n})$.
+
+	\ref{itm:a1l:lowLn:1LA} Se il numero di stati di un \la1 che riconosca $L_n$ fosse meno che polinomiale in $n$, allora in virtù del teorema \ref{thm:a1l:upper} si potrebbe costruire un 1DFA meno che doppiamente esponenziale in $n$, il che contraddirebbe \ref{itm:a1l:lowLn:DFA}.
+
+	\ref{itm:a1l:lowLn:NFA} Con un ragionamento analogo, considerando le costruzioni che permettono ai 1DFA di simulare 1NFA, 2NFA, 2DFA e D\la1, tutte di crescita almeno esponenziale, dimostriamo che è impossibile che una di queste macchine che riconosca $L_n$ abbia un numero di stati meno che esponenziale in $n$.
+\end{proof}
+\noindent La dimostrazione di Pighizzini e Pisoni (\cite{Pighizzini:14:limitedRE}) estende il lower bound per i 1DFA a $((2^n-2)\cdot(\frac{n-1}{n})^2+1)\cdot n^{2^n}+1$ (tramite distinguibilità) e quello dei 1NFA a $n^2\cdot2^n$ (tramite \eng{fooling set}).
+
+Il teorema \ref{thm:a1l:lowLn}, oltre a dimostrare che le conversioni da \la1 non possono essere migliorate significativamente (ossia così da rimuovere un livello di esponenzialità), trova un lower bound esponenziale alla conversione da \la1 a D\la1:
+\begin{corol}
+	La simulazione di \la1 nondeterministici da parte di \la1 deterministici richiede un fattore esponenziale di stati.
+\end{corol}
+\begin{proof}
+	L'esistenza di un D\la1 deterministico meno che esponenziale in $n$ che riconosca $L_n$ permetterebbe la costruzione di un 1DFA equivalente meno che doppiamente esponenziale in $n$ con la simulazione di cui al teorema \ref{thm:a1l:upper}, il che alla luce del teorema \ref{thm:a1l:lowLn} è assurdo.
+\end{proof}
