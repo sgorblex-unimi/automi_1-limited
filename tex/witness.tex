@@ -1,8 +1,45 @@
 \chapter{\eng{Witness languages}}
+Ai fini di ottenere o migliorare i lower bound, di risolvere i problemi aperti e in generale di ottenere una conoscenza più approfondita di un modello oggetto di studio, vengono studiati dei \eng{witness languages} ("linguaggi testimoni"), linguaggi la cui esistenza dimostra una congettura. Nella sezione \ref{subs:a1l:low} abbiamo studiato la famiglia di linguaggi $L_n$, testimone del lower bound di conversione da \la1 e 1DFA doppiamente esponenziale e da \la1 a 1NFA, 2NFA, 2DFA, D\la1 semplicemente esponenziale. In questo capitolo espandiamo lo studio di questi linguaggi introducendone di nuovi, costruendone altri riconoscitori e dimostrando l'ottimalità dei bound che li riguardano. Classifichiamo tali linguaggi in base a una caratteristica comune che ne rende lo studio (almeno in parte) uniforme: a blocchi, unari, con reset, algebrici. I linguaggi unari, in particolare, sono di interesse in quanto il caso unario è considerato speciale nello studio dei linguaggi formali (poiché non c'è distinzione tra unari regolari e unari context-free), ed è oggetto di problemi aperti.
 
 
 
 \section{Linguaggi a blocchi}
+In un linguaggio a blocchi di parametro $n$, ogni parola è composta dalla concatenazione di stringhe di lunghezza $n$, dette blocchi. Condizioni diverse sulla relazione tra i blocchi danno origine a diverse famiglie di linguaggi, ad esempio:
+\begin{itemize}
+	\item il linguaggio delle parole in cui l'ultimo blocco è uguale a uno dei precedenti:
+	      \begin{equation*}
+		      K_n := \{ x_1\cdots x_kx \mid k>0, x_1,\dots,x_k\in\{a,b\}^n, \exists j\in\{1,\dots,k\},x_j=x\}
+	      \end{equation*}
+	\item il linguaggio delle parole in cui due blocchi qualsiasi sono uguali:
+	      \begin{equation*}
+		      E_n := \{x_1\cdots x_k \mid k>0, x_1,\dots,x_k\in\{a,b\}^n,\exists i,j\in\{1,\dots,k\},i<j,x_i=x_j\}
+	      \end{equation*}
+	\item il linguaggio in cui $n$ blocchi sono uguali:
+	      \begin{align*}
+		      L_n := \{ & x_1x_2\cdots x_k\mid k\geq0, x_1,x_2,\dots,x_k\in\{0,1\}^n,                                  \\
+		                & \exists i_1,i_2,\dots,i_n\in\{1,\dots,k\},i_1<i_2<\dots<i_n, x_{i_1}=x_{i_2}=\dots=x_{i_n}\}
+	      \end{align*}
+\end{itemize}
+
+Per $L_n$ sono stati descritti al paragrafo \ref{subs:a1l:low} un \la1 riconoscitore e il lower bound sul numero di stati di un 1DFA, un \la1, e 1NFA, 2NFA, 2DFA o D\la1 che riconoscano $L_n$. Gli stessi risultati possono essere facilmente adattati agli altri due linguaggi presentati, usando una variante dell'algoritmo \ref{alg:a1l:lowLn:3f} per il riconoscimento e la distinguibilità per i lower bound. Questo dimostra che i tre linguaggi sono testimoni della distanza doppiamente esponenziale di complessità tra \la1 e 1DFA, di quella semplicemente esponenziale tra \la1 e NFA, 2NFA, 2DFA, e di quella almeno esponenziale tra \la1 e D\la1.
+
+
+\subsection{Riconoscitori}
+Descriviamo ora gli upper bound mancanti per il riconoscimento di questi linguaggi, cioè D\la1, 2NFA, 2DFA e 1NFA. Usiamo ancora una volta l'esempio di $L_n$ poiché le tecniche sono molto simili tra i diversi linguaggi.
+
+\subsubsection{1DFA}
+% TODO: immagine?
+Un 1DFA che riconosca $L_n$ può, scansionando l'input da sinistra verso destra, contare le occorrenze di ogni possibile blocco. Per fare ciò, ogni blocco $x\in\set{0,1}^n$ ha un contatore associato. Per l'identificazione di un blocco, gli stati sono organizzati ad albero, in cui ogni ramo è prefisso di un blocco e una foglia coincide con l'incremento del contatore, nonché la radice dell'albero successivo. Trovata la $n$-esima occorrenza di un blocco, l'automa si limita a contare modulo $n$ la restante lunghezza della parola di input per verificare la struttura a blocchi. Per la prima fase sono richiesti $n^{2^n}$ stati per i contatori, ciascuno dipendente da un albero di $2^n-1$ stati, mentre per la seconda fase sono sufficienti $n$ stati, per un totale di $(2^n-1)\cdot n^{2^n}+n$ stati.
+
+\subsubsection{1NFA}
+% TODO: immagine?
+Un 1NFA che riconosca $L_n$ può provare a indovinare una stringa che ritiene essere il blocco ripetuto, quindi scansionando l'input verificare che tale blocco compaia $n$ volte. L'automa usa un contatore da $0$ a $n$ per le occorrenze del blocco candidato e uno modulo $n$ che verifichi la lunghezza dell'input per la struttura a blocchi. Una volta trovate $n$ occorrenze del blocco, l'automa si limita a verificare la lunghezza dell'input rimanente. Includendo uno stato iniziale, si ha un totale di $(2n-1)\cdot n\cdot 2^n+n+1$ stati.
+
+% TODO: numero di stati?
+\subsubsection{2DFA}
+Un 2DFA può riconoscere $L_n$ eseguendo innanzitutto una scansione preliminare che verifichi che la lunghezza dell'input è multipla di $n$, quindi effettuando una scansione del nastro per ogni possibile blocco, contando le occorrenze di quello corrente (con una strategia simile a quella dell'1NFA descritto precedentemente), finché trovando $n$ occorrenze di un blocco può semplicemente accettare violando l'end-marker destro.
+
+Questa macchina è anche un 2NFA e D\la1, che non hanno riconoscitori migliori che sfruttino le capacità in più dei rispettivi modelli.
 
 
 
