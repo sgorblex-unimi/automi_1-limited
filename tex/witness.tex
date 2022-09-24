@@ -43,7 +43,7 @@ Questa macchina è anche un 2NFA e D\la1, che non hanno riconoscitori migliori c
 
 
 
-\section{Linguaggi unari}
+\section{Linguaggi unari}\label{sec:wit:un}
 La relazione tra automi limited e linguaggi unari è stata studiata estensivamente da Pighizzini e Prigioniero in \cite{Pighizzini:19:limitedunary}. In particolare, i \la1 che riconoscono linguaggi unari possono fare uso di una tecnica basata sulla \eng{binary carry sequence}:
 \begin{defin}
 	La \emph{binary carry sequence} è la successione infinita di interi $\sigma_1\sigma_2\cdots\sigma_j\cdots$ in cui $\sigma_j$ è l'esponente della più alta potenza di $2$ che divide $j$, per ogni intero $j\geq1$.
@@ -85,6 +85,26 @@ L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro l
 
 
 \section{Linguaggi con reset}
+Con l'intenzione di studiare un witness language che non fosse né unario né a blocchi, Pighizzini, Prigioniero e Sádovský hanno studiato in \cite{Pighizzini:22:limitedwitness} il riconoscimento da parte di \la1 del linguaggio accettato dall'automa $S_N$, introdotto da Meyer e Fischer in \cite{Meyer:71:ecodescription} come testimone della distanza esponenziale tra 1NFA e 1DFA. L'automa, rappresentato in figura \ref{img:wit:Sn}, ha una struttura ciclica: se si considerano solo le transizioni generate dal simbolo $a$ l'automa riconosce il linguaggio $\set{a^N}\star$. Il ruolo di $b$ è scelto nondeterministicamente tra due: o viene ignorato, lasciando invariato lo stato, o impone alla macchina un reset, riportandola allo stato iniziale.
+
+\begin{figure}
+	\centering
+	\input{img/Sn.tikz}
+	\caption{L'NFA $S_N$ di Meyer e Fischer.}
+	\label{img:wit:Sn}
+\end{figure}
+
+Viene dimostrato in \cite{Meyer:71:ecodescription} che il minimo 1DFA equivalente a $S_N$ ha $2^N$ stati. In \cite{Pighizzini:22:limitedwitness} viene costruito un 2DFA di $N+2$ stati equivalente a $S_N$, il che testimonia la distanza esponenziale tra D\la1 e 1DFA, e viene dimostrato che il minimo 2NFA equivalente a $S_{2^n}$, con $n>0$, ha almeno $2^n$ stati.
+
+Per simulare con \la1 automi con un meccanismo di reset simile a quello di $S_N$, si può sfruttare una variante della tecnica basata sulla binary carry sequence di cui al paragrafo \ref{sec:wit:un}. In particolare, per ogni $N>1$, $S_N$ può essere riconosciuto da un \la1 $C_N$ con $O(\log N)$ stati e un alfabeto di lavoro di $O(\log N)$ simboli.
+Poiché, come accennato in precedenza, restringendo il comportamento di $S_N$ al solo input $a$ si riconosce il linguaggio unario $\set{a^N}\star$, in questo caso $C_N$ può comportarsi esattamente come $B_N$, l'automa che riconosce tale linguaggio. $C_N$ costruisce quindi una serie di ripetizioni del prefisso di lunghezza $N-1$ della binary carry sequence, separandole con il carattere di reset $\reset$. Per quanto riguarda il comportamento di $C_N$ per il simbolo di input $b$, la macchina può scegliere nondeterministicamente di effettuare una di due mosse, ciascuna corrispondente con uno dei comportamenti di $S_N$ leggendo $b$:
+\begin{itemize}
+	\item per simulare le transizioni che non cambiano stato, $C_N$ sovrascrive $b$ con un simbolo $\neutr$ neutrale, nel senso che il comportamento della macchina in esso sarà semplicemente di procedere senza tenerlo in considerazione;
+	\item per simulare le transizioni di reset, $C_N$ sovrascrive $b$ con il simbolo di reset $\reset$. Si noti che sia in questo caso sia se il ciclo di $\set{a^N}\star$ viene completato il simbolo $\reset$ corrisponde agli istanti in cui $S_N$ passa allo stato $q_0$.
+\end{itemize}
+Se si incontra $b$ a destra di $\lem$ o di $\reset$, la mossa non è definita, così come non lo è in $q_0$ per $S_N$. $C_N$ accetta se e solo se $\reset$ o $\lem$ sono seguiti da $\rem$. L'incremento di stati e di simboli rispetto a $B_N$ è trascurabile ed entrambi rimangono in numero di $O(\log N)$.
+
+In conclusione il linguaggio $\generated{S_N}$ è testimone del gap esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
 
 
 
