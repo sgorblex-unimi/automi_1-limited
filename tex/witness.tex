@@ -44,6 +44,43 @@ Questa macchina è anche un 2NFA e D\la1, che non hanno riconoscitori migliori c
 
 
 \section{Linguaggi unari}
+La relazione tra automi limited e linguaggi unari è stata studiata estensivamente da Pighizzini e Prigioniero in \cite{Pighizzini:19:limitedunary}. In particolare, i \la1 che riconoscono linguaggi unari possono fare uso di una tecnica basata sulla \eng{binary carry sequence}:
+\begin{defin}
+	La \emph{binary carry sequence} è la successione infinita di interi $\sigma_1\sigma_2\cdots\sigma_j\cdots$ in cui $\sigma_j$ è l'esponente della più alta potenza di $2$ che divide $j$, per ogni intero $j\geq1$.
+\end{defin}
+
+Definiamo inoltre la \eng{backward increasing sequence}, una funzione che trasforma sequenze che ha proprietà interessanti in relazione alla binary carry sequence.
+\begin{defin}
+	Sia $s=k_1k_2\cdots k_j$ una sequenza finita di interi. La \emph{backward increasing sequence} di $s$, denotata con $\bis(s)$, è la più lunga successione ottenibile selezionando da destra verso sinistra gli elementi di $s$ solo finché si susseguono in ordine crescente. Formalmente, $\bis(k_1k_2\cdots k_j)=(i_1,i_2,\dots,i_r)$ se e solo se $i_1=k_{h_1},i_2=k_{h_2}\dots i_r=k_{h_r}$ dove $h_1=j$ e $h_t=\max\set{h'<h_{t-1}\mid k_{h'}>k_{h_{t-1}}}$.
+\end{defin}
+
+Si verifica il seguente risultato, dimostrato in \cite{Pighizzini:19:limitedunary}:
+\begin{lemma}\label{lem:wit:bis}
+	Sia $\sigma_1\sigma_2\cdots\sigma_j$ il prefisso di lunghezza $j$ della binary carry sequence.
+	\begin{itemize}
+		\item \label{lem:wit:bis:1} Se $\bis(\sigma_1\sigma_2\cdots\sigma_j)=(i_1,i_2,\dots,i_r)$ allora
+		      \begin{equation*}
+			      j=\sum_{t=1}^r 2^{i_t}
+		      \end{equation*}
+		      Ossia, i valori della backward increasing sequence applicata al prefisso di lunghezza $j$ della binary carry sequence corrispondono alle posizioni dei bit a $1$ della rappresentazione binaria di $j$.
+		\item \label{lem:wit:bis:2} $o_j$ è il minor numero naturale che non occorre in $\bis(\sigma_1\sigma_2\cdots\sigma_{j-1})$.
+	\end{itemize}
+\end{lemma}
+
+Spieghiamo ora una tecnica che ci permette di riconoscere diversi linguaggi unari facendo uso del lemma per contare i simboli dell'input. Si prenda in considerazione il linguaggio singoletto $\set{a^{2^n}}$, dove $n>0$ è un parametro intero. Lo scopo della macchina è quello di scrivere il prefisso di lunghezza $2^n$ della binary carry sequence sul nastro, sostituendo le $a$.
+
+% TODO: immagine?
+Un \la1 di alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: la macchina può effettuare visite in sola lettura verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero è scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker la parola è troppo lunga. Questa macchina può essere implementata in $O(n)$ stati e fare uso di $O(n)$ simboli. Scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro, si adatta la macchina ad accettare $\set{a^{2^n}}\star$ quando $\lem$ o $\reset$ precedono $\rem$. Un 2NFA necessita di $2^n$ stati per riconoscere questo linguaggio, come dimostrato in \cite{Mereghetti:00:twoway}, ergo esso è testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA) per i linguaggi unari.
+
+Una variante di questa tecnica può essere applicata per riconoscere il linguaggio $M_N:=\set{a^N}\star$, con $N>0$ un intero qualsiasi. Per fare ciò, un D\la1 $_N$ può scrivere il prefisso di lunghezza $N-1$ della binary carry sequence con la tecnica descritta precedentemente, quindi scrivere un simbolo di reset $\reset$ che equivale a $\lem$ e impone alla macchina di ricominciare la scrittura dal simbolo $\sigma_1$. Questo procedimento viene ripetuto per tutto l'input: la stringa ha lunghezza multipla di $N$ se e solo se l'ultimo simbolo prima dell'end-marker destro è $\reset$ o $\lem$. Se $w$ è l'input il nastro verrà riscritto come segue:
+\begin{equation*}
+	\underbrace{\sigma_1\cdots\sigma_{N-1}\reset\cdots\reset\sigma_1\cdots\sigma_{N-1}\reset}_{\floor{\len w/N} \text{ volte}}\sigma_1\cdots\sigma_{\scriptscriptstyle \len w\mkern -11mu \mod N}
+\end{equation*}
+Poiché $N$ non è necessariamente una potenza di $2$, rilevare quando è il momento di scrivere $\reset$ non è triviale. Per fare ciò $B_N$, durante procedimento di identificazione del prossimo simbolo da scrivere, verifica inoltre se la backward increasing sequence del prefisso attuale rappresenta il numero $N-1$. Se così fosse, il \hyperref[lem:wit:bis:1]{primo punto} del lemma \ref{lem:wit:bis} dimostra che il prefisso attuale ha lunghezza $N-1$, e che quindi il prossimo simbolo da scrivere è $\reset$.
+
+L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro lineari nel massimo elemento della binary carry sequence che può essere scritto, ossia $O(\log N)$.
+
+% TODO: guardare articolo unari e decidere se inserire qualcosa
 
 
 
