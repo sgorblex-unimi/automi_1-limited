@@ -28,18 +28,27 @@ Per $L_n$ sono stati descritti al paragrafo \ref{subs:a1l:low} un \la1 riconosci
 Descriviamo ora gli upper bound mancanti per il riconoscimento di questi linguaggi, cioè D\la1, 2NFA, 2DFA e 1NFA. Usiamo ancora una volta l'esempio di $L_n$ poiché le tecniche sono molto simili tra i diversi linguaggi.
 
 \subsubsection{1DFA}
-% TODO: immagine?
-Un 1DFA che riconosca $L_n$ può, scansionando l'input da sinistra verso destra, contare le occorrenze di ogni possibile blocco. Per fare ciò, ogni blocco $x\in\set{0,1}^n$ ha un contatore associato. Per l'identificazione di un blocco, gli stati sono organizzati ad albero, in cui ogni ramo è prefisso di un blocco e una foglia coincide con l'incremento del contatore, nonché la radice dell'albero successivo. Trovata la $n$-esima occorrenza di un blocco, l'automa si limita a contare modulo $n$ la restante lunghezza della parola di input per verificare la struttura a blocchi. Per la prima fase sono richiesti $n^{2^n}$ stati per i contatori, ciascuno dipendente da un albero di $2^n-1$ stati, mentre per la seconda fase sono sufficienti $n$ stati, per un totale di $(2^n-1)\cdot n^{2^n}+n$ stati.
+Un 1DFA che riconosca $L_n$ può, scansionando l'input da sinistra verso destra, contare le occorrenze di ogni possibile blocco. Per fare ciò, ogni blocco $x\in\set{0,1}^n$ ha un contatore associato. Per l'identificazione di un blocco, gli stati sono organizzati ad albero, in cui ogni ramo è prefisso di un blocco e una foglia coincide con l'incremento del contatore, nonché con la radice dell'albero successivo. Trovata la $n$-esima occorrenza di un blocco, l'automa si limita a contare modulo $n$ la restante lunghezza della parola di input per verificare la struttura a blocchi. Per la prima fase sono richiesti $n^{2^n}$ stati per i contatori, ciascuno dipendente da un albero binario completo di $2^n-1$ stati, mentre per la seconda fase sono sufficienti $n$ stati, per un totale di $(2^n-1)\cdot n^{2^n}+n$ stati.
 
 \subsubsection{1NFA}
-% TODO: immagine?
-Un 1NFA che riconosca $L_n$ può provare a indovinare una stringa che ritiene essere il blocco ripetuto, quindi scansionando l'input verificare che tale blocco compaia $n$ volte. L'automa usa un contatore da $0$ a $n$ per le occorrenze del blocco candidato e uno modulo $n$ che verifichi la lunghezza dell'input per la struttura a blocchi. Una volta trovate $n$ occorrenze del blocco, l'automa si limita a verificare la lunghezza dell'input rimanente. Includendo uno stato iniziale, si ha un totale di $(2n-1)\cdot n\cdot 2^n+n+1$ stati.
+La figura \ref{img:wit:LnNFA} mostra un NFA che riconsce $L_n$. All'inizio l'automa prova a indovinare nondeterministicamente una stringa $x^{(i)}\in\set{0,1}^n$ che ritiene essere il blocco ripetuto. Questa mossa è rappresentata per semplicità come $\emptyword$-transizione, cioè senza leggere alcun simbolo, ma può essere convertita in una transizione normale. Scelto un candidato blocco $x$, l'automa conta le occorrenze di $x$ nell'input. Per fare ciò, utilizza $2n-1$ stati per ciascuna delle $n$ occorrenze (per ciascuno dei blocchi possibili). Le transizioni contrassegnate con $\ok$ indicano un confronto positivo tra il simbolo corrente e il rispettivo nel blocco candidato, quelle con $\nok$ un confronto negativo e quelle con $\any$ non dipendono dal confronto e contano semplicemente i simboli di input. I valori effettivi di $\ok$ e $\nok$ dipendono ovviamente dal blocco scelto all'inizio.
+\begin{itemize}
+	\item finché il blocco corrente coincide con il candidato, vengono effettuate le transizioni $\ok$, proseguendo nella serie di stati $x_{i,j}$, dove $i$ è il contatore di occorrenze allo stato attuale (si sta confrontando per l'$i+1$-esima) e $j$ è l'indice del simbolo che viene confrontato. Verificata la coincidenza dell'ultimo simbolo, cioè certificata l'occorrenza $i+1$, si passa al confronto del blocco successivo incrementando il contatore $i$ e passando quindi alla serie $x_{i+1,j}$;
+	\item se i due blocchi non coincidono, il primo simbolo diverso tra i due porta l'automa a prendere una transizione $\nok$, proseguendo poi per la serie di stati $\bar x_{i,j}$, che contano i simboli fino alla fine del blocco senza confrontare. Al termine di questa serie si riprende la computazione dallo stato $x_{i,j}$ alla ricerca della $i+1$-esima occorrenza nel blocco successivo.
+\end{itemize}
+Una volta trovate $n$ occorrenze, l'automa passa in una serie di stati $f_n,f_1,\dots,f_{n-1}$, comuni a tutti i blocchi candidati, che contano modulo $n$ i simboli rimanenti, accettando se sono in numero multiplo di $n$. Il numero di stati è quindi in totale $1+2^n\cdot (2n-1)\cdot n+n$.
 
-% TODO: numero di stati?
+\begin{figure}
+	\centering
+	\input{img/Ln_NFA.tikz}
+	\caption{L'NFA che riconosce $L_n$.}
+	\label{img:wit:LnNFA}
+\end{figure}
+
 \subsubsection{2DFA}
-Un 2DFA può riconoscere $L_n$ eseguendo innanzitutto una scansione preliminare che verifichi che la lunghezza dell'input è multipla di $n$, quindi effettuando una scansione del nastro per ogni possibile blocco, contando le occorrenze di quello corrente (con una strategia simile a quella dell'1NFA descritto precedentemente), finché trovando $n$ occorrenze di un blocco può semplicemente accettare violando l'end-marker destro.
+Un 2DFA può riconoscere $L_n$ eseguendo innanzitutto una scansione preliminare che verifichi che la lunghezza dell'input sia multipla di $n$, quindi effettuando una scansione del nastro per ogni possibile blocco, contando le occorrenze di quello corrente (con una strategia simile a quella dell'1NFA descritto precedentemente), finché trovando $n$ occorrenze di un blocco può semplicemente accettare violando l'end-marker destro. Il numero di stati richiesti è $n$ per la prima fase, $2^n\cdot n\cdot (2n-1)$ per la seconda e $1$ per accettare, per un totale di $n+2^n\cdot (2n-1)\cdot n+1$ come nel caso precedente.
 
-Questa macchina è anche un 2NFA e D\la1, che non hanno riconoscitori migliori che sfruttino le capacità in più dei rispettivi modelli.
+Questa macchina è anche un 2NFA e D\la1, di cui non conosciamo riconoscitori migliori che sfruttino le capacità in più dei rispettivi modelli per riconoscere $L_n$.
 
 
 
@@ -69,7 +78,6 @@ Si verifica il seguente risultato, dimostrato in \cite{Pighizzini:19:limitedunar
 
 Spieghiamo ora una tecnica che ci permette di riconoscere diversi linguaggi unari facendo uso del lemma per contare i simboli dell'input. Si prenda in considerazione il linguaggio singoletto $\set{a^{2^n}}$, dove $n>0$ è un parametro intero. Lo scopo della macchina è quello di scrivere il prefisso di lunghezza $2^n$ della binary carry sequence sul nastro, sostituendo le $a$.
 
-% TODO: immagine?
 Un \la1 di alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: la macchina può effettuare visite in sola lettura verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero è scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker la parola è troppo lunga. Questa macchina può essere implementata in $O(n)$ stati e fare uso di $O(n)$ simboli. Scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro, si adatta la macchina ad accettare $\set{a^{2^n}}\star$ quando $\lem$ o $\reset$ precedono $\rem$. Un 2NFA necessita di $2^n$ stati per riconoscere questo linguaggio, come dimostrato in \cite{Mereghetti:00:twoway}, ergo esso è testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA) per i linguaggi unari.
 
 Una variante di questa tecnica può essere applicata per riconoscere il linguaggio $M_N:=\set{a^N}\star$, con $N>0$ un intero qualsiasi. Per fare ciò, un D\la1 $_N$ può scrivere il prefisso di lunghezza $N-1$ della binary carry sequence con la tecnica descritta precedentemente, quindi scrivere un simbolo di reset $\reset$ che equivale a $\lem$ e impone alla macchina di ricominciare la scrittura dal simbolo $\sigma_1$. Questo procedimento viene ripetuto per tutto l'input: la stringa ha lunghezza multipla di $N$ se e solo se l'ultimo simbolo prima dell'end-marker destro è $\reset$ o $\lem$. Se $w$ è l'input il nastro verrà riscritto come segue:
@@ -79,8 +87,6 @@ Una variante di questa tecnica può essere applicata per riconoscere il linguagg
 Poiché $N$ non è necessariamente una potenza di $2$, rilevare quando è il momento di scrivere $\reset$ non è triviale. Per fare ciò $B_N$, durante procedimento di identificazione del prossimo simbolo da scrivere, verifica inoltre se la backward increasing sequence del prefisso attuale rappresenta il numero $N-1$. Se così fosse, il \hyperref[lem:wit:bis:1]{primo punto} del lemma \ref{lem:wit:bis} dimostra che il prefisso attuale ha lunghezza $N-1$, e che quindi il prossimo simbolo da scrivere è $\reset$.
 
 L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro lineari nel massimo elemento della binary carry sequence che può essere scritto, ossia $O(\log N)$.
-
-% TODO: guardare articolo unari e decidere se inserire qualcosa
 
 
 

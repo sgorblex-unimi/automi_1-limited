@@ -1,0 +1,63 @@
+\begin{tikzpicture}[shorten >=1pt,initial text=,near/.style={node distance=5mm}]
+	\scriptsize
+	\node[state,initial] (q0) {\small $q_0$};
+	\node[state,node distance=12mm] (x00) [right=of q0] {$x_{0,0}$};
+	\node[node distance=8mm] (dots1) [above=of x00] {$\dots$};
+	\node (y1) [above=of dots1]{$x^{(1)}$};
+	\node (dots2) [below=of x00] {$\dots$};
+	\node (y2n) [below=of dots2] {$x^{(2^n)}$};
+
+	\path[->]
+	(q0) edge[bend left] node [above] {$\emptyword$} (y1.west)
+	(q0) edge[bend left] node [above] {$\emptyword$} (dots1.west)
+	(q0) edge[bend right] node [below] {$\emptyword$} (x00.west)
+	(q0) edge[bend right] node [below] {$\emptyword$} (dots2.west)
+	(q0) edge[bend right] node [below] {$\emptyword$} (y2n.west);
+
+	\node[state,near] (x01) [right=of x00] {$x_{0,1}$};
+	\node[state,near] (x02) [right=of x01] {$x_{0,2}$};
+	\node[near] (x02d) [right=of x02] {$\dots$};
+	\node[state,near] (x0n-1) [right=of x02d] {\tiny $x_{0,n-1}$};
+
+	\path[->]
+	(x00)	edge node [above] {$\ok$} (x01)
+	(x01)	edge node [above] {$\ok$} (x02)
+	(x02)	edge node [above] {$\ok$} (x02d)
+	(x02d)	edge node [above] {$\ok$} (x0n-1);
+
+	\node[state,node distance=8mm] (bx01) [below right=of x00] {$\bar x_{0,1}$};
+	\node[state,near] (bx02) [right=of bx01] {$\bar x_{0,2}$};
+	\node[near] (bx02d) [right=of bx02] {$\dots$};
+	\node[state,near] (bx0n-1) [right=of bx02d] {\tiny $\bar x_{0,n-1}$};
+
+	\path[->]
+	(x00)	edge node [left] {$\nok$} (bx01)
+	(bx01)	edge node [below] {$\any$} (bx02)
+	(bx02)	edge node [below] {$\any$} (bx02d)
+	(bx02d)	edge node [below] {$\any$} (bx0n-1)
+	(x01)	edge node [left] {$\nok$} (bx02)
+	(x02)	edge node [left] {$\nok$} (bx02d);
+
+	\node[state,near] (x10) [right=of x0n-1] {$x_{1,0}$};
+
+	\path[->]
+	(bx0n-1) edge[bend angle=70,bend left] node[below] {$\any$} (x00)
+	(x0n-1) edge[bend angle=45,bend right] node[below] {$\nok$} (x00)
+	(x0n-1) edge node [above] {$\ok$} (x10);
+
+	\node[near]		(x10d)		[right=of x10] {$\dots$};
+	\node[state,near]	(in-1n-1)	[right=of x10d] {\tiny $x_{n-1,n-1}$};
+	\node[state]		(f1)		[right=of in-1n-1.north] {$f_1$};
+	\node[state,near,accepting]	(fn)		[above=of f1] {$f_n$};
+	\node[state,near]		(f2)		[below=of f1] {$f_2$};
+	\node[near]	(fd)	[below=of f2] {$\dots$};
+	\node[state,near]	(fn-1)	[below=of fd] {\tiny $f_{n-1}$};
+
+	\path[->]
+	(in-1n-1)	edge node[left] {$\ok$} (fn)
+	(fn)		edge node[right] {$\any$} (f1)
+	(f1)		edge node[right] {$\any$} (f2)
+	(f2)		edge node[right] {$\any$} (fd)
+	(fd)		edge node[right] {$\any$} (fn-1)
+	(fn-1)		edge[bend right] node[right] {$\any$} (fn);
+\end{tikzpicture}

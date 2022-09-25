@@ -4,7 +4,6 @@ La teoria dei linguaggi formali è un campo fondamentale dell'informatica teoric
 
 \subsection*{Convenzioni di notazione}
 Dato un insieme $S$, indicheremo con $\card{S}$ la sua cardinalità e con $\subsets{S}$ l'insieme dei suoi sottoinsiemi.
-% TODO: aggiungere qui eventuali altre notazioni
 La restante notazione è descritta nelle sezioni seguenti.
 
 
@@ -29,7 +28,6 @@ Si indica inoltre con $L^+$ il linguaggio $\bigcup_{k=1}^\infty L^k$. Si noti ch
 \subsection*{Riconoscitori e generatori}
 Esistono diversi modi di rappresentare un linguaggio $L$: se è finito è sufficiente elencarne le parole ($L:=\set{w_1,w_2,\dots,w_n}$), se è infinito e le sue parole possiedono una proprietà caratterizzante $P$, può essere descritto da essa ($L:=\set{w\mid P(w)}$). Tuttavia, non sempre è facile o rappresentativo usare una di queste rappresentazioni. I metodi generativo e riconoscitivo forniscono un ulteriore modo di descrivere i linguaggi.
 
-% TODO: aggiungere un riferimento bibliografico che permetta al lettore di approfondire il concetto di sistema formale (e, volendo, calcolo logico)
 \begin{description}
 	\item[Generatori] un generatore per un linguaggio $L\subseteq\Sigma\star$ è un sistema formale che produce parole appartenenti a $L$, cioè un metodo per costruirle tramite regole.
 	\item[Riconoscitori] un riconoscitore per un linguaggio $L\subseteq\Sigma\star$ è un algoritmo o una procedura che determina se una data parola $w\in\Sigma\star$ appartiene a $L$.
@@ -99,7 +97,6 @@ In generale, una macchina riconoscitrice si dice nondeterministica quando la sua
 
 Poiché per ogni TM nondeterministica è possibile costruire una TM deterministica che riconosce lo stesso linguaggio e viceversa, i due modelli riconoscono la stessa classe di linguaggi. La classe dei linguaggi accettati da macchine di Turing è quella dei linguaggi ricorsivamente enumerabili, che equivale alla classe dei linguaggi generabili da grammatiche di tipo 0 della classificazione di Chomsky (paragrafo \ref{subs:prel:chom}).
 
-% TODO: aggiungere estensione con limitazione da una funzione lineare nell'input? Serve fonte
 \subsubsection{Automi limitati linearmente}
 Gli \emph{automi linearmente limitati} (LBA) sono macchine di Turing in cui la lunghezza del nastro, invece che essere infinita, è limitata dalla lunghezza dell'input. La classe dei linguaggi accettati da automi linearmente limitati è quella dei linguaggi dipendenti da contesto.
 
