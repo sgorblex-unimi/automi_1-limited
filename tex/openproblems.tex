@@ -41,11 +41,30 @@ Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla bi
 \section{Altri risultati sugli \texorpdfstring{$1$-limited}{1-limited}}
 
 
+\subsection{Grammatiche}
+Negli scorsi capitoli ci siamo concentrati sugli aspetti degli $1$-limited che li mettono in relazione con altri riconoscitori di linguaggi regolari; tuttavia sono noti anche risultati relativi al loro rapporto con grammatiche. Nel caso unario in particolare, in cui le grammatiche di tipo $2$ descrivono linguaggi regolari, Pighizzini e Prigioniero hanno dimostrato (\cite{Pighizzini:19:limitedunary}) che è possibile convertire una grammatica context-free in un \la1 che riconosce lo stesso linguaggio, con un incremento polinomiale della dimensione della descrizione.
+
+Il risultato è stato esteso al caso generale tramite la nozione di Parikh-equivalenza. Due linguaggi (o due loro generatori o riconoscitori) si dicono Parikh-equivalenti se per ogni parola del primo esiste una parola nel secondo uguale a meno dell'ordine dei simboli, o alternativamente con lo stesso numero di occorrenze per ogni simbolo. Il teorema di Parikh dimostra che ogni linguaggio libero da contesto ha un Parikh-equivalente regolare. Nell'articolo di cui sopra viene dimostrato che è possibile convertire una grammatica context-free qualsiasi in un \la1 che riconosca il regolare Parikh-equivalente, con un incremento polinomiale nella dimensione della grammatica.
+
+
+\subsection{Complessità temporale}
+Abbiamo dimostrato che l'utilizzo di un \la1 per riconoscere un linguaggio regolare può fornire un vantaggio esponenziale di complessità descrizionale rispetto all'utilizzo di un 1NFA, o doppiamente esponenziale rispetto a un 1DFA. Questo vantaggio, tuttavia, va a pari passo con una potenziale perdita nella complessità temporale. Infatti, mentre un 1NFA o 1DFA effettua una transizione per carattere di input, risultando in un tempo lineare nella sua dimensione, un \la1, in quanto macchina two-way, può ripercorrere l'input un numero di volte ben oltre il lineare. Guillon e Prigioniero hanno dimostrato in \cite{Guillon:19:linearlimited} che dato un qualsiasi \la1 è possibile costruire un \la1 equivalente che lavori in tempo lineare nella dimensione dell'input, con un incremento polinomiale nella complessità descrizionale e preservando lo stato di determinismo.
+
+
 
 \section{Altri automi limited}
+Lo studio degli automi limited va ben oltre il caso degli $1$-limited, trattando sia il caso $d>1$ sia varianti del modello, con particolare attenzione alla complessità descrizionale. In \cite{Pighizzini:19:limited} Pighizzini presenta la maggior parte dei risultati conseguiti su questa famiglia di riconoscitori, tra cui riportiamo qui alcuni dei più interessanti.
 
 
 \subsection{\texorpdfstring{$d$-limited con $d>1$}{d-limited con d>1}}
+Come detto, già Hibbard (\cite{Hibbard:67:CFdet}) ha dimostrato che i $d$-limited nondeterministici riconoscono esattamente i linguaggi context-free se $d\geq2$. Nel caso deterministico, esiste una gerarchia stretta in cui i D\la2 riconoscono i linguaggi liberi da contesto deterministici e per ogni $d\geq2$ esiste un linguaggio riconosciuto da un \la{(d+1)} non riconosciuto da alcun \la d, pur non raggiungendo l'interezza della classe dei context-free per alcun $d$.
+
+Pighizzini e Pisoni hanno dimostrato in \cite{Pighizzini:14:limitedCF} che la trasformazione da \la2 ad automa a pila è esponenziale, mentre la trasformazione inversa (che non è banale come nel caso 1DFA\tto\la1) è polinomiale. Kutrib, Pighizzini e Wendlandt hanno dimostrato che per $d>2$ rimane un upper bound esponenziale alla conversione in PDA (\cite{Kutrib:18:complexlimited}).
 
 
 \subsection{Varianti di automi limited}
+In \cite{Wechsung:79:complexities} Wechsung studia una variante di automa limited in cui, invece di un $d$ costante, la limitazione all'ultima visita con capacità di scrittura dipende da una funzione $f(n)$ della dimensione dell'input.
+
+Più recentemente è stato introdotto il modello degli \eng{strongly limited automata}, che possiedono un numero di ulteriori restrizioni ispirate agli automi limited che riconoscono linguaggi di Dyck (espressioni ben parentesizzate). Pighizzini dimostra in \cite{Pighizzini:16:stronglylimited} che questo modello ha dimensione al più polinomiale nella dimensione di una grammatica context-free o di un PDA equivalenti, in contrapposizione con i risultati esponenziali del modello classico.
+
+Numerosi altri modelli e varianti sono stati studiati, tra cui automi limited con capacità di scrittura nelle \emph{ultime} $d$ visite (\cite{Wechsung:79:complexities}) e anche estensioni probabilistiche (\cite{Yamakami:19:limitedmodels}).
