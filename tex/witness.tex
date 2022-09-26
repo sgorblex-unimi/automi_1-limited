@@ -1,5 +1,5 @@
 \chapter{\eng{Witness languages}}
-Ai fini di ottenere o migliorare i lower bound, di risolvere i problemi aperti e in generale di ottenere una conoscenza più approfondita di un modello oggetto di studio, vengono studiati dei \eng{witness languages} ("linguaggi testimoni"), linguaggi la cui esistenza dimostra una congettura. Nella sezione \ref{subs:a1l:low} abbiamo studiato la famiglia di linguaggi $L_n$, testimone del lower bound di conversione da \la1 e 1DFA doppiamente esponenziale e da \la1 a 1NFA, 2NFA, 2DFA, D\la1 semplicemente esponenziale. In questo capitolo espandiamo lo studio di questi linguaggi introducendone di nuovi, costruendone altri riconoscitori e dimostrando l'ottimalità dei bound che li riguardano. Classifichiamo tali linguaggi in base a una caratteristica comune che ne rende lo studio (almeno in parte) uniforme: a blocchi, unari, con reset, algebrici. I linguaggi unari, in particolare, sono di interesse in quanto il caso unario è considerato speciale nello studio dei linguaggi formali (poiché non c'è distinzione tra unari regolari e unari context-free), ed è oggetto di problemi aperti.
+Ai fini di ottenere o migliorare i lower bound, di risolvere i problemi aperti e in generale di ottenere una conoscenza più approfondita di un modello oggetto di studio, vengono studiati dei \eng{witness languages} ("linguaggi testimoni"), linguaggi la cui esistenza dimostra una congettura. Nella sezione \ref{subs:a1l:low} abbiamo studiato la famiglia di linguaggi $L_n$, testimone del lower bound di conversione da \la1 e 1DFA doppiamente esponenziale e da \la1 a 1NFA, 2NFA, 2DFA, D\la1 semplicemente esponenziale. In questo capitolo espandiamo lo studio di questi linguaggi introducendone di nuovi, costruendone altri riconoscitori e dimostrando l'ottimalità dei bound che li riguardano. Classifichiamo tali linguaggi in base a una caratteristica comune che ne rende lo studio (almeno in parte) uniforme: a blocchi, unari, con reset. I linguaggi unari, in particolare, sono di interesse in quanto considerati un caso speciale nello studio dei linguaggi formali (poiché non c'è distinzione tra unari regolari e unari context-free), ed è oggetto di problemi aperti.
 
 
 
@@ -53,6 +53,8 @@ Questa macchina è anche un 2NFA e D\la1, di cui non conosciamo riconoscitori mi
 
 
 \section{Linguaggi unari}\label{sec:wit:un}
+I linguaggi unari possiedono la fondamentale proprietà secondo cui le classi dei context-free e dei regolari collidono in un'unica classe. Da ciò deriva il fatto che un automa $d$-limited riconosce precisamente i linguaggi regolari, ossia i context-free, per qualunque $d$.
+
 La relazione tra automi limited e linguaggi unari è stata studiata estensivamente da Pighizzini e Prigioniero in \cite{Pighizzini:19:limitedunary}. In particolare, i \la1 che riconoscono linguaggi unari possono fare uso di una tecnica basata sulla \eng{binary carry sequence}:
 \begin{defin}
 	La \emph{binary carry sequence} è la successione infinita di interi $\sigma_1\sigma_2\cdots\sigma_j\cdots$ in cui $\sigma_j$ è l'esponente della più alta potenza di $2$ che divide $j$, per ogni intero $j\geq1$.
@@ -78,7 +80,7 @@ Si verifica il seguente risultato, dimostrato in \cite{Pighizzini:19:limitedunar
 
 Spieghiamo ora una tecnica che ci permette di riconoscere diversi linguaggi unari facendo uso del lemma per contare i simboli dell'input. Si prenda in considerazione il linguaggio singoletto $\set{a^{2^n}}$, dove $n>0$ è un parametro intero. Lo scopo della macchina è quello di scrivere il prefisso di lunghezza $2^n$ della binary carry sequence sul nastro, sostituendo le $a$.
 
-Un \la1 di alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: la macchina può effettuare visite in sola lettura verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero è scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker la parola è troppo lunga. Questa macchina può essere implementata in $O(n)$ stati e fare uso di $O(n)$ simboli. Scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro, si adatta la macchina ad accettare $\set{a^{2^n}}\star$ quando $\lem$ o $\reset$ precedono $\rem$. Un 2NFA necessita di $2^n$ stati per riconoscere questo linguaggio, come dimostrato in \cite{Mereghetti:00:twoway}, ergo esso è testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA) per i linguaggi unari.
+Un D\la1 di alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: la macchina può effettuare visite in sola lettura verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero è scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker la parola è troppo lunga. Questa macchina può essere implementata in $O(n)$ stati e fare uso di $O(n)$ simboli (dettagli sull'implementazione e l'algoritmo che essa utilizza sono presenti in \cite{Pighizzini:19:limitedunary}). Scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro, si adatta la macchina ad accettare $\set{a^{2^n}}\star$ quando $\lem$ o $\reset$ precedono $\rem$. Un 1NFA necessità di $2^n$ stati per un contatore al fine di riconoscere questo linguaggio. Mereghetti e Pighizzini hanno dimostrato in \cite{Mereghetti:00:twoway} che lo stesso lower bound vale per i 2NFA. Questo linguaggio è quindi testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA) per i linguaggi unari.
 
 Una variante di questa tecnica può essere applicata per riconoscere il linguaggio $M_N:=\set{a^N}\star$, con $N>0$ un intero qualsiasi. Per fare ciò, un D\la1 $_N$ può scrivere il prefisso di lunghezza $N-1$ della binary carry sequence con la tecnica descritta precedentemente, quindi scrivere un simbolo di reset $\reset$ che equivale a $\lem$ e impone alla macchina di ricominciare la scrittura dal simbolo $\sigma_1$. Questo procedimento viene ripetuto per tutto l'input: la stringa ha lunghezza multipla di $N$ se e solo se l'ultimo simbolo prima dell'end-marker destro è $\reset$ o $\lem$. Se $w$ è l'input il nastro verrà riscritto come segue:
 \begin{equation*}
@@ -111,40 +113,3 @@ Poiché, come accennato in precedenza, restringendo il comportamento di $S_N$ al
 Se si incontra $b$ a destra di $\lem$ o di $\reset$, la mossa non è definita, così come non lo è in $q_0$ per $S_N$. $C_N$ accetta se e solo se $\reset$ o $\lem$ sono seguiti da $\rem$. L'incremento di stati e di simboli rispetto a $B_N$ è trascurabile ed entrambi rimangono in numero di $O(\log N)$.
 
 In conclusione il linguaggio $\generated{S_N}$ è testimone del gap esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
-
-
-
-\section{Problemi aperti e ricerche future}
-Lo studio dei $1$-limited e del loro rapporto con altri riconoscitori, pur avendo portato a risultati soddisfacenti nei casi principali (1NFA, 1DFA), lascia diverse domande senza risposta.
-
-
-\subsection{L'eliminazione del nondeterminismo}
-Il più importante dei problemi aperti che riguardano i $1$-limited è il gap di complessità descrizionale tra \la1 e D\la1, di cui conosciamo un lower bound esponenziale (corollario \ref{cor:a1l:LAtoDLA}) e un upper bound doppiamente esponenziale, derivante dalla simulazione degli \la1 da parte dei 1DFA. Non abbiamo, tra l'altro, evidenze di una distanza maggiore tra \la1 e 2DFA.
-
-Pighizzini, Prigioniero e Sádovský (\cite{Pighizzini:22:limitedwitness}) hanno proposto, con l'intenzione di introdurre dei witness language per una ipotetica distanza più che esponenziale tra \la1 e D\la1 (o tra \la1 e 2DFA), due linguaggi binari basati sulla parità (XOR). Il linguaggio $P_n$ è un linguaggio a blocchi, in cui lo XOR di un certo numero di blocchi risulta nell'ultimo blocco. Il linguaggio $P'_n$ è una versione di $P_n$ in cui cade il vincolo dei blocchi, permettendo lo XOR di qualunque sottostringa che non si sovrapponga:
-\begin{align*}
-	P_n := \{  x_1\dots x_kx \mid ~ & k>0, x_1,\dots,x_k,x\in\{0,1\}^n,                                \\
-	                                & \exists h>0,i_1,i_2,\dots,x_h\in\{1,\dots,k\},i_1<i_2<\dots<i_h: \\
-	                                & x=x_{i_1}\oplus x_{i_2}\oplus\dots\oplus x_{i_h}\}
-\end{align*}
-\begin{align*}
-	P'_n := \{  wx \mid ~ & w\in\{0,1\}^*,x\in\{0,1\}^n,                                              \\
-	                      & \exists h>0,x_1,x_2,\dots,x_h\in\{0,1\}^n,y_0,y_1,\dots,y_h\in\{0,1\}^*:  \\
-	                      & w=y_0x_1y_1\dots y_{n-1}x_hy_h \land x=x_1\oplus x_2\oplus\dots\oplus x_h\}
-\end{align*}
-
-Questi linguaggi possono essere riconosciuti da un \la1 lineare in $n$ con un adattamento delle tecniche per i linguaggi a blocchi (paragrafo \ref{sec:wit:blk}), tuttavia è sconosciuto un lower bound per un 1DFA equivalente. Rimane una congettura, per il momento, che questi linguaggi non siano accettati da D\la1 o 2DFA di dimensione semplicemente esponenziale.
-
-
-\subsection{Simulazioni mancanti}
-Non si conoscono simulazioni che permettano, a partire da un \la1, di rimuovere il nondeterminismo (\la1\tto D\la1), la capacità di riscrittura (\la1\tto 2NFA), o la combinazione delle due (\la1\tto 2DFA), se non quella in 1NFA e 1DFA.
-
-In effetti, non si conosce una costruzione che permetta di convertire un 2NFA in un 2DFA (o un 1NFA in un 2DFA), di cui si conosce un lower bound polinomiale e un upper bound esponenziale. Pur non risolvendo questo problema, sarebbe interessante investigare la sua potenziale correlazione con la simulazione di \la1 da parte di D\la1. In particolare, l'eliminazione del nondeterminismo da una macchina two-way potrebbe sfruttare una tecnica adattabile al caso \la1\tto D\la1.
-
-Per quanto riguarda l'eliminazione della capacità di riscrittura, ci sembra improbabile trovare una tecnica che permetta di codificare nel solo movimento two-way, anche se nondeterministico, i possibili stati del nastro modificato.
-
-
-\subsection{Il caso unario}
-Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla binary carry sequence (paragrafo \ref{sec:wit:un}) ha portato alla determinazione di diversi testimoni della distanza almeno esponenziale tra \la1 e 1DFA. Non si conosce una simulazione che limiti la distanza nel caso unario a semplicemente esponenziale, né sono stati trovati lower bound maggiori, pertanto il gap tra \la1 e 1DFA per gli unari rimane un problema aperto, la cui risposta è inclusa tra il singolo e il doppio esponenziale.
-
-% TODO: aggiungere tabella/mappa dei bound
