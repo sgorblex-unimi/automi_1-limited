@@ -32,16 +32,13 @@ In effetti, non si conosce una costruzione che permetta di convertire un 2NFA in
 
 Per quanto riguarda l'eliminazione della capacità di riscrittura, ci sembra improbabile trovare una tecnica che permetta di codificare nel solo movimento two-way, anche se nondeterministico, i possibili stati del nastro modificato.
 
-
-\subsection{Il caso unario}
-Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla binary carry sequence (paragrafo \ref{sec:wit:un}) ha portato all'individuazione di testimoni della distanza almeno esponenziale tra \la1 e 1NFA o 2NFA, superando i precedenti risultati di lower bound quadratico (\cite{Pighizzini:14:limitedRE}). Non si conosce una simulazione che limiti la distanza nel caso unario a semplicemente esponenziale, né sono stati trovati lower bound maggiori, pertanto il gap tra \la1 e 1DFA per gli unari rimane un problema aperto, la cui risposta è inclusa tra il singolo e il doppio esponenziale.
-
+I risultati relativi alla complessità descrizionale dei vari riconoscitori di linguaggi regolari sono riassunti nella figura \ref{img:pro:sim}.
 
 \begin{figure}
 	\centering
 	\input{img/simulations.tikz}
 	\captionsetup{singlelinecheck=off}
-	\caption[]{Upper e lower bound di conversione tra $1$-limited e altri riconoscitori di linguaggi regolari.
+	\caption[]{Upper e lower bound di conversione tra $1$-limited e altri riconoscitori di linguaggi regolari.\label{img:pro:sim}
 		\begin{enumerate}[(a)]
 			\item \label{itm:pro:lanfa:u} simulazione \la1\tto 1NFA (paragrafo \ref{subs:a1l:up})
 			\item \label{itm:pro:lanfa:l} witness language tra cui $L_n$ (paragrafo \ref{subs:a1l:low})
@@ -50,8 +47,12 @@ Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla bi
 			\item \label{itm:pro:dlanfa:l} witness language tra cui l'unario $\set{a^{2^n}}$ (paragrafo \ref{sec:wit:un}).
 		\end{enumerate}
 	}
-	\label{img:pro:sim}
 \end{figure}
+
+
+
+\subsection{Il caso unario}
+Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla binary carry sequence (paragrafo \ref{sec:wit:un}) ha portato all'individuazione di testimoni della distanza almeno esponenziale tra \la1 e 1NFA o 2NFA, superando i precedenti risultati di lower bound quadratico (\cite{Pighizzini:14:limitedRE}). Non si conosce una simulazione che limiti la distanza nel caso unario a semplicemente esponenziale, né sono stati trovati lower bound maggiori, pertanto il gap tra \la1 e 1DFA per gli unari rimane un problema aperto, la cui risposta è inclusa tra il singolo e il doppio esponenziale.
 
 
 
@@ -61,7 +62,7 @@ Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla bi
 \subsection{Grammatiche}
 Negli scorsi capitoli ci siamo concentrati sugli aspetti degli $1$-limited che li mettono in relazione con altri riconoscitori di linguaggi regolari; tuttavia sono noti anche risultati relativi al loro rapporto con grammatiche. Nel caso unario in particolare, in cui le grammatiche di tipo $2$ descrivono linguaggi regolari, Pighizzini e Prigioniero hanno dimostrato (\cite{Pighizzini:19:limitedunary}) che è possibile convertire una grammatica context-free in un \la1 che riconosce lo stesso linguaggio, con un incremento polinomiale della dimensione della descrizione.
 
-Il risultato è stato esteso al caso generale tramite la nozione di Parikh-equivalenza. Due linguaggi (o due loro generatori o riconoscitori) si dicono Parikh-equivalenti se per ogni parola del primo esiste una parola nel secondo uguale a meno dell'ordine dei simboli, o alternativamente con lo stesso numero di occorrenze per ogni simbolo. Il teorema di Parikh dimostra che ogni linguaggio libero da contesto ha un Parikh-equivalente regolare. Nell'articolo di cui sopra viene dimostrato che è possibile convertire una grammatica context-free qualsiasi in un \la1 che riconosca il regolare Parikh-equivalente, con un incremento polinomiale nella dimensione della grammatica.
+Il risultato è stato esteso al caso generale tramite la nozione di Parikh-equivalenza. Due linguaggi (o due loro generatori o riconoscitori) si dicono Parikh-equivalenti se per ogni parola del primo esiste una parola nel secondo uguale a meno dell'ordine dei simboli, o alternativamente con lo stesso numero di occorrenze per ogni simbolo. Il teorema di Parikh dimostra che ogni linguaggio libero dal contesto ha un Parikh-equivalente regolare. Nell'articolo di cui sopra viene dimostrato che è possibile convertire una grammatica context-free qualsiasi in un \la1 che riconosca il regolare Parikh-equivalente, con un incremento polinomiale nella dimensione della grammatica.
 
 
 \subsection{Complessità temporale}
@@ -74,7 +75,7 @@ Lo studio degli automi limited va ben oltre il caso degli $1$-limited, trattando
 
 
 \subsection{\texorpdfstring{$d$-limited con $d>1$}{d-limited con d>1}}
-Come detto, già Hibbard (\cite{Hibbard:67:CFdet}) ha dimostrato che i $d$-limited nondeterministici riconoscono esattamente i linguaggi context-free se $d\geq2$. Nel caso deterministico, esiste una gerarchia stretta in cui i D\la2 riconoscono i linguaggi liberi da contesto deterministici e per ogni $d\geq2$ esiste un linguaggio riconosciuto da un \la{(d+1)} non riconosciuto da alcun \la d, pur non raggiungendo l'interezza della classe dei context-free per alcun $d$.
+Come detto, già Hibbard (\cite{Hibbard:67:CFdet}) ha dimostrato che i $d$-limited nondeterministici caratterizzano i linguaggi context-free se $d\geq2$. Nel caso deterministico, esiste una gerarchia stretta in cui i D\la2 caratterizzano i linguaggi liberi da contesto deterministici e per ogni $d\geq2$ esiste un linguaggio riconosciuto da un \la{(d+1)} non riconosciuto da alcun \la d, pur non raggiungendo l'interezza della classe dei context-free per alcun $d$.
 
 Pighizzini e Pisoni hanno dimostrato in \cite{Pighizzini:14:limitedCF} che la trasformazione da \la2 ad automa a pila è esponenziale, mentre la trasformazione inversa (che non è banale come nel caso 1DFA\tto\la1) è polinomiale. Kutrib, Pighizzini e Wendlandt hanno dimostrato che per $d>2$ rimane un upper bound esponenziale alla conversione in PDA (\cite{Kutrib:18:complexlimited}).
 
