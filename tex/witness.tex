@@ -93,6 +93,9 @@ L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro l
 
 
 \section{Linguaggi con reset}
+
+
+\subsection{L'automa di Meyer e Fischer}
 Con l'intenzione di studiare un witness language che non fosse né unario né a blocchi, Pighizzini, Prigioniero e Sádovský hanno studiato in \cite{Pighizzini:22:limitedwitness} il riconoscimento da parte di \la1 del linguaggio accettato dall'automa $S_N$, introdotto da Meyer e Fischer in \cite{Meyer:71:ecodescription} come testimone della distanza esponenziale tra 1NFA e 1DFA. L'automa, rappresentato in figura \ref{img:wit:Sn}, ha una struttura ciclica: se si considerano solo le transizioni generate dal simbolo $a$ l'automa riconosce il linguaggio $\set{a^N}\star$. Il ruolo di $b$ è scelto nondeterministicamente tra due: o viene ignorato, lasciando invariato lo stato, o impone alla macchina un reset, riportandola allo stato iniziale.
 
 \begin{figure}
@@ -113,3 +116,25 @@ Poiché, come accennato in precedenza, restringendo il comportamento di $S_N$ al
 Se si incontra $b$ a destra di $\lem$ o di $\reset$, la mossa non è definita, così come non lo è in $q_0$ per $S_N$. $C_N$ accetta se e solo se $\reset$ o $\lem$ sono seguiti da $\rem$. L'incremento di stati e di simboli rispetto a $B_N$ è trascurabile ed entrambi rimangono in numero di $O(\log N)$.
 
 In conclusione il linguaggio $\generated{S_N}$ è testimone del gap esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
+
+
+\subsection{L'automa di Moore}
+Un automa simile a quello di Meyer e Fischer è stato presentato da E. F. Moore in \cite{Moore:56:gendanken} e studiato da F. R. Moore in \cite{Moore:71:automatabounds}. L'automa $R_N$, rappresentato in figura \ref{img:wit:Rn}, presenta un meccanismo di reset, ma questa volta le transizioni di reset possono avvenire solo dallo stato $q_N$ verso lo stato $q_1$ o verso lo stato $q_2$. Queste transizioni sono, tra l'altro, l'unica fonte di nondeterminismo della macchina.
+
+\begin{figure}
+	\centering
+	\input{img/Rn.tikz}
+	\caption{L'NFA $S_N$ di Moore.}
+	\label{img:wit:Rn}
+\end{figure}
+
+Un \la1 $D_N$ può riconoscere l'automa di Moore con un adattamento della tecnica precedente:
+\begin{itemize}
+	\item simulando la computazione tra $q_1$ e $q_N$, $D_N$ sovrascrive l'input con la binary carry sequence trovando, scritto ogni simbolo, il più piccolo naturale che non ricorre nella backward increasing sequence del prefisso corrente e, contemporaneamente, controllando se tale sequenza rappresenta il numero $N$. La macchina verifica che la successione dei simboli di input porti a transizioni legali (ossia non può ricevere $b$ nello stato $q_N$);
+	\item $D_N$ sceglie nondeterministicamente quale transizione simulare nel caso stia simulando lo stato $q_N$ e riceva $a$ in input;
+	\item per simulare la transizione dallo stato $q_n$ verso lo stato $q_1$, $D_N$ utilizza un simbolo di reset $\reset_1$ che si comporta come l'end-marker sinistro, e impone all'automa di ricominciare a scrivere la binary carry sequence a partire dal suo primo elemento $\sigma_1$. Lo stesso simbolo viene scritto se simulando lo stato $q_1$, cioè dopo la scrittura di $\reset_1$ oppure dopo $\lem$, il simbolo di input successivo è $b$, simulando la transizione dallo stato $q_1$ in se stesso;
+	\item per simulare la transizione dallo stato $q_N$ verso lo stato $q_2$, $D_N$ utilizza un simbolo di reset $\reset_2$. Questo simbolo si comporta in modo leggermente diverso rispetto a $\reset_1$ e $\lem$, in quanto muovendosi alla sua destra l'automa scrive la binary carry sequence partendo dal suo secondo elemento $\sigma_2$ (invece che dal primo). Questo simbolo porta l'automa a comportarsi diversamente anche nelle computazioni successive: leggendolo durante il tracciamento della backward increasing sequence, l'automa si comporta come se avesse letto $\reset_1$ e prima di esso $\sigma_1$. In questo modo il conteggio degli stati con la tecnica della binary carry sequence rimane valido, pur contando a partire dal suo secondo elemento.
+\end{itemize}
+L'automa $D_N$ può essere implementato con $O(\log N)$ stati e $O(\log N)$ simboli.
+
+F. R. Moore ha dimostrato che $R_N$, oltre a essere minimo, riconosce un linguaggio che è testimone della distanza esponenziale da 1NFA a 1DFA. L'esistenza di un \la1 di complessità logaritmica che riconosce $\generated{R_N}$ dimostra che il linguaggio riconosciuto è testimone anche della distanza esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
