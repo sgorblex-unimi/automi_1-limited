@@ -1,0 +1,20 @@
+\begin{tikzpicture}
+	\footnotesize
+	\newcommand{\bounds}[4]{$\geq$ #1 \ref{itm:pro:#2}\\ $\leq$ #3 \ref{itm:pro:#4}}
+	\newcommand{\boundsq}[3]{\bounds{#1}{#3:l}{#2}{#3:u}}
+
+	\node (la)	{\la1};
+	\node (dla)	[below=5cm of la] {D\la1};
+	\node (nfa)	[below left=3cm of la] {1NFA/2NFA};
+	\node (2dfa)	[right=6cm of nfa] {2DFA};
+	\node (1dfa)	[right=2cm of 2dfa] {1DFA};
+
+	\path[-latex]
+	(la)  edge node[above left,align=left] {\boundsq{exp}{exp}{lanfa}} (nfa.north)
+	(la) edge node[above right,align=left] {\boundsq{2exp}{2exp}{lanfa}} (1dfa.north)
+	(la)  edge node[left,align=left] {\bounds{exp}{ladla:l}{2exp}{ladfa:u}} (dla.north)
+	(la)  edge node[below left,align=left] {\bounds{exp}{lanfa:l}{2exp}{ladfa:u}} (2dfa.north)
+	(dla) edge node[below left,align=left] {\bounds{exp}{dlanfa:l}{2exp}{lanfa:u}} (nfa.south)
+	(dla)  edge node[below right,align=left] {\bounds{exp}{dlanfa:l}{2exp}{ladfa:u}} (1dfa.south)
+	(dla) edge node[above left,align=left] {\bounds{exp}{dlanfa:l}{2exp}{ladfa:u}} (2dfa.south);
+\end{tikzpicture}

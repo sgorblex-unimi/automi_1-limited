@@ -53,7 +53,7 @@ Limitatamente alla complessità descrizionale, gli automi $1$-limited vengono va
 Non sono necessari particolari costruzioni perché un \la1 simuli un'altra macchina tra i tipici riconoscitori di linguaggi regolari: è sufficiente che ignori la sua capacità di scrivere (2NFA) o quella di muoversi in ambe le direzioni (1NFA). È invece non triviale la simulazione opposta, cioè quella di un \la1 da parte di una di tali macchine. Gli estensivi studi di queste simulazioni ci permettono non solo di dimostrare che gli \la1 caratterizzano i linguaggi regolari, ma anche quale aumento di complessità descrizionale derivi dalla costruzione.
 
 
-\subsection{Upper bound}
+\subsection{Upper bound}\label{subs:a1l:up}
 Con una rivisitazione della costruzione di Wagner e Wechsung (teorema 12.1 in \cite{Wagner:86:compCompl}), Pighizzini e Pisoni hanno ottenuto in \cite{Pighizzini:14:limitedRE} l'upper bound del numero di stati sufficienti a un automa a stati finiti per simulare un automa 1-limited. La simulazione si basa sul concetto di tabella di transizione, già usato nella conversione da 2DFA in 1DFA presentata in \cite{Shepherdson:59:reduction2to1way}. Dato un \la1 di $n$ stati, la costruzione produce un 1NFA di un numero di stati esponenziale in $n$, oppure un 1DFA doppiamente esponenziale, indipendentemente dalla dimensione dell'alfabeto di lavoro. Se il \la1 è deterministico, inoltre, la stessa costruzione produce un 1DFA di numero di stati semplicemente esponenziale.
 \begin{theor}[Teorema 2 in \cite{Pighizzini:14:limitedRE}]\label{thm:a1l:upper}
 	Sia $M$ un \la1 di $n$ stati.

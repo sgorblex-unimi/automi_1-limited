@@ -37,6 +37,23 @@ Per quanto riguarda l'eliminazione della capacità di riscrittura, ci sembra imp
 Per quanto riguarda i linguaggi unari, lo sviluppo della tecnica basata sulla binary carry sequence (paragrafo \ref{sec:wit:un}) ha portato all'individuazione di testimoni della distanza almeno esponenziale tra \la1 e 1NFA o 2NFA, superando i precedenti risultati di lower bound quadratico (\cite{Pighizzini:14:limitedRE}). Non si conosce una simulazione che limiti la distanza nel caso unario a semplicemente esponenziale, né sono stati trovati lower bound maggiori, pertanto il gap tra \la1 e 1DFA per gli unari rimane un problema aperto, la cui risposta è inclusa tra il singolo e il doppio esponenziale.
 
 
+\begin{figure}
+	\centering
+	\input{img/simulations.tikz}
+	\captionsetup{singlelinecheck=off}
+	\caption[]{Upper e lower bound di conversione tra $1$-limited e altri riconoscitori di linguaggi regolari.
+		\begin{enumerate}[(a)]
+			\item \label{itm:pro:lanfa:u} simulazione \la1\tto 1NFA (paragrafo \ref{subs:a1l:up})
+			\item \label{itm:pro:lanfa:l} witness language tra cui $L_n$ (paragrafo \ref{subs:a1l:low})
+			\item \label{itm:pro:ladfa:u} simulazione \la1\tto 1DFA (paragrafo \ref{subs:a1l:up});
+			\item \label{itm:pro:ladla:l} corollario \ref{cor:a1l:LAtoDLA} da witness language $L_n$;
+			\item \label{itm:pro:dlanfa:l} witness language tra cui l'unario $\set{a^{2^n}}$ (paragrafo \ref{sec:wit:un}).
+		\end{enumerate}
+	}
+	\label{img:pro:sim}
+\end{figure}
+
+
 
 \section{Altri risultati sugli \texorpdfstring{$1$-limited}{1-limited}}
 
