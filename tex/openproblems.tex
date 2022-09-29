@@ -1,4 +1,4 @@
-\chapter{Altri risultati e problemi aperti}
+\chapter{Altri risultati e problemi aperti}\label{cha:prob}
 In questo capitolo concludiamo riassumendo i problemi aperti che riguardano gli automi $1$-limited e presentandone qualche ulteriore risultato. Diamo poi uno sguardo ai risultati relativi ad altre varianti degli automi limited.
 
 
@@ -28,7 +28,7 @@ Questi linguaggi possono essere riconosciuti da un \la1 lineare in $n$ con un ad
 \subsection{Simulazioni mancanti}
 Non si conoscono simulazioni che permettano, a partire da un \la1, di rimuovere il nondeterminismo (\la1\tto D\la1), la capacità di riscrittura (\la1\tto 2NFA), o la combinazione delle due (\la1\tto 2DFA), se non quelle in 1NFA e 1DFA.
 
-In effetti, non si conosce una costruzione che permetta di convertire un 2NFA in un 2DFA (o un 1NFA in un 2DFA), di cui si conosce un lower bound polinomiale e un upper bound esponenziale. Pur non risolvendo questo problema, sarebbe interessante investigare la sua potenziale correlazione con la simulazione di \la1 da parte di D\la1. In particolare, l'eliminazione del nondeterminismo da una macchina two-way potrebbe sfruttare una tecnica adattabile al caso \la1\tto D\la1.
+In effetti, non si conosce una costruzione che permetta di convertire un 2NFA in un 2DFA (è il problema aperto posto da Sakoda e Sipser in \cite{Sakoda:78:sizetwoway}), di cui si conosce un lower bound polinomiale e un upper bound esponenziale. Pur non risolvendo questo problema, sarebbe interessante investigare la sua potenziale correlazione con la simulazione di \la1 da parte di D\la1. In particolare, l'eliminazione del nondeterminismo da una macchina two-way potrebbe sfruttare una tecnica adattabile al caso \la1\tto D\la1.
 
 Per quanto riguarda l'eliminazione della capacità di riscrittura, ci sembra improbabile trovare una tecnica che permetta di codificare nel solo movimento two-way, anche se nondeterministico, i possibili stati del nastro modificato.
 
