@@ -1,5 +1,6 @@
-% \documentclass[a4paper,twoside]{thesis}
-\documentclass[a4paper,compact]{thesis}	% compact is used for drafts
+\documentclass[a4paper,twoside]{thesis}
+% \documentclass[a4paper]{thesis}
+% \documentclass[a4paper,compact]{thesis}	% compact is used for drafts
 
 \usepackage{Automi_1-Limited}
 
@@ -15,10 +16,16 @@
 \cosuperv{Dr. Luca Prigioniero}
 \date{Anno Accademico 2021/2022}
 
+\pagestyle{plain}
 \maketitle
+\thispagestyle{empty}
+\cleardoublepage
+\pagenumbering{roman}
 \tableofcontents
-
 \include{tex/introduzione}
+\pagenumbering{arabic}
+\pagestyle{headings}
+
 \include{tex/preliminari}
 \include{tex/automi-1-limited}
 \include{tex/witness}
