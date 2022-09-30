@@ -5,20 +5,20 @@
 }
 $\C \leftarrow 0$\;
 \Repeat{la cella corrente contiene $\rem$}{
-	\label{algln:a1l:lowLn:3f:1} \While{$\C>0$}{
+	\While{$\C>0$}{ \label{algln:a1l:lowLn:3f:1}
 		sposta la testina a destra di una cella\;
 		$\C \leftarrow \C-1$\;
 	}
 	$\B \leftarrow$ simbolo corrente\;
 	\While{la cella corrente non è segnata}{
 		sposta la testina a sinistra di una cella\;
-		\label{algln:a1l:lowLn:3f:2} $\C \leftarrow \C+1$\;
 	}
+	\label{algln:a1l:lowLn:3f:2} $\C \leftarrow \C+1$\;
 	\Repeat{la cella corrente è segnata o contiene $\rem$}{
 		sposta la testina a destra di una cella\;
 	}
 	\If{la cella corrente non contiene $\rem$}{
-		\label{algln:a1l:lowLn:3f:3} \While{$\C>0$}{
+		\While{$\C>0$}{ \label{algln:a1l:lowLn:3f:3}
 			sposta la testina a destra di una cella\;
 			$\C \leftarrow \C-1$\;
 		}
@@ -27,8 +27,8 @@ $\C \leftarrow 0$\;
 		}
 		\While{la cella corrente non è segnata}{
 			sposta la testina a sinistra di una cella\;
-			\label{algln:a1l:lowLn:3f:4} $\C \leftarrow \C+1$\;
 		}
+		\label{algln:a1l:lowLn:3f:4} $\C \leftarrow \C+1$\;
 		\If{$\C<n-1$}{
 			\Repeat{la cella corrente è segnata}{
 				sposta la testina a sinistra di una cella\;
