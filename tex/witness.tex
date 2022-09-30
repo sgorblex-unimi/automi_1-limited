@@ -1,5 +1,8 @@
-\chapter{\eng{Witness languages}}\label{cha:wit}
-Ai fini di ottenere o migliorare i lower bound, di risolvere i problemi aperti e in generale di ottenere una conoscenza più approfondita di un modello oggetto di studio, vengono studiati dei \eng{witness languages} ("linguaggi testimoni"), linguaggi utili a dimostrare un'ipotesi. Nel paragrafo \ref{subs:a1l:low} abbiamo studiato la famiglia di linguaggi $L_n$, testimone del lower bound di conversione da \la1 e 1DFA doppiamente esponenziale e da \la1 a 1NFA, 2NFA, 2DFA, D\la1 semplicemente esponenziale. In questo capitolo espandiamo lo studio di questi linguaggi introducendone di nuovi, costruendone altri riconoscitori e dimostrando l'ottimalità dei bound che li riguardano. Classifichiamo tali linguaggi in base a una caratteristica comune che ne rende lo studio (almeno in parte) uniforme: a blocchi, unari, con reset. I linguaggi unari, in particolare, sono di interesse in quanto considerati un caso speciale nello studio dei linguaggi formali (poiché non c'è distinzione tra unari regolari e unari context-free), ed è oggetto di problemi aperti.
+\chapter{Witness languages}\label{cha:wit}
+Quando esiste un linguaggio con una certa proprietà, si dice che tale linguaggio è un \eng{witness language} ("linguaggio testimone") di quella proprietà. I witness language rappresentano casi peggiori, e sono utili ad ottenere lower bound, risolvere problemi aperti e in generale ad avere una conoscenza più approfondita di un modello oggetto di studio.
+Nel paragrafo \ref{subs:a1l:low} abbiamo studiato il linguaggio $L_n$, testimone del lower bound esponenziale della simulazione di \la1 da parte di 1NFA, 2NFA, 2DFA e D\la1 e doppiamente esponenziale da parte di 1DFA.
+In questo capitolo studieremo alcune tecniche che permettono di costruire riconoscitori per vari linguaggi, e dimostreremo che questi linguaggi sono testimoni di diversi lower bound che riguardano gli automi $1$-limited.
+Classifichiamo tali linguaggi in base a una caratteristica comune che ne rende lo studio (almeno in parte) uniforme: \emph{a blocchi}, \emph{unari}, \emph{con reset}. I linguaggi unari, in particolare, sono di interesse in quanto si dimostra che, pur non avendo una struttura vera e propria ed essendo caratterizzati unicamente dalla lunghezza delle loro parole, le loro descrizioni hanno costo esponenziale.
 
 
 
@@ -8,52 +11,55 @@ In un linguaggio a blocchi di parametro $n$, ogni parola è composta dalla conca
 \begin{itemize}
 	\item il linguaggio delle parole in cui l'ultimo blocco è uguale a uno dei precedenti:
 	      \begin{equation*}
-		      K_n := \{ x_1\cdots x_kx \mid k>0, x_1,\dots,x_k\in\{a,b\}^n, \exists j\in\{1,\dots,k\},x_j=x\}
+		      K_n := \set{x_1\cdots x_kx \mid k>0, x_1,\dots,x_k\in\set{0,1}^n, \exists j\in\set{1,\dots,k}: x_j=x}
 	      \end{equation*}
 	\item il linguaggio delle parole in cui due blocchi qualsiasi sono uguali:
 	      \begin{equation*}
-		      E_n := \{x_1\cdots x_k \mid k>0, x_1,\dots,x_k\in\{a,b\}^n,\exists i,j\in\{1,\dots,k\},i<j,x_i=x_j\}
+		      E_n := \set{x_1\cdots x_k \mid k>0, x_1,\dots,x_k\in\set{0,1}^n,\exists i,j\in\set{1,\dots,k},i<j: x_i=x_j}
 	      \end{equation*}
 	\item il linguaggio delle parole in cui $n$ blocchi sono uguali:
 	      \begin{align*}
-		      L_n := \{ & x_1x_2\cdots x_k\mid k\geq0, x_1,x_2,\dots,x_k\in\{0,1\}^n,                                  \\
-		                & \exists i_1,i_2,\dots,i_n\in\{1,\dots,k\},i_1<i_2<\dots<i_n, x_{i_1}=x_{i_2}=\dots=x_{i_n}\}
+		      L_n := \{ & x_1x_2\cdots x_k\mid k\geq0, x_1,x_2,\dots,x_k\in \set{0,1}^n,                                  \\
+		                & \exists i_1,i_2,\dots,i_n\in\set{1,\dots,k},i_1<i_2<\dots<i_n: x_{i_1}=x_{i_2}=\dots=x_{i_n} \}
 	      \end{align*}
 \end{itemize}
 
-Per $L_n$ sono stati descritti al paragrafo \ref{subs:a1l:low} un \la1 riconoscitore e il lower bound sul numero di stati di un 1DFA, un \la1, e 1NFA, 2NFA, 2DFA o D\la1 che riconoscano $L_n$. Gli stessi risultati possono essere facilmente adattati agli altri due linguaggi presentati, usando una variante dell'algoritmo \ref{alg:a1l:lowLn:3f} per il riconoscimento e la distinguibilità per i lower bound. Questo dimostra che i tre linguaggi sono testimoni della distanza di complessità doppiamente esponenziale tra \la1 e 1DFA, di quella semplicemente esponenziale tra \la1 e 1NFA, 2NFA, 2DFA, e di quella almeno esponenziale tra \la1 e D\la1.
+Per $L_n$ sono stati descritti nel paragrafo \ref{subs:a1l:low} un \la1 riconoscitore e il lower bound sul numero di stati di ogni 1DFA, \la1, e 1NFA, 2NFA, 2DFA, D\la1 che riconosce $L_n$. Gli stessi risultati possono essere facilmente adattati a $K_n$ e $E_n$, usando una variante dell'algoritmo \ref{alg:a1l:lowLn:3f} per il riconoscimento e la distinguibilità per i lower bound.
+I tre linguaggi possono quindi essere usati per dimostrare che esistono casi in cui per la simulazione di un \la1 di $n$ stati da parte di un 1NFA, 2NFA, 2DFA, D\la1 è necessario un numero esponenziale in $n$ di stati e da parte di un 1DFA un numero doppiamente esponenziale.
 
 
 \subsection{Riconoscitori}
-Descriviamo ora gli upper bound mancanti per il riconoscimento di questi linguaggi, cioè D\la1, 2NFA, 2DFA e 1NFA. Usiamo ancora una volta l'esempio di $L_n$ poiché le tecniche sono molto simili tra i diversi linguaggi.
+Descriviamo ora i riconoscitori mancanti per questi linguaggi, cioè 1DFA, 1NFA, 2DFA, 2NFA e D\la1. Usiamo ancora una volta l'esempio di $L_n$ poiché le tecniche sono molto simili tra i diversi linguaggi.
 
 \subsubsection{1DFA}
-Un 1DFA che riconosca $L_n$ può, scansionando l'input da sinistra verso destra, contare le occorrenze di ogni possibile blocco. Per fare ciò, ogni blocco $x\in\set{0,1}^n$ ha un contatore associato. Per l'identificazione di un blocco, gli stati sono organizzati ad albero, in cui ogni ramo è prefisso di un blocco e una foglia coincide con l'incremento del contatore, nonché con la radice dell'albero successivo. Trovata la $n$-esima occorrenza di un blocco, l'automa si limita a contare modulo $n$ la restante lunghezza della parola di input per verificare la struttura a blocchi. Per la prima fase sono richiesti $n^{2^n}$ stati per i contatori, ciascuno dipendente da un albero binario completo di $2^n-1$ stati, mentre per la seconda fase sono sufficienti $n$ stati, per un totale di $(2^n-1)\cdot n^{2^n}+n$ stati.
+Un 1DFA che riconosce $L_n$ può contare le occorrenze di ogni possibile blocco durante la scansione dell'input. Per fare ciò, ogni stringa $x\in\set{0,1}^n$ ha un contatore da $0$ a $n-1$ associato. Per l'identificazione di un blocco, gli stati sono organizzati come un albero, in cui ogni nodo rappresenta un prefisso di tale blocco. Giunta a una foglia la macchina incrementa il contatore del relativo blocco, e la foglia coincide con la radice dell'albero successivo. Trovata la $n$-esima occorrenza di un blocco, l'automa si limita a contare modulo $n$ la restante lunghezza della parola di input per verificare la struttura a blocchi. Per la prima fase vengono usati $n^{2^n}$ stati per i contatori; ogni incremento di un contatore dipende da un albero binario completo di $2^n-1$ stati. Per la seconda fase sono sufficienti $n$ stati, per un totale di $(2^n-1)\cdot n^{2^n}+n$ stati.
 
 \subsubsection{1NFA}
-La figura \ref{img:wit:LnNFA} mostra un NFA che riconsce $L_n$. All'inizio l'automa prova a indovinare nondeterministicamente una stringa $x^{(i)}\in\set{0,1}^n$ che ritiene essere il blocco ripetuto. Questa mossa è rappresentata per semplicità come $\emptyword$-transizione, cioè senza leggere alcun simbolo, ma può essere convertita in una transizione normale. Scelto un candidato blocco $x$, l'automa conta le occorrenze di $x$ nell'input. Per fare ciò, utilizza $2n-1$ stati per ciascuna delle $n$ occorrenze (per ciascuno dei blocchi possibili). Le transizioni contrassegnate con $\ok$ indicano un confronto positivo tra il simbolo corrente e il rispettivo nel blocco candidato, quelle con $\nok$ un confronto negativo e quelle con $\any$ non dipendono dal confronto e contano semplicemente i simboli di input. I valori effettivi di $\ok$ e $\nok$ dipendono ovviamente dal blocco scelto all'inizio.
+La figura \ref{img:wit:LnNFA} mostra un NFA che riconsce $L_n$. All'inizio l'automa prova a indovinare nondeterministicamente una stringa $x\in\set{0,1}^n$ che ritiene essere il blocco ripetuto. Scelto il candidato, l'automa conta le occorrenze di $x$ nell'input. Per fare ciò, utilizza $2n-1$ stati per ciascuna occorrenza (per ciascuno dei blocchi possibili). Le transizioni contrassegnate con $\ok$ indicano un confronto positivo tra il simbolo corrente e il rispettivo nel blocco candidato, quelle con $\nok$ un confronto negativo e quelle con $\any$ non dipendono dal confronto e contano semplicemente i simboli di input. I valori effettivi di $\ok$ e $\nok$ dipendono ovviamente dal blocco scelto all'inizio.
+
+Si supponga di aver contato l'$i$-esima occorrenza del candidato, con $i\in\set{0,\dots,n-1}$, e di star verificando l'$(i+1)$-esima.
 \begin{itemize}
-	\item finché il blocco corrente coincide con il candidato, vengono effettuate le transizioni $\ok$, proseguendo nella serie di stati $x_{i,j}$, dove $i$ è il contatore di occorrenze allo stato attuale (si sta confrontando per l'$(i+1)$-esima) e $j$ è l'indice del simbolo che viene confrontato. Verificata la coincidenza dell'ultimo simbolo, cioè certificata l'occorrenza $i+1$, si passa al confronto del blocco successivo incrementando il contatore $i$ e passando quindi alla serie $x_{i+1,j}$;
-	\item se i due blocchi non coincidono, il primo simbolo diverso tra i due porta l'automa a prendere una transizione $\nok$, proseguendo poi per la serie di stati $\bar x_{i,j}$, che contano i simboli fino alla fine del blocco senza confrontare. Al termine di questa serie si riprende la computazione dallo stato $x_{i,j}$ alla ricerca della $(i+1)$-esima occorrenza nel blocco successivo.
+	\item Finché il blocco corrente coincide con il candidato, vengono effettuate le transizioni $\ok$, proseguendo negli stati $x_{i,j}$, dove $j\in\set{0,\dots,n-1}$ è l'indice del simbolo che viene confrontato. Verificata la coincidenza dell'ultimo simbolo, cioè certificata l'occorrenza $i+1$, si passa al confronto del blocco successivo incrementando il contatore $i$ e passando quindi agli stati $x_{i+1,j}$;
+	\item se i due blocchi non coincidono, il primo simbolo diverso tra i due porta l'automa a prendere una transizione $\nok$, proseguendo poi negli stati $\bar x_{i,j}$, che contano i simboli fino alla fine del blocco senza confrontare. Al termine di questa serie si riprende la computazione dallo stato $x_{i,j}$ alla ricerca della $(i+1)$-esima occorrenza nel blocco successivo.
 \end{itemize}
 Una volta trovate $n$ occorrenze, l'automa passa in una serie di stati $f_n,f_1,\dots,f_{n-1}$, comuni a tutti i blocchi candidati, che contano modulo $n$ i simboli rimanenti, accettando se sono in numero multiplo di $n$. Il numero di stati è quindi in totale $1+2^n\cdot (2n-1)\cdot n+n$.
 
 \begin{figure}
 	\centering
 	\input{img/Ln_NFA.tikz}
-	\caption{L'NFA che riconosce $L_n$.}
+	\caption{L'NFA che riconosce $L_n$. La prima mossa è rappresentata come $\emptyword$-mossa, cioè non legge alcun simbolo.}
 	\label{img:wit:LnNFA}
 \end{figure}
 
 \subsubsection{2DFA}
-Un 2DFA può riconoscere $L_n$ eseguendo innanzitutto una scansione preliminare che verifichi che la lunghezza dell'input sia multipla di $n$, quindi effettuando una scansione del nastro per ogni possibile blocco, contando le occorrenze di quello corrente (con una strategia simile a quella dell'1NFA descritto precedentemente), finché trovando $n$ occorrenze di un blocco può semplicemente accettare violando l'end-marker destro. Il numero di stati richiesti è $n$ per la prima fase, $2^n\cdot (2n-1)\cdot n$ per la seconda e $1$ per accettare, per un totale di $n+2^n\cdot (2n-1)\cdot n+1$ come nel caso precedente.
+Un 2DFA può riconoscere $L_n$ eseguendo innanzitutto una scansione preliminare che verifichi che la lunghezza dell'input sia multipla di $n$. Quindi, per ogni possibile blocco $x\in\set{0,\dots,n-1}$, effettua una scansione del nastro contando le occorrenze di $x$ (con una strategia simile a quella dell'1NFA descritto precedentemente). Trovate $n$ occorrenze di un blocco, accetta violando l'end-marker destro. Il numero di stati utilizzati è $n$ per la prima fase, $2^n\cdot (2n-1)\cdot n$ per la seconda e $1$ per accettare, per un totale di $n+2^n\cdot (2n-1)\cdot n+1$ come nel caso precedente.
 
 Questa macchina è anche un 2NFA e D\la1, di cui non conosciamo riconoscitori migliori che sfruttino le capacità in più dei rispettivi modelli per riconoscere $L_n$.
 
 
 
 \section{Linguaggi unari}\label{sec:wit:un}
-I linguaggi unari possiedono la fondamentale proprietà secondo cui le classi dei context-free e dei regolari collidono in un'unica classe. Da ciò deriva il fatto che un automa $d$-limited caratterizza precisamente i linguaggi regolari, ossia i context-free, per qualunque $d$.
+I linguaggi unari possiedono la fondamentale proprietà secondo cui le classi dei context-free e dei regolari coincidono. Da ciò deriva il fatto che, nel caso unario, un automa $d$-limited caratterizza i linguaggi regolari, nonché i context-free, per qualunque $d$.
 
 La relazione tra automi limited e linguaggi unari è stata studiata estensivamente da Pighizzini e Prigioniero in \cite{Pighizzini:19:limitedunary}. In particolare, i \la1 che riconoscono linguaggi unari possono fare uso di una tecnica basata sulla \eng{binary carry sequence}:
 \begin{defin}
@@ -62,7 +68,7 @@ La relazione tra automi limited e linguaggi unari è stata studiata estensivamen
 
 Definiamo inoltre la \eng{backward increasing sequence}, una funzione che trasforma sequenze e che ha proprietà interessanti in relazione alla binary carry sequence.
 \begin{defin}
-	Sia $s=k_1k_2\cdots k_j$ una sequenza finita di interi. La \emph{backward increasing sequence} di $s$, denotata con $\bis(s)$, è la più lunga successione ottenibile selezionando da destra verso sinistra un elemento di $s$ solo se è maggiore dell'ultimo selezionato. Formalmente, $\bis(k_1k_2\cdots k_j)=(i_1,i_2,\dots,i_r)$ se e solo se $i_1=k_{h_1},i_2=k_{h_2}\dots i_r=k_{h_r}$ dove $h_1=j$ e $h_t=\max\set{h'<h_{t-1}\mid k_{h'}>k_{h_{t-1}}}$.
+	Sia $s=k_1k_2\cdots k_j$ una sequenza finita di interi. La \emph{backward increasing sequence} di $s$, denotata con $\bis(s)$, è la più lunga successione ottenibile selezionando da destra verso sinistra un elemento di $s$ solo se è maggiore dell'ultimo selezionato. Formalmente, $\bis(k_1k_2\cdots k_j)=(i_1,i_2,\dots,i_r)$ se e solo se $i_1=k_{h_1},i_2=k_{h_2},\dots,i_r=k_{h_r}$ dove $h_1=j$ e $h_t=\max\set{h'<h_{t-1}\mid k_{h'}>k_{h_{t-1}}}$.
 \end{defin}
 
 Si verifica il seguente risultato, dimostrato in \cite{Pighizzini:19:limitedunary}:
@@ -78,15 +84,17 @@ Si verifica il seguente risultato, dimostrato in \cite{Pighizzini:19:limitedunar
 	\end{itemize}
 \end{lemma}
 
-Spieghiamo ora una tecnica che ci permette di riconoscere diversi linguaggi unari facendo uso del lemma per contare i simboli dell'input. Si prenda in considerazione il linguaggio singoletto $\set{a^{2^n}}$, dove $n>0$ è un parametro intero. Lo scopo della macchina è quello di scrivere il prefisso di lunghezza $2^n$ della binary carry sequence sul nastro, sostituendo le $a$.
+Spieghiamo ora una tecnica che permette di riconoscere diversi linguaggi unari facendo uso del lemma \ref{lem:wit:bis} per contare i simboli dell'input. Si prenda in considerazione il linguaggio singoletto $\set{a^{2^n}}$, dove $n>0$ è un parametro intero fissato. Lo scopo della macchina è quello di scrivere il prefisso di lunghezza $2^n$ della binary carry sequence sul nastro, sostituendo le $a$.
 
-Un D\la1 $A_n$ di alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: $A_n$ può effettuare visite in sola lettura verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero è scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker la parola è troppo lunga. $A_n$ può essere implementato in $O(n)$ stati e fare uso di $O(n)$ simboli (dettagli sull'implementazione e l'algoritmo che essa utilizza sono presenti in \cite{Pighizzini:19:limitedunary}). Scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro, si adatta la macchina ad accettare $\set{a^{2^n}}\star$ quando $\lem$ o $\reset$ precedono $\rem$. Un 1NFA necessita di $2^n$ stati per un contatore al fine di riconoscere questo linguaggio. Mereghetti e Pighizzini hanno dimostrato in \cite{Mereghetti:00:twoway} che lo stesso lower bound vale per i 2NFA. Questo linguaggio è quindi testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA), anche per i linguaggi unari.
+Un D\la1 $A_n$ con alfabeto di lavoro $\set{a,0,1,\dots,n}$ può innanzitutto sovrascrivere il primo simbolo con $0$, primo elemento della binary carry sequence. Supponendo che a un certo punto della computazione la macchina abbia scritto il prefisso di lunghezza $j$ della binary carry sequence sovrascrivendo i primi $j$ simboli, il simbolo $\sigma_{j+1}$ può essere calcolato grazie al \hyperref[lem:wit:bis:2]{secondo punto} del lemma \ref{lem:wit:bis}: $A_n$ può effettuare visite in sola lettura dall'ultima cella scritta verso sinistra, individuando il più piccolo naturale che non occorre nella backward increasing sequence del prefisso scritto. Tale numero viene poi scritto nella successiva cella scrivibile e il procedimento viene ripetuto. Se a un certo punto della computazione l'automa scrive $n$ ($2^n$-esimo elemento della binary carry sequence) e la successiva cella contiene $\rem$ l'automa accetta. Se si raggiunge $\rem$ senza che $n$ venga scritto allora la parola di input è troppo corta, mentre se viene scritto ma la successiva cella non contiene l'end-marker allora è troppo lunga. $A_n$ può essere implementato con $O(n)$ stati e usa $O(n)$ simboli (dettagli sull'implementazione e l'algoritmo utilizzato sono presenti in \cite{Pighizzini:19:limitedunary}).
+
+Si può adattare $A_n$ ad accettare $\set{a^{2^n}}\star$, scrivendo al posto di $n$ un simbolo di reset $\reset$, in cui l'automa si comporta come sull'end-marker sinistro. La macchina accetta se $\reset$ precede $\rem$ o se riceve in input la stringa vuota. Un 1NFA necessita di $2^n$ stati per un contatore al fine di riconoscere questo linguaggio. Mereghetti e Pighizzini hanno dimostrato in \cite{Mereghetti:00:twoway} che lo stesso lower bound vale per i 2NFA. Questo linguaggio è quindi testimone della distanza almeno esponenziale da D\la1 a 2NFA (e quindi anche da \la1 e verso 1NFA, 1DFA e 2DFA), anche per i linguaggi unari.
 
 Una variante di questa tecnica può essere applicata per riconoscere il linguaggio $M_N:=\set{a^N}\star$, con $N>0$ un intero qualsiasi. Per fare ciò, un D\la1 $B_N$ può scrivere il prefisso di lunghezza $N-1$ della binary carry sequence con la tecnica descritta precedentemente, quindi scrivere un simbolo di reset $\reset$ che equivale a $\lem$ e impone alla macchina di ricominciare la scrittura dal simbolo $\sigma_1$. Questo procedimento viene ripetuto per tutto l'input: la stringa ha lunghezza multipla di $N$ se e solo se l'ultimo simbolo prima dell'end-marker destro è $\reset$ o $\lem$. Se $w$ è l'input il nastro verrà riscritto come segue:
 \begin{equation*}
-	\underbrace{\sigma_1\cdots\sigma_{N-1}\reset\cdots\reset\sigma_1\cdots\sigma_{N-1}\reset}_{\floor{\len w/N} \text{ volte}}\sigma_1\cdots\sigma_{\scriptscriptstyle \len w\mkern -11mu \mod N}
+	\underbrace{\sigma_1\cdots\sigma_{N-1}\reset\cdots\reset\sigma_1\cdots\sigma_{N-1}\reset}_{\floor{\len w/N} \text{ volte}}\sigma_1\cdots\sigma_{\scriptscriptstyle \len w\mkern -11mu \mod N}\text.
 \end{equation*}
-Poiché $N$ non è necessariamente una potenza di $2$, rilevare quando è il momento di scrivere $\reset$ non è triviale. Per fare ciò $B_N$, durante il procedimento di identificazione del prossimo simbolo da scrivere, verifica inoltre se i bit indicati dalla backward increasing sequence del prefisso attuale rappresentano il numero $N-1$. Se così fosse, il \hyperref[lem:wit:bis:1]{primo punto} del lemma \ref{lem:wit:bis} dimostra che il prefisso attuale ha lunghezza $N-1$, e che quindi il prossimo simbolo da scrivere è $\reset$.
+Poiché $N$ non è necessariamente una potenza di $2$, rilevare quando è il momento di scrivere $\reset$ non è triviale. Per fare ciò $B_N$, durante il procedimento di identificazione del prossimo simbolo da scrivere, verifica inoltre se la backward increasing sequence del prefisso attuale è composta dagli indici dei bit a $1$ nella rappresentazione binaria di $N-1$. Se così fosse, il \hyperref[lem:wit:bis:1]{primo punto} del lemma \ref{lem:wit:bis} dimostra che il prefisso attuale ha lunghezza $N-1$, e che quindi il prossimo simbolo da scrivere è $\reset$.
 
 L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro lineari nel massimo elemento della binary carry sequence che può essere scritto, ossia $O(\log N)$.
 
@@ -96,7 +104,7 @@ L'implementazione di $B_N$ richiede un numero di stati e un alfabeto di lavoro l
 
 
 \subsection{L'automa di Meyer e Fischer}
-Con l'intenzione di studiare un witness language che non fosse né unario né a blocchi, Pighizzini, Prigioniero e Sádovský hanno studiato in \cite{Pighizzini:22:limitedwitness} il riconoscimento da parte di \la1 del linguaggio accettato dall'automa $S_N$, introdotto da Meyer e Fischer in \cite{Meyer:71:ecodescription} come testimone della distanza esponenziale tra 1NFA e 1DFA. L'automa, rappresentato in figura \ref{img:wit:Sn}, ha una struttura ciclica: se si considerano solo le transizioni generate dal simbolo $a$ l'automa riconosce il linguaggio $\set{a^N}\star$. Il ruolo di $b$ è scelto nondeterministicamente tra due: o viene ignorato, lasciando invariato lo stato, o impone alla macchina un reset, riportandola allo stato iniziale.
+Con l'intenzione di studiare un witness language che non fosse né unario né a blocchi, Pighizzini, Prigioniero e Sádovský hanno studiato in \cite{Pighizzini:22:limitedwitness} il riconoscimento da parte di \la1 del linguaggio accettato dall'automa $S_N$, introdotto da Meyer e Fischer in \cite{Meyer:71:ecodescription} come testimone del costo esponenziale tra 1NFA e 1DFA. L'automa, rappresentato in figura \ref{img:wit:Sn}, ha una struttura ciclica: se si considerano solo le transizioni generate dal simbolo $a$ l'automa riconosce il linguaggio $\set{a^N}\star$. Durante il riconoscimento di una stringa, il ruolo di $b$ è scelto nondeterministicamente tra due: o viene ignorato, lasciando invariato lo stato, o impone alla macchina un reset, riportandola allo stato iniziale.
 
 \begin{figure}
 	\centering
@@ -105,36 +113,36 @@ Con l'intenzione di studiare un witness language che non fosse né unario né a 
 	\label{img:wit:Sn}
 \end{figure}
 
-Viene dimostrato in \cite{Meyer:71:ecodescription} che il minimo 1DFA equivalente a $S_N$ ha $2^N$ stati. In \cite{Pighizzini:22:limitedwitness} viene costruito un 2DFA di $N+2$ stati equivalente a $S_N$, il che testimonia la distanza esponenziale tra D\la1 e 1DFA, e viene dimostrato che il minimo 2NFA equivalente a $S_{2^n}$, con $n>0$, ha almeno $2^n$ stati.
+È stato dimostrato in \cite{Meyer:71:ecodescription} che il minimo 1DFA equivalente a $S_N$ ha $2^N$ stati. In \cite{Pighizzini:22:limitedwitness} viene costruito un 2DFA di $N+2$ stati equivalente a $S_N$, il che testimonia la distanza esponenziale tra D\la1 e 1DFA, e viene dimostrato che il minimo 2NFA equivalente a $S_{2^n}$, con $n>0$, ha almeno $2^n$ stati.
 
-Per simulare con \la1 automi con un meccanismo di reset simile a quello di $S_N$, si può sfruttare una variante della tecnica basata sulla binary carry sequence di cui al paragrafo \ref{sec:wit:un}. In particolare, per ogni $N>1$, $S_N$ può essere riconosciuto da un \la1 $C_N$ con $O(\log N)$ stati e un alfabeto di lavoro di $O(\log N)$ simboli.
-Poiché, come accennato in precedenza, restringendo il comportamento di $S_N$ al solo input $a$ si riconosce il linguaggio unario $\set{a^N}\star$, in questo caso $C_N$ può comportarsi esattamente come $B_N$, l'automa che riconosce tale linguaggio. $C_N$ costruisce quindi una serie di ripetizioni del prefisso di lunghezza $N-1$ della binary carry sequence, separandole con il carattere di reset $\reset$. Per quanto riguarda il comportamento di $C_N$ per il simbolo di input $b$, la macchina può scegliere nondeterministicamente di effettuare una di due mosse, ciascuna corrispondente a uno dei comportamenti di $S_N$ leggendo $b$:
+Per simulare con \la1 automi con un meccanismo di reset simile a quello di $S_N$, si può utilizzare una variante della tecnica basata sulla binary carry sequence presentata nel paragrafo \ref{sec:wit:un}. In particolare, per ogni $N>1$, $S_N$ può essere riconosciuto da un \la1 $C_N$ con $O(\log N)$ stati e un alfabeto di lavoro di $O(\log N)$ simboli.
+Poiché, come accennato in precedenza, se $S_N$ riceve in input stringhe composte unicamente dal simbolo $a$ l'automa riconosce il linguaggio unario $\set{a^N}\star$, in questo caso $C_N$ può comportarsi esattamente come $B_N$, l'automa che riconosce tale linguaggio. $C_N$ costruisce quindi una serie di ripetizioni del prefisso di lunghezza $N-1$ della binary carry sequence, separandole con il carattere di reset $\reset$. Per quanto riguarda il comportamento di $C_N$ per il simbolo di input $b$, la macchina può scegliere nondeterministicamente di effettuare una di due mosse, ciascuna corrispondente a uno dei comportamenti di $S_N$ leggendo $b$:
 \begin{itemize}
 	\item per simulare le transizioni che non cambiano stato, $C_N$ sovrascrive $b$ con un simbolo $\neutr$ neutrale, nel senso che il comportamento della macchina in esso sarà semplicemente di procedere senza tenerlo in considerazione;
 	\item per simulare le transizioni di reset, $C_N$ sovrascrive $b$ con il simbolo di reset $\reset$. Si noti che sia in questo caso sia se il ciclo di $\set{a^N}\star$ viene completato il simbolo $\reset$ corrisponde agli istanti in cui $S_N$ passa allo stato $q_0$.
 \end{itemize}
-Se si incontra $b$ a destra di $\lem$ o di $\reset$, la mossa non è definita, così come non lo è in $q_0$ per $S_N$. $C_N$ accetta se e solo se $\reset$ o $\lem$ sono seguiti da $\rem$. L'incremento di stati e di simboli rispetto a $B_N$ è trascurabile ed entrambi rimangono in numero di $O(\log N)$.
+Se si incontra $b$ a destra di $\lem$ o di $\reset$, la mossa non è definita, così come non lo è in $q_0$ nell'automa $S_N$. $C_N$ accetta se e solo se $\reset$ o $\lem$ sono seguiti da $\rem$. L'incremento di stati e di simboli rispetto a $B_N$ è trascurabile ed entrambi rimangono in numero di $O(\log N)$.
 
 In conclusione, visti i risultati precedenti, il linguaggio $\generated{S_N}$ è testimone del gap esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
 
 
-\subsection{L'automa di Moore}
-Un automa simile a quello di Meyer e Fischer è stato presentato da E. F. Moore in \cite{Moore:56:gendanken} e studiato da F. R. Moore in \cite{Moore:71:automatabounds}. L'automa $R_N$, rappresentato in figura \ref{img:wit:Rn}, presenta un meccanismo di reset, ma questa volta le transizioni di reset possono avvenire solo dallo stato $q_N$, verso lo stato $q_1$ o verso lo stato $q_2$. Queste transizioni sono, tra l'altro, l'unica fonte di nondeterminismo della macchina.
+\subsection{L'automa \texorpdfstring{$R_N$}{R con N}}
+Un automa che presenta un meccanismo di reset simile a quello di Meyer e Fischer è stato presentato da Moore in \cite{Moore:71:automatabounds}. Il meccanismo dell'automa $R_N$, rappresentato in figura \ref{img:wit:Rn}, è tuttavia leggermente diverso: questa volta le transizioni di reset possono avvenire solo dallo stato $q_N$, verso lo stato $q_1$ o verso lo stato $q_2$. Queste transizioni sono, tra l'altro, le uniche nondeterministiche della macchina.
 
 \begin{figure}
 	\centering
 	\input{img/Rn.tikz}
-	\caption{L'NFA $S_N$ di Moore.}
+	\caption{L'NFA $R_N$ di Moore.}
 	\label{img:wit:Rn}
 \end{figure}
 
-Un \la1 $D_N$ può riconoscere l'automa di Moore con un adattamento della tecnica precedente:
+Un \la1 $D_N$ può riconoscere l'automa $S_N$ con un adattamento della tecnica precedente:
 \begin{itemize}
-	\item simulando la computazione tra $q_1$ e $q_N$, $D_N$ sovrascrive l'input con la binary carry sequence trovando, scritto ogni simbolo, il più piccolo naturale che non ricorre nella backward increasing sequence del prefisso corrente e, contemporaneamente, controllando se tale sequenza rappresenta il numero $N$. La macchina verifica che la successione dei simboli di input porti a transizioni legali (ossia non può ricevere $b$ nello stato $q_N$);
-	\item $D_N$ sceglie nondeterministicamente quale transizione simulare nel caso stia simulando lo stato $q_N$ e riceva $a$ in input;
-	\item per simulare la transizione dallo stato $q_n$ verso lo stato $q_1$, $D_N$ utilizza un simbolo di reset $\reset_1$ che si comporta come l'end-marker sinistro, e impone all'automa di ricominciare a scrivere la binary carry sequence a partire dal suo primo elemento $\sigma_1$. Lo stesso simbolo di reset viene scritto se simulando lo stato $q_1$, cioè dopo la scrittura di $\reset_1$ oppure dopo $\lem$, il simbolo di input successivo è $b$, simulando la transizione dallo stato $q_1$ in se stesso;
-	\item per simulare la transizione dallo stato $q_N$ verso lo stato $q_2$, $D_N$ utilizza un simbolo di reset $\reset_2$. Questo simbolo si comporta in modo leggermente diverso rispetto a $\reset_1$ e $\lem$, in quanto muovendosi alla sua destra l'automa scrive la binary carry sequence partendo dal suo secondo elemento $\sigma_2$ (invece che dal primo). Questo simbolo porta l'automa a comportarsi diversamente anche nelle computazioni successive: leggendolo durante il tracciamento della backward increasing sequence, l'automa si comporta come se avesse letto $\reset_1$ e prima di esso (cioè alla sua destra) $\sigma_1$. In questo modo il conteggio degli stati con la tecnica della binary carry sequence rimane valido, pur contando a partire dal suo secondo elemento.
+	\item simulando la computazione tra $q_1$ e $q_N$, $D_N$ sovrascrive l'input con la binary carry sequence trovando, dopo ogni scrittura, il più piccolo naturale che non ricorre nella backward increasing sequence del prefisso corrente e, contemporaneamente, controllando se tale sequenza rappresenta il numero $N$. La macchina verifica che la successione dei simboli di input porti a transizioni valide (ossia non può leggere $b$ nello stato $q_N$);
+	\item $D_N$ sceglie nondeterministicamente quale transizione simulare nel caso stia simulando lo stato $q_N$ e legga $a$ in input;
+	\item per simulare la transizione dallo stato $q_N$ verso lo stato $q_1$, $D_N$ scrive un simbolo di reset $\reset_1$ su cui la macchina si comporta come sull'end-marker sinistro, e dopo il quale ricomincia a scrivere la binary carry sequence a partire dal suo primo elemento. Lo stesso simbolo di reset viene scritto se simulando lo stato $q_1$, cioè dopo la scrittura di $\reset_1$ oppure dopo $\lem$, il simbolo di input successivo è $b$, simulando la transizione dallo stato $q_1$ in se stesso;
+	\item per simulare la transizione dallo stato $q_N$ verso lo stato $q_2$, $D_N$ scrive un simbolo di reset $\reset_2$. Su questo simbolo la macchina si comporta in modo leggermente diverso rispetto a $\reset_1$ e $\lem$, in quanto muovendosi alla sua destra l'automa scrive la binary carry sequence partendo dal suo secondo elemento (invece che dal primo). Questo simbolo porta l'automa a comportarsi diversamente anche nelle computazioni successive: leggendolo durante il tracciamento della backward increasing sequence, l'automa si comporta come se avesse letto $\reset_1$ e prima di esso (cioè alla sua destra) $\sigma_1$. In questo modo il conteggio dei simboli con la tecnica della binary carry sequence rimane valido, pur contando a partire dal suo secondo elemento.
 \end{itemize}
 L'automa $D_N$ può essere implementato con $O(\log N)$ stati e $O(\log N)$ simboli.
 
-F. R. Moore ha dimostrato che $R_N$, oltre a essere minimo, riconosce un linguaggio che è testimone della distanza esponenziale da 1NFA a 1DFA. L'esistenza di un \la1 di complessità logaritmica che riconosce $\generated{R_N}$ dimostra che tale linguaggio è testimone anche della distanza esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.
+Moore ha dimostrato che $R_N$, oltre a essere minimo, riconosce un linguaggio che è testimone del costo esponenziale tra 1NFA a 1DFA. L'esistenza di un \la1 di descrizione logaritmica che riconosce $\generated{R_N}$ dimostra che tale linguaggio è testimone anche del costo esponenziale tra \la1 e 1NFA e doppiamente esponenziale tra \la1 e 1DFA.

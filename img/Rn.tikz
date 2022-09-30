@@ -3,8 +3,8 @@
 	\node[state]		(q2)	[right=of q1]	{$q_2$};
 	\node[state]		(q3)	[right=of q2]	{$q_3$};
 	\node			(qd)	[right=of q3]	{$\dots$};
-	\node[state]		(qn-1)	[right=of qd]	{\small $q_{n-1}$};
-	\node[state]		(qn)	[right=of qn-1]	{$q_n$};
+	\node[state]		(qn-1)	[right=of qd]	{\small $q_{N-1}$};
+	\node[state]		(qn)	[right=of qn-1]	{$q_N$};
 	\path[->]
 	(q1)	edge			node[above]	{$a$} (q2)
 		edge[loop above]	node[above] 	{$b$} ()
